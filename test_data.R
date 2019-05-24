@@ -23,14 +23,57 @@ trainData = createTestDataset(plastic, noise = c(0,10,50,100))
 
 source("polymeRID/trainModells.R")
 
+trCnt = trainCt = trainControl(method = "cv",number = 10, classProbs = TRUE)
+plastic$Abbreviation = as.factor(plastic$Abbreviation)
+
+
+cl = parallel::makeCluster(6)
+doParallel::registerDoParallel(cl)
+mod = train(x = plastic[,1:ncol(plastic)-1], y = plastic$Abbreviation, method = "rf", trControl = trCnt, metric ="Kappa")
+parallel::stopCluster(cl)
+
+
+svmgrid = expand.grid(sigma= c(0.002), C = c(0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9))# sigma 0.002 and C 0.55
+cl = parallel::makeCluster(6)
+doParallel::registerDoParallel(cl)
+mod1 = train(x = plastic[,1:ncol(plastic)-1], y = plastic$Abbreviation, method = "svmRadial", trControl = trCnt, metric ="Kappa", tuneGrid = svmgrid)
+parallel::stopCluster(cl)
+plot(mod1)
+
+cl = parallel::makeCluster(6)
+doParallel::registerDoParallel(cl)
+mod3 = train(x = plastic[,1:ncol(plastic)-1], y = plastic$Abbreviation, method = "rpart", trControl = trCnt, metric ="Kappa")
+parallel::stopCluster(cl)
+
+cl = parallel::makeCluster(6)
+doParallel::registerDoParallel(cl)
+mod4 = train(x = plastic[,1:ncol(plastic)-1], y = plastic$Abbreviation, method = "cforest", trControl = trCnt, metric ="Kappa")
+parallel::stopCluster(cl)
+
+netgrid = expand.grid(decay=c(0.05,0.06,0.07,0.08,0.09,0.1,0.11,0.12,0.13,0.14,0.15),
+                      size = c(1,3,5,7,9,11,13))# optimum and size 9 and decay 0.1
+netgrid = expand.grid(size=c(25,30,35,40),decay = c(0.175))# better 0.175 and 15 size
+cl = parallel::makeCluster(6)
+doParallel::registerDoParallel(cl)
+mod8.2 = train(x = plastic[,1:ncol(plastic)-1], y = plastic$Abbreviation, method = "pcaNNet", trControl = trCnt, metric ="Kappa", tuneGrid = netgrid) 
+parallel::stopCluster(cl)
+plot(mod8.2)
+
+
+cl = parallel::makeCluster(6)
+doParallel::registerDoParallel(cl)
+mod9 = train(x = plastic[,1:ncol(plastic)-1], y = plastic$Abbreviation, method = "ORFpls", trControl = trCnt, metric ="Kappa")
+parallel::stopCluster(cl)
 
 
 
-
-
-
-
-
+trCnt = trainCt = trainControl(method = "LOOCV", classProbs = TRUE)
+plsgrid = expand.grid(ncomp=c(15,16,17,18,19,20,21,22,23,24,25,26))#optimum at 20
+cl = parallel::makeCluster(6)
+doParallel::registerDoParallel(cl)
+mod10 = train(x = plastic[,1:ncol(plastic)-1], y = plastic$Abbreviation, method = "kernelpls", trControl = trCnt, metric ="Kappa", tuneGrid = plsgrid)
+parallel::stopCluster(cl)
+plot(mod10)
 
 spectral_data = as.matrix(plastic[,2:1864])
 wavelengths = unlist(lapply(as.list(names(plastic[2:1864])),function(x){
