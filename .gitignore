@@ -1,5 +1,9 @@
 smp/*.txt
+smp/*.csv
 ref/*.csv
+ref/*.txt
 run
-mod
+mod/*.rds
+mod/*.csv
+mod/*.txt
 
