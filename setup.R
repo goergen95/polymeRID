@@ -15,7 +15,8 @@ libs <-  c("dplyr",
            "ggplot2",
            "magrittr",
            "caret",
-           "keras")
+           "keras",
+           "prospectr")
 for (lib in libs){loadandinstall(lib)}
 
 # creating mandatory directories
@@ -29,4 +30,4 @@ subDir= c("fun", #directory containing scripts for functions
 for (dir in subDir){if(!dir.exists(file.path(root, dir))){dir.create(file.path(root, dir))}}
 
 # create path variables
-for (dir in subDir){assign(dir,file.path(root, dir))}
+for (dir in subDir){assign(dir,paste(root,"/", paste(dir,"/",sep=""),sep=""))}
