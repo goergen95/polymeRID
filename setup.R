@@ -1,8 +1,8 @@
 # set root folder
 if(Sys.info()["sysname"] == "Windows"){
-  root_folder = "~/polymer"
+  root_folder = "~/polymer/polymeRID"
 } else {
-  root_folder = "~/polymer"
+  root_folder = "~/polymer/polymeRID"
 }
 
 # loading necessary libraries
@@ -24,7 +24,8 @@ subDir= c("fun", #directory containing scripts for functions
           "smp", #directory containing sample spectra files
           "ref", #directory containing reference spectra files
           "mod", #directory containing pre-trained and calibrated models
-          "doc") #directory for documentation files
+          "doc", #directory for documentation files
+          "run") #directory for files created in runtime
 for (dir in subDir){if(!dir.exists(file.path(root, dir))){dir.create(file.path(root, dir))}}
 
 # create path variables

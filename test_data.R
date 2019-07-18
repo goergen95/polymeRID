@@ -10,9 +10,15 @@ library(rpatrec) # package to add noise
 library(stringr)
 library(hsdar)
 library(ChemoSpec)
+library(dplyr)
+library(keras)
+library(magrittr)
+library(tensorflow)
 
 data = read.csv("data/ESM/216_2018_1156_MOESM2_ESM.csv", sep = ",", header = T)
-
+data = tbl_df(data)
+data2 = read.csv("data/18122018_PE_1.txt", header = TRUE, sep = "")
+data2
 
 plastic = data[which(data$Abbreviation %in%  c("PP","PE","PS","PA","HDPE","LDPE","PC","PES","PET","PVC")),]
 plastic = plastic[,c(2:1863,1871)]
@@ -31,6 +37,51 @@ cl = parallel::makeCluster(6)
 doParallel::registerDoParallel(cl)
 mod = train(x = plastic[,1:ncol(plastic)-1], y = plastic$Abbreviation, method = "rf", trControl = trCnt, metric ="Kappa")
 parallel::stopCluster(cl)
+
+
+
+ind = sample(1:89,0.5*89)
+
+x_train = as.matrix(plastic[ind,1:1862])
+y_train = plastic[ind,1863]
+x_test = as.matrix(plastic[-ind,1:1862])
+y_test = plastic[-ind,1863]
+
+
+model <- keras_model_sequential()
+model %>% 
+  layer_dense(units = 931, activation = "relu",input_shape = c(1,1862)) %>%
+  layer_conv_1d(filter = 64, kernel_size = 3, activation = 'relu') %>% 
+  layer_conv_1d(filter = 64, kernel_size = 3, activation = 'relu') %>% 
+  #layer_max_pooling_1d(pool_size = 3) %>% 
+  layer_conv_1d(filter = 32, kernel_size = 5, activation = 'relu') %>% 
+  layer_conv_1d(filter = 32, kernel_size = 5, activation = 'relu') %>% 
+  #layer_global_average_pooling_1d() %>% 
+  #layer_dropout(rate = 0.5) %>% 
+  layer_dense(units = 10, activation = 'softmax') %>% 
+  compile(
+    loss = 'categorical_crossentropy',
+    optimizer = 'rmsprop',
+    metrics = c('accuracy')
+  )
+
+model = keras_model_sequential()
+model %>%
+  layer_dense(units = 931, activation = "relu",input_shape = c(1862)) %>%
+  layer_conv_1d(filter = 500, kernel_size = 3, activation = 'relu') %>% 
+  layer_dense(units = 10, activation = 'softmax') %>%
+  compile(
+    loss = 'categorical_crossentropy',
+    optimizer = 'rmsprop',
+    metrics = c('accuracy')
+  )
+
+
+model %>% fit(x_train,y_train,batch_size=3,epochs=10)
+
+
+
+
 
 
 svmgrid = expand.grid(sigma= c(0.002), C = c(0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9))# sigma 0.002 and C 0.55
