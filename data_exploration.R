@@ -2,11 +2,11 @@
 source("polymeRID/setup.R")
 
 
-raw = read.csv(paste0(ref,"216_2018_1156_MOESM2_ESM.csv"),header=T)
+raw = read.csv(paste0(run,"216_2018_1156_MOESM2_ESM.csv"),header=F)
 raw = raw[which(raw$Abbreviation %in%  c("PP","PE","PS","PA","HDPE","LDPE","PC","PES","PET","PVC")),]
 raw$Abbreviation = droplevels(raw$Abbreviation)
 wavelengths = as.numeric(raw[1,2:1864])
-saveRDS(wavelengths,paste0(run,"wavelengths.rds"))
+#saveRDS(wavelengths,paste0(run,"wavelengths.rds"))
 
 sample1 = read.csv(paste0(smp,"10012019_ABS_1.txt"),header=F,sep="")
 sample2 = read.csv(paste0(smp,"10012019_PS_1.txt"),header=F,sep="")

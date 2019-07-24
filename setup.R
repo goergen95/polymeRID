@@ -16,7 +16,9 @@ libs <-  c("dplyr",
            "magrittr",
            "caret",
            "keras",
-           "prospectr")
+           "prospectr",
+           "tidyr",
+           "stringr")
 for (lib in libs){loadandinstall(lib)}
 
 # creating mandatory directories
