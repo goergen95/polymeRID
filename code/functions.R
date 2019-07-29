@@ -17,17 +17,17 @@ createTestDataset = function(data,category = "Abbreviation",noise = c(),savG = l
   data.sg.d1.norm[category] = data.norm[category]
   data.sg.d2.norm = as.data.frame(prospectr::savitzkyGolay(data.norm[,-which(names(data.norm)==category)], p = savG[[1]], w = savG[[2]], m = 2))
   data.sg.d2.norm[category] = data.norm[category]
-  # 1st and 2nd derivative on raw data 
+  # 1st and 2nd derivative on raw data
   data.d1 = as.data.frame(t(diff(t(data[,-which(names(data)==category)]), differences = 1, lag = 11)))
   data.d1[category] = data[category]
   data.d2 = as.data.frame(t(diff(t(data[,-which(names(data)==category)]), differences = 2, lag = 11)))
   data.d2[category] = data[category]
-  # 1st and 2nd derivative on normalized data 
+  # 1st and 2nd derivative on normalized data
   data.d1.norm = as.data.frame(t(diff(t(data.norm[,-which(names(data.norm)==category)]), differences = 1, lag = 11)))
   data.d1.norm[category] = data.norm[category]
   data.d2.norm = as.data.frame(t(diff(t(data.norm[,-which(names(data.norm)==category)]), differences = 2, lag = 11)))
   data.d2.norm[category] = data.norm[category]
-  
+
   # prepare for adding noises
   data.clean = list(data,
                     data.norm,
@@ -41,7 +41,7 @@ createTestDataset = function(data,category = "Abbreviation",noise = c(),savG = l
                     data.d2,
                     data.d1.norm,
                     data.d2.norm)
-  
+
   data.noise10 = lapply(data.clean, function(x){
     tmp = as.matrix(x[,1:ncol(x)-1])
     tmp = as.data.frame(jitter(tmp, 10))
@@ -60,9 +60,9 @@ createTestDataset = function(data,category = "Abbreviation",noise = c(),savG = l
     tmp[category] = x[category]
     return(tmp)
   })
-  
+
   data.return = list(data.clean,data.noise10,data.noise50,data.noise100)
-  return(data.return)  
+  return(data.return)
 }
 
 
@@ -78,14 +78,14 @@ trainTestDataset = function(data,category = "Abbreviation", ntree = 200, metric 
       trainingData = levelData[[type]]
       trCnt = trainCt = trainControl(method = "LOOCV", classProbs = TRUE)
       trainingData[,category] = as.factor(trainingData[,category])
-      
+
       cl = parallel::makeCluster(clusterNumber)
       doParallel::registerDoParallel(cl)
       rfModel = train(x = trainingData[,1:ncol(trainingData)-1], y = trainingData[,category], method = "rf", trControl = trCnt, metric = metric, ntree = ntree)
       parallel::stopCluster(cl)
       saveRDS(rfModel, file = paste0("models/rfmodel_",levels[level],"_",types[type],".rds"))
       imp = varImp(rfModel)
-      
+
       variables$var = attributes(imp$importance)$row.names[which(imp$importance$Overall %in% sort(imp$importance$Overall, decreasing = T)[1:20])]
       variables$imp = imp$importance$Overall[which(imp$importance$Overall %in% sort(imp$importance$Overall, decreasing = T)[1:20])]
       accuracy = rfModel$results[which(rfModel$results$Kappa == max(rfModel$results$Kappa)),]
@@ -95,9 +95,9 @@ trainTestDataset = function(data,category = "Abbreviation", ntree = 200, metric 
       conf = rfModel$finalModel$confusion
       results = list(variables,accuracy,predictive,conf)
       saveRDS(results,file = paste0("results/results_",levels[level],"_",types[type],".rds"))
-      
+
     }
-  } 
+  }
 }
 
 
@@ -112,30 +112,46 @@ trainModel = function(data, method = "rf"){
     imp = varImp(mod)
   }
   if (method == "plsr"){
-    trCnt = trainCt = trainControl(method = "cv", classProbs = TRUE, number = 5 ) 
+    trCnt = trainCt = trainControl(method = "cv", classProbs = TRUE, number = 5 )
     cl = parallel::makeCluster(clusterNumber)
     doParallel::registerDoParallel(cl)
     mod = train(x = data[,1:ncol(data)-1], y = data[,category], method = "gpls", trControl = trCnt, metric = "Accuracy", ncomp = 60)
     parallel::stopCluster(cl)
     saveRDS(mod, file = paste0("models/plsrmodel_",levels[level],"_",types[type],".rds"))
-    imp = varImp(mod) 
+    imp = varImp(mod)
   }
   if (method == "mlp"){
-    trCnt = trainCt = trainControl(method = "cv", classProbs = TRUE, number = 5 ) 
+    trCnt = trainCt = trainControl(method = "cv", classProbs = TRUE, number = 5 )
     cl = parallel::makeCluster(clusterNumber)
     doParallel::registerDoParallel(cl)
     mod = train(x = data[,1:ncol(data)-1], y = data[,category], method = "mlp", trControl = trCnt, metric = "Accuracy", tuneLength = 20)
     parallel::stopCluster(cl)
     saveRDS(mod, file = paste0("models/mlpmodel_",levels[level],"_",types[type],".rds"))
-    imp = varImp(mod) 
+    imp = varImp(mod)
   }
   if (method == "svm"){
-    trCnt = trainCt = trainControl(method = "cv", classProbs = F, number = 5 ) 
+    trCnt = trainCt = trainControl(method = "cv", classProbs = F, number = 5 )
     cl = parallel::makeCluster(clusterNumber)
     doParallel::registerDoParallel(cl)
     mod = train(x = data[,1:ncol(data)-1], y = data[,category], method = "lssvmRadial", trControl = trCnt, metric = "Accuracy")
     parallel::stopCluster(cl)
     saveRDS(mod, file = paste0("models/svmrmodel_",levels[level],"_",types[type],".rds"))
-    imp = varImp(mod) 
+    imp = varImp(mod)
   }
+}
+
+
+samplePlot = function(data,class){
+  cldata = data[data$class == class,]
+  N = length(cldata$class)
+  cldata$id = 1:length(cldata$class)
+  cldata = melt(cldata,id.vars = c("id","class"))
+  cldata = Rmisc::summarySE(cldata,measurevar="value",groupvars = "variable")
+  names(cldata)[3] ="reflectance"
+  figure = ggplot(data=cldata,aes(x=wavenumbers))+
+    geom_ribbon(aes(ymin=reflectance-sd,ymax=reflectance+sd),fill="lightgrey",alpha=0.8)+
+    geom_line(aes(y=reflectance),linetype="dotted")+
+    annotate(geom="text",label=paste0("class: ",class,"\nsamples: ",N),x=0,y=max(cldata$reflectance))+
+    theme_minimal()
+  return(figure)
 }

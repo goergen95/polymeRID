@@ -20,7 +20,7 @@ names(cldata)[3] ="reflectance"
 meanplot = ggplot(data=cldata,aes(x=wavenumbers))+
   geom_ribbon(aes(ymin=reflectance-sd,ymax=reflectance+sd),fill="lightgrey",alpha=0.8)+
   geom_line(aes(y=reflectance),linetype="dotted")+
-  annotate(geom="text",label=paste0("Class: ",classes[i],"\nSamples: ",N),x=3500,y=0.4)+
+  annotate(geom="text",label=paste0("class: ",classes[i],"\nsamples: ",N),x=0,y=max(cldata$reflectance))+
   theme_minimal()
 ggsave(plot=meanplot,file=paste0(output,"mean_spectrum_",classes[i],".png"),dpi=600,device="png",units="cm",width=40,height=20)
 }
