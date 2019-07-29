@@ -1,2 +1,2 @@
 This directory contains reference spectra which are used during the training process.
-Currently, the data can not be shared publicliy at GitHub, though I hope this might change in the future.
+Use the classes.txt file to select classes which are used during training and prediction. The software looks for csv files in /ref for each unique line in classes.txt
