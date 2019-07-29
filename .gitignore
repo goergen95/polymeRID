@@ -6,3 +6,5 @@ mod/*.rds
 mod/*.csv
 mod/*.txt
 
+.Rproj.user
+
