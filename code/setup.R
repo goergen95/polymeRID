@@ -18,7 +18,8 @@ libs <-  c("dplyr",
            "keras",
            "prospectr",
            "tidyr",
-           "stringr")
+           "stringr",
+           "Rfast")
 for (lib in libs){loadandinstall(lib)}
 
 # creating mandatory directories

@@ -141,17 +141,24 @@ trainModel = function(data, method = "rf"){
 }
 
 
-samplePlot = function(data,class){
+samplePlot = function(data,sample,class){
   cldata = data[data$class == class,]
-  N = length(cldata$class)
+  MIN = Rfast::colMins(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
+  MAX = Rfast::colMaxs(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
   cldata$id = 1:length(cldata$class)
   cldata = melt(cldata,id.vars = c("id","class"))
   cldata = Rmisc::summarySE(cldata,measurevar="value",groupvars = "variable")
-  names(cldata)[3] ="reflectance"
+  names(cldata)[3] ="mean"
+  cldata$min = MIN
+  cldata$max = MAX
   figure = ggplot(data=cldata,aes(x=wavenumbers))+
-    geom_ribbon(aes(ymin=reflectance-sd,ymax=reflectance+sd),fill="lightgrey",alpha=0.8)+
-    geom_line(aes(y=reflectance),linetype="dotted")+
-    annotate(geom="text",label=paste0("class: ",class,"\nsamples: ",N),x=0,y=max(cldata$reflectance))+
+    geom_ribbon(aes(ymin=mean-sd,ymax=mean+sd),fill="lightgrey",alpha=0.8)+
+    geom_line(aes(y=mean),alpha=0.4)+
+    geom_line(aes(y=max),linetype="dotted")+
+    geom_line(aes(y=min),linetype="dotted")+
+    geom_line(data=sample,aes(y=reflectance),color="red")+
+    annotate(geom="text",label=paste0("class: ",class,"\nsamples: ",cldata$N[1]),x=0,y=max(cldata$mean))+
+    ylab(label="reflectance")+
     theme_minimal()
   return(figure)
 }
