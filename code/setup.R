@@ -1,6 +1,6 @@
 # set root folder
 if(Sys.info()["sysname"] == "Windows"){
-  root_folder = "~/polymer/polymeRID"
+  root_folder = "~/polymer/polymeRID"# adopt root folder to your personal dir sructure
 } else {
   root_folder = "~/polymer/polymeRID"
 }

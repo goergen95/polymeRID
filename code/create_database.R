@@ -1,6 +1,6 @@
 #script to create a common data base from our own reference polymers
 #and the data by Primpke et al. (2018) (https://link.springer.com/article/10.1007%2Fs00216-018-1156-x)
-source("polymeRID/setup.R")
+source("code/setup.R")
 
 rawPrimpke = read.csv(paste0(run,"216_2018_1156_MOESM2_ESM.csv"),header=F)
 wavenumbers = as.numeric(rawPrimpke[1,2:1864])
