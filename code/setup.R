@@ -19,7 +19,10 @@ libs <-  c("dplyr",
            "prospectr",
            "tidyr",
            "stringr",
-           "Rfast")
+           "Rfast",
+           "factoextra",
+           "randomforest",
+           "workflowr")
 for (lib in libs){loadandinstall(lib)}
 
 # creating mandatory directories
