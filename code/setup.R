@@ -19,9 +19,8 @@ libs <-  c("dplyr",
            "prospectr",
            "tidyr",
            "stringr",
-           "Rfast",
            "factoextra",
-           "randomforest",
+           "randomForest",
            "workflowr")
 for (lib in libs){loadandinstall(lib)}
 
