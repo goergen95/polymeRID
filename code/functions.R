@@ -141,7 +141,7 @@ trainModel = function(data, method = "rf"){
 }
 
 
-samplePlot = function(data,sample,class){
+samplePlot = function(data,sample,class,probs){
   cldata = data[data$class == class,]
   MIN = Rfast::colMins(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
   MAX = Rfast::colMaxs(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
@@ -151,13 +151,22 @@ samplePlot = function(data,sample,class){
   names(cldata)[3] ="mean"
   cldata$min = MIN
   cldata$max = MAX
+  if (probs<0.5) prop = "no confidence"
+  if (probs>=0.5 & probs<0.6) prop = "very low confidence"
+  if (probs>=0.6 & probs<0.7) prop = "low confidence"
+  if (probs>=0.7 & probs<0.8) prop = "medium confidence"
+  if (probs>=0.8 & probs<0.9) prop = "high confidence"
+  if (probs>=0.9) prop = "very high confidence"
   figure = ggplot(data=cldata,aes(x=wavenumbers))+
     geom_ribbon(aes(ymin=mean-sd,ymax=mean+sd),fill="lightgrey",alpha=0.8)+
     geom_line(aes(y=mean),alpha=0.4)+
     geom_line(aes(y=max),linetype="dotted")+
     geom_line(aes(y=min),linetype="dotted")+
     geom_line(data=sample,aes(y=reflectance),color="red")+
-    annotate(geom="text",label=paste0("class: ",class,"\nsamples: ",cldata$N[1]),x=0,y=max(cldata$mean))+
+    annotate(geom="text",label=paste0("Class: ",class,
+                                      "\nSamples: ",cldata$N[1],
+                                      "\nProbability: ",round(probs,3),
+                                      "\nConfidence: ",prop),x=3500,y=max(cldata$max)-0.2)+
     ylab(label="reflectance")+
     theme_minimal()
   return(figure)
@@ -241,7 +250,8 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa"){
   rfModFinal = randomForest::randomForest(predictors,response,ntree=500)
   output = list()
   output[[1]] = acc_metric
-  output[[2]] = results
-  output[[3]] = rfModFinal
+  output[[2]] = thresInd
+  output[[3]] = results
+  output[[4]] = rfModFinal
   return(output)
 }

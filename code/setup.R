@@ -21,6 +21,7 @@ libs <-  c("dplyr",
            "stringr",
            "factoextra",
            "randomForest",
+           "gridExtra",
            "workflowr")
 for (lib in libs){loadandinstall(lib)}
 
