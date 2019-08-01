@@ -2,7 +2,7 @@
 source("code/setup.R")
 source("code/functions.R")
 MODEL = "20190801_1458"
-TYPE = "SGD2"
+TYPE = "FUSION"
 FORMAT = ".txt"
 TIME = format(Sys.time(),"%Y%m%d_%H%M")
 root = paste0(smp,TIME,"_",TYPE)
@@ -89,29 +89,49 @@ if (TYPE == "FUSION"){
   results = list()
   plotID = list()
   for (i in 1:Nsamples){
+    predRAW = predict(rfRAW[[4]],predict(pcaRAW,samples[i,])[,1:rfRAW[[2]]])
+    predNORM = predict(rfNORM[[4]],predict(pcaNORM,sampleNORM[i,])[,1:rfNORM[[2]]])
+    predSGD2 = predict(rfSGD2[[4]],predict(pcaSGD2,sampleSGD2[i,])[,1:rfSGD2[[2]]])
+    predSGNORM = predict(rfSGNORM[[4]],predict(pcaSGNORM,sampleSGNORM[i,])[,1:rfSGNORM[[2]]])
+    classVec = levels(predRAW)
+    fusion = as.vector(c(predNORM, predSGD2, predSGNORM, predRAW))
+    fusionResult = table(fusion)
+
+    if (length(names(fusionResult))==4){
+      class = "NA"
+      probs = "no agreement"
+    }else if(length(names(fusionResult))==2 & as.numeric(fusionResult[1])==2){
+      class1 = classVec[as.numeric(names(fusionResult))[1]]
+      class2 = classVec[as.numeric(names(fusionResult))[2]]
+      class = paste0(class1,"_",class2)
+      probs = "tie"
+    }else{
+      hit = which(fusionResult == max(fusionResult))
+      class = classVec[as.numeric(names(fusionResult))[hit]]
+      counter = as.numeric(fusionResult[hit])
+      if (counter==2){
+        probs = "low agreement"
+      }else if (counter==3){
+        probs = "medium agreement"
+      }else{
+        probs = "high agreement"
+      }
+    }
+    pred = data.frame(ID = ids[i], class = class, probability = probs)
+    results[[i]] = pred
+
+    # get data for similarity plots
     predRAW = predict(rfRAW[[4]],predict(pcaRAW,samples[i,])[,1:rfRAW[[2]]],type="prob")
     predNORM = predict(rfNORM[[4]],predict(pcaNORM,sampleNORM[i,])[,1:rfNORM[[2]]],type="prob")
     predSGD2 = predict(rfSGD2[[4]],predict(pcaSGD2,sampleSGD2[i,])[,1:rfSGD2[[2]]],type="prob")
     predSGNORM = predict(rfSGNORM[[4]],predict(pcaSGNORM,sampleSGNORM[i,])[,1:rfSGNORM[[2]]],type="prob")
     fusion = (predNORM + predSGD2 + predSGNORM + predRAW) / 4
     fusion = as.data.frame(fusion)
-    classVec = names(fusion)
-    hit = which(fusion == max(fusion))
-    pred = data.frame(ID = ids[i], class = classVec[hit],probability = as.numeric(fusion[hit]))
-    if (pred$probability<0.5) pred$confidence = "no confidence"
-    if (pred$probability>=0.5 & pred$probability<0.6) pred$confidence = "very low confidence"
-    if (pred$probability>=0.6 & pred$probability<0.7) pred$confidence = "low confidence"
-    if (pred$probability>=0.7 & pred$probability<0.8) pred$confidence = "medium confidence"
-    if (pred$probability>=0.8 & pred$probability<0.9) pred$confidence = "high confidence"
-    if (pred$probability>=0.9) pred$confidence = "very high confidence"
-    results[[i]] = pred
-
-    # get data for similarity plots
     hits = sort(fusion,decreasing = TRUE)[1:3]
     plotID[[i]] = hits
   }
   results = do.call("rbind",results)
-  write.csv(results,file = paste0(root,"/results.csv"),row.names = FALSE)
+  write.csv(results,file = paste0(root,"/",TYPE,"_results.csv"),row.names = FALSE)
   # function in action
   # first let's prepare the sample data
   data[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
@@ -121,12 +141,42 @@ if (TYPE == "FUSION"){
     names(sample_raw) = c("wavenumbers","reflectance")
     wn_res = prospectr::resample2(sample_raw$reflectance,sample_raw$wavenumbers,wavenumbers)
     sample = data.frame(wavenumbers=wavenumbers,reflectance=wn_res)
-    class = plotID[[which(ids == id)]]
-    class1 = samplePlot(data = data, sample = sample, class = names(class)[1],prob = class[1], name = id)
-    class2 = samplePlot(data = data, sample = sample, class = names(class)[2],prob = class[2])
-    class3 = samplePlot(data = data, sample = sample, class = names(class)[3],prob = class[3])
+    #class = plotID[[which(ids == id)]]
+    if(results$probability[results$ID == id] == "no agreement"){
+      class = plotID[[which(ids == id)]]
+      annotation = paste0("No agreement\n",
+                          names(class)[1],": ",class[1],"\n",
+                          names(class)[2],": ",class[2],"\n",
+                          names(class[3]),": ",class[3])
+      class1 = samplePlot(data = data, sample = sample, class = names(class)[1],prob = annotation, name = id)
+      class2 = samplePlot(data = data, sample = sample, class = names(class)[2])
+      class3 = samplePlot(data = data, sample = sample, class = names(class)[3])
+      multiclass = gridExtra::grid.arrange(class1,class2,class3)
+      ggsave(plot=multiclass,file=paste0(plots,"/",id,"_probClasses.png"),dpi=300,device="png",units="cm",width=50,height=30)
+    } else if (results$probability[results$ID == id] == "tie"){
+      classes = results$class[results$ID == id]
+      tie1 = stringr::str_split(classes,patter="_")[[1]][1]
+      tie2 = stringr::str_split(classes,patter="_")[[1]][2]
+      third = class = names(plotID[[which(ids == id)]])[3]
+      class = plotID[[which(ids == id)]]
+      annotation = annotation = paste0("Tie between: ",tie1," and ",tie2,"\n",
+                                       names(class)[1],": ",class[1],"\n",
+                                       names(class)[2],": ",class[2],"\n",
+                                       names(class[3]),": ",class[3])
+      class1 = samplePlot(data = data, sample = sample, class = tie1, prob = annotation, name = id)
+      class2 = samplePlot(data = data, sample = sample, class = tie2)
+      class3 = samplePlot(data = data, sample = sample, class = third)
+      multiclass = gridExtra::grid.arrange(class1,class2,class3)
+      ggsave(plot=multiclass,file=paste0(plots,"/",id,"_probClasses.png"),dpi=300,device="png",units="cm",width=50,height=30)
+    }else{
+    class = as.character(results$class[results$ID==id])
+    addClasses = as.character(names(plotID[[which(ids == id)]][2:3]))
+    class1 = samplePlot(data = data, sample = sample, class = class, prob = probs, name = id)
+    class2 = samplePlot(data = data, sample = sample, class = addClasses[1])
+    class3 = samplePlot(data = data, sample = sample, class = addClasses[2])
     multiclass = gridExtra::grid.arrange(class1,class2,class3)
     ggsave(plot=multiclass,file=paste0(plots,"/",id,"_probClasses.png"),dpi=300,device="png",units="cm",width=50,height=30)
+    }
   }
 
   for (i in 1:length(sampleList)){
@@ -168,7 +218,7 @@ if (TYPE == "SGD2"){
     plotID[[i]] = hits
   }
   results = do.call("rbind",results)
-  write.csv(results,file = paste0(root,"/results.csv"),row.names = FALSE)
+  write.csv(results,file = paste0(root,"/",TYPE,"_results.csv"),row.names = FALSE)
 
   # function in action
   # first let's prepare the sample data
@@ -202,7 +252,7 @@ if (TYPE == "SGNORM"){
   dataNORM = as.data.frame(base::scale(data[,1:length(wavenumbers)]))
   dataSGNORM = as.data.frame(prospectr::savitzkyGolay(dataNORM, p = 3, w = 11, m = 0))
 
-  samplesSGNORM[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  sampleSGNORM[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
   dataSGNORM[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
 
   pcaSGNORM = prcomp(dataSGNORM)
@@ -229,7 +279,7 @@ if (TYPE == "SGNORM"){
     plotID[[i]] = hits
   }
   results = do.call("rbind",results)
-  write.csv(results,file = paste0(root,"/results.csv"),row.names = FALSE)
+  write.csv(results,file = paste0(root,"/",TYPE,"_results.csv"),row.names = FALSE)
 
   # function in action
   # first let's prepare the sample data
@@ -286,7 +336,7 @@ if (TYPE == "NORM"){
     plotID[[i]] = hits
   }
   results = do.call("rbind",results)
-  write.csv(results,file = paste0(root,"/results.csv"),row.names = FALSE)
+  write.csv(results,file = paste0(root,"/",TYPE,"_results.csv"),row.names = FALSE)
 
   # function in action
   # first let's prepare the sample data
@@ -313,8 +363,8 @@ if (TYPE == "NORM"){
 
 if (TYPE == "RAW"){
   # prepare data
-  samplesRAW = samples
-  samplesRAW[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  sampleRAW = samples
+  sampleRAW[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
 
   dataRAW = as.matrix(data[,-ncol(data)])
   dataRAW[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
@@ -343,7 +393,7 @@ if (TYPE == "RAW"){
     plotID[[i]] = hits
   }
   results = do.call("rbind",results)
-  write.csv(results,file = paste0(root,"/results.csv"),row.names = FALSE)
+  write.csv(results,file = paste0(root,"/",TYPE,"_results.csv"),row.names = FALSE)
 
   # function in action
   # first let's prepare the sample data
