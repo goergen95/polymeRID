@@ -1,5 +1,6 @@
 smp/*.txt
 smp/*.csv
+smp/*.png
 run/*.txt
 run/*.csv
 mod/*.rds

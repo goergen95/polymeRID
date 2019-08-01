@@ -26,10 +26,12 @@ for (level in 1:length(levels)){
   for (type in 1:length(types)){
     print(levels[level])
     print(types[type])
-    tmpModel = pcaCV(testDataset[[level]][[type]],folds = 15,repeats = 10,threshold = 99,metric = "Kappa")
+    tmpData = testDataset[[level]][[type]]
+    tmpData[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+    tmpModel = pcaCV(tmpData,folds = 15,repeats = 10,threshold = 99,metric = "Kappa")
     saveRDS(tmpModel,file = paste0(output,"testRun/model_",levels[level],"_",types[type],"_",round(tmpModel[[1]],2),".rds"))
     results[which(results$level==levels[level] & results$type==types[type]),"kappa"] = as.numeric(tmpModel[[1]])
     print(results)
   }
 }
-saveRDS(results,file=paste0(output,"testRun/first_testRun.rds"))
+saveRDS(results,file=paste0(output,"testRunII/first_testRun.rds"))

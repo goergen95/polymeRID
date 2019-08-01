@@ -137,10 +137,11 @@ if (TYPE == "FUSION"){
   data[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
   samples[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
   for (id in ids){
-    sample_raw = read.table(paste0(smp,id))
-    names(sample_raw) = c("wavenumbers","reflectance")
-    wn_res = prospectr::resample2(sample_raw$reflectance,sample_raw$wavenumbers,wavenumbers)
-    sample = data.frame(wavenumbers=wavenumbers,reflectance=wn_res)
+    sample = as.data.frame(t(samples[which(ids == id),]))
+    sample$wavenmubers = wavenumbers
+    names(sample)[1] = c("reflectance")
+    #wn_res = prospectr::resample2(sample_raw$reflectance,sample_raw$wavenumbers,wavenumbers)
+    #sample = data.frame(wavenumbers=wavenumbers,reflectance=wn_res)
     #class = plotID[[which(ids == id)]]
     if(results$probability[results$ID == id] == "no agreement"){
       class = plotID[[which(ids == id)]]

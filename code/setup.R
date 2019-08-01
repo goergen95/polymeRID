@@ -22,7 +22,7 @@ libs <-  c("dplyr",
            "factoextra",
            "randomForest",
            "gridExtra",
-           "hyperSpec",
+           "baseline",
            "workflowr")
 for (lib in libs){loadandinstall(lib)}
 
