@@ -141,7 +141,7 @@ trainModel = function(data, method = "rf"){
 }
 
 
-samplePlot = function(data,sample,class,probs){
+samplePlot = function(data,sample,class,probs,name=""){
   cldata = data[data$class == class,]
   MIN = Rfast::colMins(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
   MAX = Rfast::colMaxs(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
@@ -166,7 +166,8 @@ samplePlot = function(data,sample,class,probs){
     annotate(geom="text",label=paste0("Class: ",class,
                                       "\nSamples: ",cldata$N[1],
                                       "\nProbability: ",round(probs,3),
-                                      "\nConfidence: ",prop),x=3500,y=max(cldata$max)-0.2)+
+                                      "\nConfidence: ",prop),x=3500,y=Inf,hjust=1,vjust=1)+
+    annotate(geom="text",label=name,x=1000,y=Inf,hjust=1,vjust=1)+
     ylab(label="reflectance")+
     theme_minimal()
   return(figure)

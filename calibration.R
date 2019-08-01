@@ -25,9 +25,12 @@ data = lapply(classes,function(x){
   return(specs)
 })
 data = do.call("rbind",data)
-wavenumbers = stringr::str_remove(names(data),pattern = "wvn")
+window = c(3800,400)
+wavenumbers = as.numeric(stringr::str_remove(names(data),pattern = "wvn"))[1:ncol(data)-1]
+index = which(wavenumbers<=window[1] & wavenumbers>=window[2])
+wavenumbers = wavenumbers[index]
 saveRDS(wavenumbers,paste0(mod,TIME,"/wavenumbers_",TIME,".rds"))
-
+data = data[,c(index,ncol(data))]
 
 if (TYPE == "FUSION"){
   data.norm = as.data.frame(base::scale(data[,-which(names(data)==category)]))

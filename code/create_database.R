@@ -13,18 +13,19 @@ names(rawPrimpke) = paste("wvn",wavenumbers,sep="")
 rawPrimpke$class = as.character(abb)
 
 refFiles = list.files(run,full.names=TRUE,pattern=".txt")
-resampSpectra = function(x,resVec){
+resampSpectra = function(x){
   data = read.csv(x,header=F,sep="")
   names(data) = c("wavenumber","reflectance")
-  tmp = prospectr::resample2(data$reflectance,data$wavenumber,resVec)
-  data = as.data.frame(t(data.frame(tmp)))
-  names(data) = paste("wvn",resVec,sep="")
+  wvn = data$wavenumber
+  #tmp = prospectr::resample2(data$reflectance,data$wavenumber,resVec)
+  data = as.data.frame(t(data$reflectance))
+  names(data) = paste("wvn",wvn,sep="")
   filename = stringr::str_split(x,"/")[[1]][length(stringr::str_split(x,"/")[[1]])]
   className = stringr::str_split(filename,"_")[[1]][2]
   data$class = className
   return(data)
 }
-refData = lapply(refFiles,resampSpectra,resVec=wavenumbers)
+refData = lapply(refFiles,resampSpectra)
 refData = do.call("rbind",refData)
 refData$class[grep("Nylon",refData$class)] = "PA"
 rawPrimpke$class[grep("Nylon",rawPrimpke$class)] = "PA"
@@ -32,6 +33,7 @@ rawPrimpke$class[grep("HDPE",rawPrimpke$class)] = "PE"
 rawPrimpke$class[grep("LDPE",rawPrimpke$class)] = "PE"
 # join data tables
 data = rbind(rawPrimpke,refData)
+data = refData
 data$class = as.factor(data$class)
 summary(data$class)
 write.csv(data,file = paste0(ref,"reference_database.csv"),row.names=FALSE)
@@ -44,4 +46,4 @@ for (class in classIndex){
 }
 
 write(classIndex,paste0(ref,"classes.txt"))
-
+saveRDS(wvn,paste0(ref,"wavenumbers.rds"))
