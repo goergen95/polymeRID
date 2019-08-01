@@ -1,7 +1,7 @@
 # classification
 source("code/setup.R")
 source("code/functions.R")
-MODEL = "20190801_1458"
+MODEL = "20190801_1854"
 TYPE = "FUSION"
 FORMAT = ".txt"
 TIME = format(Sys.time(),"%Y%m%d_%H%M")
@@ -20,7 +20,7 @@ data = lapply(classes,function(x){
 })
 data = do.call("rbind",data)
 wavenumbers = readRDS(paste0(model,"/wavenumbers_",MODEL,".rds"))
-
+#wavenumbers = wavenumbers[1:2300]
 wvn = as.numeric(str_remove(names(data)[-ncol(data)],"wvn"))
 index = which(wvn %in% wavenumbers)
 data = data[,c(index,ncol(data))]
@@ -45,7 +45,9 @@ dummy = as.matrix(samples)
 baslineDummy = baseline(dummy,method="rfbaseline",span=NULL,NoXP=64,maxit=c(10))
 spectra = getCorrected(baslineDummy)
 samples = as.data.frame(spectra)
-
+wvn = as.numeric(str_remove(names(samples),"wvn"))
+index = which(wvn %in% wavenumbers)
+samples = samples[,index]
 
 modsList = list.files(model,full.names = TRUE)
 modsList = modsList[-grep("wavenumbers",modsList)]
@@ -56,13 +58,13 @@ if (TYPE == "FUSION"){
 
   # prepare data
   sampleRAW = samples
-  sampleRAW[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  sampleRAW[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
   sampleNORM = as.data.frame(base::scale(samples))
   sampleSGD2 = as.data.frame(prospectr::savitzkyGolay(samples, p = 3, w = 11, m = 2))
   sampleSGNORM = as.data.frame(prospectr::savitzkyGolay(sampleNORM, p = 3, w = 11, m = 0))
-  sampleSGD2[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
-  sampleSGNORM[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
-  sampleNORM[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  sampleSGD2[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
+  sampleSGNORM[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
+  sampleNORM[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
   sampleSGNORM[is.na(sampleSGNORM)] = 0
   sampleNORM[is.na(sampleNORM)] = 0
 
@@ -70,11 +72,11 @@ if (TYPE == "FUSION"){
   dataNORM = as.data.frame(base::scale(data[,1:length(wavenumbers)]))
   dataSGD2 = as.data.frame(prospectr::savitzkyGolay(data[,1:length(wavenumbers)], p = 3, w = 11, m = 2))
   dataSGNORM = as.data.frame(prospectr::savitzkyGolay(dataNORM, p = 3, w = 11, m = 0))
-  dataSGD2[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
-  dataSGNORM[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
-  dataNORM[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  dataSGD2[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
+  dataSGNORM[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
+  dataNORM[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
   dataRAW = data[,-ncol(data)]
-  dataRAW[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  dataRAW[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
 
   pcaRAW = prcomp(dataRAW)
   pcaNORM = prcomp(dataNORM)
@@ -134,8 +136,8 @@ if (TYPE == "FUSION"){
   write.csv(results,file = paste0(root,"/",TYPE,"_results.csv"),row.names = FALSE)
   # function in action
   # first let's prepare the sample data
-  data[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
-  samples[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  data[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
+  samples[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
   for (id in ids){
     sample = as.data.frame(t(samples[which(ids == id),]))
     sample$wavenmubers = wavenumbers
@@ -170,13 +172,13 @@ if (TYPE == "FUSION"){
       multiclass = gridExtra::grid.arrange(class1,class2,class3)
       ggsave(plot=multiclass,file=paste0(plots,"/",id,"_probClasses.png"),dpi=300,device="png",units="cm",width=50,height=30)
     }else{
-    class = as.character(results$class[results$ID==id])
-    addClasses = as.character(names(plotID[[which(ids == id)]][2:3]))
-    class1 = samplePlot(data = data, sample = sample, class = class, prob = probs, name = id)
-    class2 = samplePlot(data = data, sample = sample, class = addClasses[1])
-    class3 = samplePlot(data = data, sample = sample, class = addClasses[2])
-    multiclass = gridExtra::grid.arrange(class1,class2,class3)
-    ggsave(plot=multiclass,file=paste0(plots,"/",id,"_probClasses.png"),dpi=300,device="png",units="cm",width=50,height=30)
+      class = as.character(results$class[results$ID==id])
+      addClasses = as.character(names(plotID[[which(ids == id)]][2:3]))
+      class1 = samplePlot(data = data, sample = sample, class = class, prob = probs, name = id)
+      class2 = samplePlot(data = data, sample = sample, class = addClasses[1])
+      class3 = samplePlot(data = data, sample = sample, class = addClasses[2])
+      multiclass = gridExtra::grid.arrange(class1,class2,class3)
+      ggsave(plot=multiclass,file=paste0(plots,"/",id,"_probClasses.png"),dpi=300,device="png",units="cm",width=50,height=30)
     }
   }
 
@@ -190,10 +192,10 @@ if (TYPE == "FUSION"){
 if (TYPE == "SGD2"){
   # prepare data
   sampleSGD2 = as.data.frame(prospectr::savitzkyGolay(samples, p = 3, w = 11, m = 2))
-  sampleSGD2[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  sampleSGD2[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
 
   dataSGD2 = as.data.frame(prospectr::savitzkyGolay(data[,1:length(wavenumbers)], p = 3, w = 11, m = 2))
-  dataSGD2[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  dataSGD2[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
 
   pcaSGD2 = prcomp(dataSGD2)
   rfSGD2 = readRDS(modsList[grep("rfSGD2",modsList)])
@@ -223,8 +225,8 @@ if (TYPE == "SGD2"){
 
   # function in action
   # first let's prepare the sample data
-  data[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
-  samples[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  data[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
+  samples[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
   for (id in ids){
     sample_raw = read.table(paste0(smp,id))
     names(sample_raw) = c("wavenumbers","reflectance")
@@ -253,8 +255,8 @@ if (TYPE == "SGNORM"){
   dataNORM = as.data.frame(base::scale(data[,1:length(wavenumbers)]))
   dataSGNORM = as.data.frame(prospectr::savitzkyGolay(dataNORM, p = 3, w = 11, m = 0))
 
-  sampleSGNORM[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
-  dataSGNORM[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  sampleSGNORM[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
+  dataSGNORM[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
 
   pcaSGNORM = prcomp(dataSGNORM)
   rfSGNORM = readRDS(modsList[grep("rfSGNORM",modsList)])
@@ -284,8 +286,8 @@ if (TYPE == "SGNORM"){
 
   # function in action
   # first let's prepare the sample data
-  data[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
-  samples[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  data[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
+  samples[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
   for (id in ids){
     sample_raw = read.table(paste0(smp,id))
     names(sample_raw) = c("wavenumbers","reflectance")
@@ -308,10 +310,10 @@ if (TYPE == "SGNORM"){
 if (TYPE == "NORM"){
   # prepare data
   sampleNORM = as.data.frame(base::scale(samples))
-  sampleNORM[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  sampleNORM[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
 
   dataNORM = as.data.frame(base::scale(data[,1:length(wavenumbers)]))
-  dataNORM[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  dataNORM[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
 
   pcaNORM = prcomp(dataNORM)
   rfNORM = readRDS(modsList[grep("rfNORM",modsList)])
@@ -341,8 +343,8 @@ if (TYPE == "NORM"){
 
   # function in action
   # first let's prepare the sample data
-  data[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
-  samples[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  data[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
+  samples[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
   for (id in ids){
     sample_raw = read.table(paste0(smp,id))
     names(sample_raw) = c("wavenumbers","reflectance")
@@ -365,10 +367,10 @@ if (TYPE == "NORM"){
 if (TYPE == "RAW"){
   # prepare data
   sampleRAW = samples
-  sampleRAW[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  sampleRAW[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
 
   dataRAW = as.matrix(data[,-ncol(data)])
-  dataRAW[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  dataRAW[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
 
   pcaRAW = prcomp(dataRAW)
   rfRAW = readRDS(modsList[grep("rfRAW",modsList)])
@@ -398,8 +400,8 @@ if (TYPE == "RAW"){
 
   # function in action
   # first let's prepare the sample data
-  data[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
-  samples[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  data[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
+  samples[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
   for (id in ids){
     sample_raw = read.table(paste0(smp,id))
     names(sample_raw) = c("wavenumbers","reflectance")

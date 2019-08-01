@@ -41,7 +41,7 @@ if (TYPE == "FUSION"){
   data.sg.d2 = as.data.frame(prospectr::savitzkyGolay(data[,-which(names(data)==category)], p = 3, w = 11, m = 2))
   data.sg.d2[category] = data[category]
 
-  index = which(wavenumbers<=2420 & wavenumbers>=2200)
+  index = which(wavenumbers<=2420 & wavenumbers>=1900)
   data[,index] = 0
   data.norm[,index] = 0
   data.norm[is.na(data.norm)] = 0
