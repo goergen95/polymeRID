@@ -1,7 +1,7 @@
 # classification
 source("code/setup.R")
 source("code/functions.R")
-MODEL = "20190801_1854"
+MODEL = "20190802_1222"
 TYPE = "FUSION"
 FORMAT = ".txt"
 TIME = format(Sys.time(),"%Y%m%d_%H%M")

@@ -1,73 +1,68 @@
-createTestDataset = function(data,category = "Abbreviation",noise = c(),savG = list(p=3,w=11)){
+createTestDataset = function(data,category = "Abbreviation",noise = c(0,10,100,250,500),savG = list(p=3,w=11)){
   if(!category %in% names(data)) print("The categorial variable you provided does not match any column in the dataframe")
-  # center and scale data
-  data.norm = as.data.frame(base::scale(data[,-which(names(data)==category)]))
-  data.norm[category] = data[category]
-  # savitzkiy golay filter on raw data
-  data.sg = as.data.frame(prospectr::savitzkyGolay(data[,-which(names(data)==category)], p = savG[[1]], w = savG[[2]], m = 0))
-  data.sg[category] = data[category]
-  data.sg.d1 = as.data.frame(prospectr::savitzkyGolay(data[,-which(names(data)==category)], p = savG[[1]], w = savG[[2]], m = 1))
-  data.sg.d1[category] = data[category]
-  data.sg.d2 = as.data.frame(prospectr::savitzkyGolay(data[,-which(names(data)==category)], p = savG[[1]], w = savG[[2]], m = 2))
-  data.sg.d2[category] = data[category]
-  # savitzkiy golay filter on normalized data
-  data.sg.norm = as.data.frame(prospectr::savitzkyGolay(data.norm[,-which(names(data.norm)==category)], p = savG[[1]], w = savG[[2]], m = 0))
-  data.sg.norm[category] = data.norm[category]
-  data.sg.d1.norm = as.data.frame(prospectr::savitzkyGolay(data.norm[,-which(names(data.norm)==category)], p = savG[[1]], w = savG[[2]], m = 1))
-  data.sg.d1.norm[category] = data.norm[category]
-  data.sg.d2.norm = as.data.frame(prospectr::savitzkyGolay(data.norm[,-which(names(data.norm)==category)], p = savG[[1]], w = savG[[2]], m = 2))
-  data.sg.d2.norm[category] = data.norm[category]
-  # 1st and 2nd derivative on raw data
-  data.d1 = as.data.frame(t(diff(t(data[,-which(names(data)==category)]), differences = 1, lag = 11)))
-  data.d1[category] = data[category]
-  data.d2 = as.data.frame(t(diff(t(data[,-which(names(data)==category)]), differences = 2, lag = 11)))
-  data.d2[category] = data[category]
-  # 1st and 2nd derivative on normalized data
-  data.d1.norm = as.data.frame(t(diff(t(data.norm[,-which(names(data.norm)==category)]), differences = 1, lag = 11)))
-  data.d1.norm[category] = data.norm[category]
-  data.d2.norm = as.data.frame(t(diff(t(data.norm[,-which(names(data.norm)==category)]), differences = 2, lag = 11)))
-  data.d2.norm[category] = data.norm[category]
 
-  # prepare for adding noises
-  data.clean = list(data,
-                    data.norm,
-                    data.sg,
-                    data.sg.d1,
-                    data.sg.d2,
-                    data.sg.norm,
-                    data.sg.d1.norm,
-                    data.sg.d2.norm,
-                    data.d1,
-                    data.d2,
-                    data.d1.norm,
-                    data.d2.norm)
+  addNoise = function(data,nlevel){
+    tmp = as.matrix(data[,1:ncol(data)-1])
+    tmp = as.data.frame(jitter(tmp, nlevel))
+    tmp[category] = data[category]
+    return(tmp)
+  }
+  data.return = list()
+  for (n in noise){
 
-  data.noise10 = lapply(data.clean, function(x){
-    tmp = as.matrix(x[,1:ncol(x)-1])
-    tmp = as.data.frame(jitter(tmp, 10))
-    tmp[category] = x[category]
-    return(tmp)
-  })
-  data.noise50 = lapply(data.clean, function(x){
-    tmp = as.matrix(x[,1:ncol(x)-1])
-    tmp = as.data.frame(jitter(tmp, 50))
-    tmp[category] = x[category]
-    return(tmp)
-  })
-  data.noise100 = lapply(data.clean, function(x){
-    tmp = as.matrix(x[,1:ncol(x)-1])
-    tmp = as.data.frame(jitter(tmp, 100))
-    tmp[category] = x[category]
-    return(tmp)
-  })
+    dataSave = data
+    data = addNoise(data,nlevel=n)
 
-  data.return = list(data.clean,data.noise10,data.noise50,data.noise100)
+    # center and scale data
+    data.norm = as.data.frame(base::scale(data[,-which(names(data)==category)]))
+    data.norm[category] = data[category]
+    # savitzkiy golay filter on raw data
+    data.sg = as.data.frame(prospectr::savitzkyGolay(data[,-which(names(data)==category)], p = savG[[1]], w = savG[[2]], m = 0))
+    data.sg[category] = data[category]
+    data.sg.d1 = as.data.frame(prospectr::savitzkyGolay(data[,-which(names(data)==category)], p = savG[[1]], w = savG[[2]], m = 1))
+    data.sg.d1[category] = data[category]
+    data.sg.d2 = as.data.frame(prospectr::savitzkyGolay(data[,-which(names(data)==category)], p = savG[[1]], w = savG[[2]], m = 2))
+    data.sg.d2[category] = data[category]
+    # savitzkiy golay filter on normalized data
+    data.sg.norm = as.data.frame(prospectr::savitzkyGolay(data.norm[,-which(names(data.norm)==category)], p = savG[[1]], w = savG[[2]], m = 0))
+    data.sg.norm[category] = data.norm[category]
+    data.sg.d1.norm = as.data.frame(prospectr::savitzkyGolay(data.norm[,-which(names(data.norm)==category)], p = savG[[1]], w = savG[[2]], m = 1))
+    data.sg.d1.norm[category] = data.norm[category]
+    data.sg.d2.norm = as.data.frame(prospectr::savitzkyGolay(data.norm[,-which(names(data.norm)==category)], p = savG[[1]], w = savG[[2]], m = 2))
+    data.sg.d2.norm[category] = data.norm[category]
+    # 1st and 2nd derivative on raw data
+    data.d1 = as.data.frame(t(diff(t(data[,-which(names(data)==category)]), differences = 1, lag = 11)))
+    data.d1[category] = data[category]
+    data.d2 = as.data.frame(t(diff(t(data[,-which(names(data)==category)]), differences = 2, lag = 11)))
+    data.d2[category] = data[category]
+    # 1st and 2nd derivative on normalized data
+    data.d1.norm = as.data.frame(t(diff(t(data.norm[,-which(names(data.norm)==category)]), differences = 1, lag = 11)))
+    data.d1.norm[category] = data.norm[category]
+    data.d2.norm = as.data.frame(t(diff(t(data.norm[,-which(names(data.norm)==category)]), differences = 2, lag = 11)))
+    data.d2.norm[category] = data.norm[category]
+
+    # prepare for adding noises
+    data.noised = list(data,
+                       data.norm,
+                       data.sg,
+                       data.sg.d1,
+                       data.sg.d2,
+                       data.sg.norm,
+                       data.sg.d1.norm,
+                       data.sg.d2.norm,
+                       data.d1,
+                       data.d2,
+                       data.d1.norm,
+                       data.d2.norm)
+    data = dataSave
+    data.return[[which(noise == n)]] = data.noised
+  }
   return(data.return)
 }
 
 
 
-trainTestDataset = function(data,category = "Abbreviation", ntree = 200, metric = "Kappa", clusterNumber = 7, levels = c("clean","noise10","noise50","noise100"),
+trainTestDataset = function(data,category = "Abbreviation", ntree = 200, metric = "Kappa", clusterNumber = 7, levels = c("clean","noise10","noise50","noise100","noise250","noise500"),
                             types = c("raw","norm","sg","sg.d1","sg.d2","sg.norm","sg.norm.d1","sg.norm.d2","raw.d1","raw.d2","norm.d1","norm.d2")){
   levels = levels
   types = types
@@ -141,6 +136,31 @@ trainModel = function(data, method = "rf"){
 }
 
 
+meanplot = function(data,wavenumbers,class){
+  #prpare data
+  cldata = data[data$class == class,]
+  MIN = Rfast::colMins(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
+  MAX = Rfast::colMaxs(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
+  cldata$id = 1:length(cldata$class)
+  cldata = melt(cldata,id.vars = c("id","class"))
+  cldata = Rmisc::summarySE(cldata,measurevar="value",groupvars = "variable")
+  names(cldata)[3] ="mean"
+  cldata$min = MIN
+  cldata$max = MAX
+
+
+  tmp = ggplot(data=cldata,aes(x=wavenumbers))+
+    geom_ribbon(aes(ymin=mean-sd,ymax=mean+sd),fill="lightgrey",alpha=0.8)+
+    geom_line(aes(y=mean),alpha=0.4)+
+    geom_line(aes(y=max),linetype="dotted")+
+    geom_line(aes(y=min),linetype="dotted")+
+    annotate(geom="text",label=paste0("class: ",class,"\nsamples: ",cldata$N[1]),x=0,y=max(cldata$mean))+
+    ylab(label="reflectance")+
+    theme_minimal()
+  return(tmp)}
+
+
+
 samplePlot = function(data,sample,class,probs="",name=""){
   cldata = data[data$class == class,]
   MIN = Rfast::colMins(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
@@ -180,13 +200,15 @@ samplePlot = function(data,sample,class,probs="",name=""){
 ## CV
 # funcionality: get indices for the different folds by using caret functions
 
-pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa"){
-
-  foldIndex = caret::createMultiFolds(data$class,k=folds,times=repeats)
+pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=0.5){
+  set.seed(seed)
+  foldIndex = lapply(1:repeats,caret::createDataPartition,y=data$class,times = folds,p=p)
+  foldIndex = do.call(c,foldIndex)
+  #foldIndex = caret::createMultiFolds(data$class,k=folds,times=repeats)
   pcaData = lapply(1:repeats,function(x) {return(0)})
   # starting training loop
   for (rep in 1:repeats){
-    tmpIndex = foldIndex[(rep*folds-folds+1):(rep*folds)]
+    tmpIndex = foldIndex[(rep*folds-folds+1):(rep*folds)] #always jump to the correct number of folds forward for each repeat
     pcaDataFold = lapply(1:folds,function(x){
       training = data[unlist(tmpIndex[x]),]
       validation = data[-unlist(tmpIndex[x]),]
@@ -218,7 +240,7 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa"){
       y_test = unlist(pcaData[[rep]][[fold]][[2]][1+variables])
 
       first = floor(sqrt(ncol(x_train)))/3
-      if(first==0) first <- 1
+      if(first <= 1) first <- 1
       second = floor(sqrt(ncol(x_train)))
       last = ncol(x_train)
       mtries = c(first,second,last)
@@ -226,18 +248,19 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa"){
       rfMods = lapply(1:length(mtries),function(x){return(0)})
       accuracy = c()
       for (mtry in mtries){
-        rfMods[which(mtries==mtry)] = list(randomForest::randomForest(x_train,y_train,x_test,y_test,ntree=500,mtry=mtry))
-        met = confusionMatrix(rfMods[[which(mtries==mtry)]]$test$predicted,y_test)$overall[metric]
+        rfMods[which(mtries==mtry)] = list(randomForest::randomForest(x_train,y_train,ntree=500,mtry=mtry))
+        pred = predict(rfMods[[which(mtries==mtry)]],x_test)
+        met = confusionMatrix(pred,y_test)$overall[metric]
         accuracy = c(accuracy,met)
       }
       rfMod = rfMods[[which(accuracy == max(accuracy))[1]]]
-      pred = rfMod$test$predicted
-      obsv = y_test
-      confMat = caret::confusionMatrix(pred,obsv)
+      pred = predict(rfMod,x_test)
+      confMat = caret::confusionMatrix(pred,y_test)
       foldMetric = confMat$overall[metric]
       results = c(results,foldMetric)
     }
   }
+
   resNames = unlist(lapply(1:rep,function(x){
     return(paste("rep",rep(x,folds),sep=""))
   }))

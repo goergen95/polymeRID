@@ -2,8 +2,15 @@
 source("code/setup.R")
 library(plotly)
 
-results = readRDS(paste0(output,"testRun/first_testRun.rds"))
-
+results = readRDS(paste0(output,"testRunIII/first_testRun.rds"))
+results$level = as.character(results$level)
+results$level[1:12] = "noise0"
+results$level[13:24] = "noise1"
+results$level[25:36] = "noise2"
+results$level[37:48] = "noise3"
+results$level[49:60] = "noise4"
+results$level[61:72] = "noise5"
+results$level = as.factor(results$level)
 # let's visualize the accuracy results with noise levels on x-axis and kappa score on y-axis
 test = ggplot(data=results)+
   geom_line(aes(y=kappa,group=type,x=level,color=type),size=1.5)+
@@ -11,6 +18,9 @@ test = ggplot(data=results)+
   xlab("Noise level")+
   scale_color_discrete(name="Type of\nPre-Processing")+
   theme_minimal()
+
+t = ggplotly(test)
+
 
 # now we find out the three "optimal" preprocessing types by looking at the slope of the accuracy functions
 results_LM = spread(results,key=level,value=kappa)

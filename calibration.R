@@ -21,6 +21,7 @@ dir.create(paste0(mod,TIME))
 
 classes = readLines(paste0(ref,"classes.txt"))
 data = lapply(classes,function(x){
+  print(x)
   specs = read.csv(list.files(ref,full.names=T)[grep(paste(x,".csv",sep=""),list.files(ref))],header=T)
   return(specs)
 })
