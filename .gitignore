@@ -1,11 +1,7 @@
-smp/*.txt
-smp/*.csv
-smp/*.png
-run/*.txt
-run/*.csv
-mod/*.rds
-mod/*.csv
-mod/*.txt
+run/
+plots/
+output/
+files/
 
 .Rproj.user
 .Rhistory
