@@ -2,14 +2,14 @@
 source("code/setup.R")
 library(plotly)
 
-results = readRDS(paste0(output,"testRunIII/first_testRun.rds"))
+results = readRDS(paste0(output,"natural/natural_testRun.rds"))
 results$level = as.character(results$level)
-results$level[1:12] = "noise0"
-results$level[13:24] = "noise1"
-results$level[25:36] = "noise2"
-results$level[37:48] = "noise3"
-results$level[49:60] = "noise4"
-results$level[61:72] = "noise5"
+results$level[1:12] = "noise 0"
+results$level[13:24] = "noise 1"
+results$level[25:36] = "noise 2"
+results$level[37:48] = "noise 3"
+results$level[49:60] = "noise 4"
+results$level[61:72] = "noise 5"
 results$level = as.factor(results$level)
 # let's visualize the accuracy results with noise levels on x-axis and kappa score on y-axis
 test = ggplot(data=results)+

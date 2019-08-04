@@ -97,45 +97,6 @@ trainTestDataset = function(data,category = "Abbreviation", ntree = 200, metric 
 
 
 
-trainModel = function(data, method = "rf"){
-  if (method == "rf"){
-    cl = parallel::makeCluster(clusterNumber)
-    doParallel::registerDoParallel(cl)
-    mod = train(x = data[,1:ncol(data)-1], y = data[,category], method = "rf", trControl = trCnt, metric = metric, ntree = ntree)
-    parallel::stopCluster(cl)
-    saveRDS(mod, file = paste0("models/rfmodel_",levels[level],"_",types[type],".rds"))
-    imp = varImp(mod)
-  }
-  if (method == "plsr"){
-    trCnt = trainCt = trainControl(method = "cv", classProbs = TRUE, number = 5 )
-    cl = parallel::makeCluster(clusterNumber)
-    doParallel::registerDoParallel(cl)
-    mod = train(x = data[,1:ncol(data)-1], y = data[,category], method = "gpls", trControl = trCnt, metric = "Accuracy", ncomp = 60)
-    parallel::stopCluster(cl)
-    saveRDS(mod, file = paste0("models/plsrmodel_",levels[level],"_",types[type],".rds"))
-    imp = varImp(mod)
-  }
-  if (method == "mlp"){
-    trCnt = trainCt = trainControl(method = "cv", classProbs = TRUE, number = 5 )
-    cl = parallel::makeCluster(clusterNumber)
-    doParallel::registerDoParallel(cl)
-    mod = train(x = data[,1:ncol(data)-1], y = data[,category], method = "mlp", trControl = trCnt, metric = "Accuracy", tuneLength = 20)
-    parallel::stopCluster(cl)
-    saveRDS(mod, file = paste0("models/mlpmodel_",levels[level],"_",types[type],".rds"))
-    imp = varImp(mod)
-  }
-  if (method == "svm"){
-    trCnt = trainCt = trainControl(method = "cv", classProbs = F, number = 5 )
-    cl = parallel::makeCluster(clusterNumber)
-    doParallel::registerDoParallel(cl)
-    mod = train(x = data[,1:ncol(data)-1], y = data[,category], method = "lssvmRadial", trControl = trCnt, metric = "Accuracy")
-    parallel::stopCluster(cl)
-    saveRDS(mod, file = paste0("models/svmrmodel_",levels[level],"_",types[type],".rds"))
-    imp = varImp(mod)
-  }
-}
-
-
 meanplot = function(data,wavenumbers,class){
   #prpare data
   cldata = data[data$class == class,]
@@ -200,7 +161,7 @@ samplePlot = function(data,sample,class,probs="",name=""){
 ## CV
 # funcionality: get indices for the different folds by using caret functions
 
-pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=0.5){
+pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=0.5,method="svm"){
   set.seed(seed)
   foldIndex = lapply(1:repeats,caret::createDataPartition,y=data$class,times = folds,p=p)
   foldIndex = do.call(c,foldIndex)
@@ -231,6 +192,12 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
 
 
   results = c()
+  if (method == "svm"){
+    metrics = data.frame(gamma=rep(0,repeats*folds),
+                         cost=rep(0,repeats*folds),
+                         metric=rep(0,repeats*folds))
+  }
+  counter = 1
   for (rep in 1:repeats){
     for (fold in 1:folds){
       variables = ncol(pcaData[[rep]][[fold]][[1]])-1
@@ -239,25 +206,52 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
       x_test = pcaData[[rep]][[fold]][[2]][,1:variables]
       y_test = unlist(pcaData[[rep]][[fold]][[2]][1+variables])
 
-      first = floor(sqrt(ncol(x_train)))/3
-      if(first <= 1) first <- 1
-      second = floor(sqrt(ncol(x_train)))
-      last = ncol(x_train)
-      mtries = c(first,second,last)
 
-      rfMods = lapply(1:length(mtries),function(x){return(0)})
-      accuracy = c()
-      for (mtry in mtries){
-        rfMods[which(mtries==mtry)] = list(randomForest::randomForest(x_train,y_train,ntree=500,mtry=mtry))
-        pred = predict(rfMods[[which(mtries==mtry)]],x_test)
-        met = confusionMatrix(pred,y_test)$overall[metric]
-        accuracy = c(accuracy,met)
+      if (method == "rf"){
+        first = floor(sqrt(ncol(x_train)))/3
+        if(first <= 1) first <- 1
+        second = floor(sqrt(ncol(x_train)))
+        last = ncol(x_train)
+        mtries = c(first,second,last)
+
+        Mods = lapply(1:length(mtries),function(x){return(0)})
+        accuracy = c()
+        for (mtry in mtries){
+          Mods[which(mtries==mtry)] = list(randomForest::randomForest(x_train,y_train,ntree=500,mtry=mtry))
+          pred = predict(Mods[[which(mtries==mtry)]],x_test)
+          met = confusionMatrix(pred,y_test)$overall[metric]
+          accuracy = c(accuracy,met)
+        }
+        Mod = Mods[[which(accuracy == max(accuracy))[1]]]
+        pred = predict(Mod,x_test)
+        confMat = caret::confusionMatrix(pred,y_test)
+        foldMetric = confMat$overall[metric]
+        results = c(results,foldMetric)
       }
-      rfMod = rfMods[[which(accuracy == max(accuracy))[1]]]
-      pred = predict(rfMod,x_test)
-      confMat = caret::confusionMatrix(pred,y_test)
-      foldMetric = confMat$overall[metric]
-      results = c(results,foldMetric)
+
+      if (method == "svm"){
+        tuneGrid = expand.grid(gamma =10^(-10:-1),cost = 10^(-10:1) )
+        for ( i in nrow(tuneGrid)){
+          Mods = parallelSVM::parallelSVM(x = x_train, y = y_train,
+                                          numberCores = 1,
+                                          samplingSize = 0.8,
+                                          scale = FALSE,type = "C",
+                                          kernel = "radial",
+                                          gamma = tuneGrid$gamma[i],
+                                          cost = tuneGrid$cost[i])
+        }
+
+        # Mods = tune.svm(x = x_train,y = y_train,data=data,gamma=10^(-10:-1),cost=10^(-10:1))
+        pred = predict(Mods$best.model,x_test)
+        confMat = caret::confusionMatrix(pred,y_test)
+        foldMetric = confMat$overall[metric]
+        paras = Mods$best.parameters
+        paras[,metric] = confMat$overall[metric]
+        metrics[counter,] = paras
+        counter = counter + 1
+        results = c(results,foldMetric)
+      }
+
     }
   }
 
@@ -272,11 +266,18 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
   thresInd = which(varInfo$cumulative.variance.percent>=threshold)[1]
   predictors = pcaMod$x[,1:thresInd]
   response = data[,ncol(data)]
-  rfModFinal = randomForest::randomForest(predictors,response,ntree=500)
+
+  if (method == "rf"){
+    ModFinal = randomForest::randomForest(predictors,response,ntree=500)
+  }
+  if (method == "svm"){
+    index = which(metrics$metric == max(metrics$metric))
+    ModFinal = svm(predictors,response,gamma=metrics$gamma[index],cost = metrics$cost[index])
+  }
   output = list()
   output[[1]] = acc_metric
   output[[2]] = thresInd
   output[[3]] = results
-  output[[4]] = rfModFinal
+  output[[4]] = ModFinal
   return(output)
 }

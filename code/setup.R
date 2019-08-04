@@ -15,7 +15,6 @@ libs <-  c("dplyr",
            "ggplot2",
            "magrittr",
            "caret",
-           "keras",
            "prospectr",
            "tidyr",
            "stringr",
@@ -23,7 +22,9 @@ libs <-  c("dplyr",
            "randomForest",
            "gridExtra",
            "baseline",
-           "workflowr")
+           "workflowr",
+           "parallelSVM")
+           #"e1071")
 for (lib in libs){loadandinstall(lib)}
 
 # creating mandatory directories
