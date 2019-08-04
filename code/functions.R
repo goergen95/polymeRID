@@ -230,22 +230,26 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
       }
 
       if (method == "svm"){
-        tuneGrid = expand.grid(gamma =10^(-10:-1),cost = 10^(-10:1) )
-        for ( i in nrow(tuneGrid)){
-          Mods = parallelSVM::parallelSVM(x = x_train, y = y_train,
-                                          numberCores = 1,
-                                          samplingSize = 0.8,
-                                          scale = FALSE,type = "C",
-                                          kernel = "radial",
-                                          gamma = tuneGrid$gamma[i],
-                                          cost = tuneGrid$cost[i])
+        tuneGrid = expand.grid(gamma =seq(0.1,1,0.1),cost = seq(1,5,1) )
+        acc = c()
+        models = list()
+        for ( i in 1:nrow(tuneGrid)){
+          Mods = Rgtsvm::svm(x = x_train, y = y_train,
+                             kernel = "radial",
+                             gamma = tuneGrid$gamma[i],
+                             cost = tuneGrid$cost[i])
+          acc = c(acc,Mods$fitted.accuracy)
+          models[[i]] = Mods
         }
 
-        # Mods = tune.svm(x = x_train,y = y_train,data=data,gamma=10^(-10:-1),cost=10^(-10:1))
-        pred = predict(Mods$best.model,x_test)
+        bestMod = models[[which(acc == max(acc))[1]]]
+        #Mods = Rgtsvm::tune.svm(x = x_train,y = y_train,data=data,gamma=seq(0.1,10,0.3),cost=seq(1,10,1),
+         #                       tunecontrol=tune.control(sampling = "fix",fix=1))
+        #Mod = Rgtsvm::svm(class~.,data=df,gamma=0.250,cost = 1, verbose = T)
+        pred = predict(bestMod,x_test)
         confMat = caret::confusionMatrix(pred,y_test)
         foldMetric = confMat$overall[metric]
-        paras = Mods$best.parameters
+        paras = data.frame(gamma = bestMod$gamma, cost = bestMod$cost)
         paras[,metric] = confMat$overall[metric]
         metrics[counter,] = paras
         counter = counter + 1
@@ -272,7 +276,7 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
   }
   if (method == "svm"){
     index = which(metrics$metric == max(metrics$metric))
-    ModFinal = svm(predictors,response,gamma=metrics$gamma[index],cost = metrics$cost[index])
+    ModFinal = Rgtsvm::svm(predictors,response,gamma=metrics$gamma[index],cost = metrics$cost[index])
   }
   output = list()
   output[[1]] = acc_metric
