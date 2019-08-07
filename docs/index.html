@@ -325,7 +325,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-08-05
+<strong>Last updated:</strong> 2019-08-07
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -356,10 +356,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree5b8a2e6b34c96613b1680ccd4189a8a0228150d5targetblank5b8a2e6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/5b8a2e6b34c96613b1680ccd4189a8a0228150d5" target="_blank">5b8a2e6</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreecaf89e27f83b67040b85d6a819eff2ff89da7edctargetblankcaf89e2a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/caf89e27f83b67040b85d6a819eff2ff89da7edc" target="_blank">caf89e2</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree5b8a2e6b34c96613b1680ccd4189a8a0228150d5targetblank5b8a2e6a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreecaf89e27f83b67040b85d6a819eff2ff89da7edctargetblankcaf89e2a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -436,6 +436,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/goergen95/polymeRID/blob/caf89e27f83b67040b85d6a819eff2ff89da7edc/analysis/index.Rmd" target="_blank">caf89e2</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-08-07
+</td>
+<td>
+wflow_publish(c(“analysis/index.Rmd”))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/goergen95/polymeRID/348ad0a4900088fea1850923057f6f27743d2d6c/docs/index.html" target="_blank">348ad0a</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-08-05
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/goergen95/polymeRID/blob/5b8a2e6b34c96613b1680ccd4189a8a0228150d5/analysis/index.Rmd" target="_blank">5b8a2e6</a>
 </td>
 <td>
@@ -489,7 +523,10 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<p>Welcome to my research website. Here I present the results of my work for a master’s seminar at the University of Marburg concerned with microplastic in the environment. The seminar was placed in the context of a broader <a href="https://www.uni-marburg.de/administration/verwaltung/stab/umr2027/aktuelleprojekte/gefoerdertes/mikroplastik">research effort</a> between the working group of Soil and Water Ecosystems at the Institute of Geography and the working group of Semiconductor Photonics at the Institute of Physics. It was conducted jointly by <a href="https://www.uni-marburg.de/de/fb19/fachbereich/staff/prof-dr-peter-chifflard">Prof. Dr. Peter Chifflard</a> and <a href="https://www.uni-marburg.de/de/fb13/halbleiterphotonik/team">MSc Julia Prume</a> and was focused on the analysis of envrionmental samples to answer different geographical questions about the how and then of microplastic particles moving in water ecosystems. While the most projects during the seminar were focusing on these important geographical questions I set out my project to actually ease the cumbersome process of categorizing FTIR spectra of particles wihtin the samples to polymer classes. The idea was that up-to-date machine learning models applied to the high-dimensional spectral data of particles found in samples could minimize the need for human intervention in the classifcation process and thus significantly speed up the process of categorizing particles to reference polymers. To achieve this aim this project consisted of basically four distinguishable work steps. These are: - Preparation: At first the establishment of a comprehensive database of reference spectra was mandatory to allow the application of machine learning models. The preparation steps included spectral resampling and labeling of reference polymers and natural particles. Later, this database underwent some steps of baseline corrections as well as different level of pre-processing such as normalisation and Savtizkiy-Golay filtering. - Exploration: At the different types of pre-processing techniques were assessed by a brute-force method in which all different levels of the data were presented to different machine learning models and their capability to correctly classify the dataset was captured. Additionally, different levels of noise was added to the data so that the models and pre-processing types which most robustly classify the spectra could be identified. - Calibration: After the explorative stage, a applicable algorithm which can be calibrated to a potentially changing database needed to be established. That was important, so that the code can be used in the future as well e.g. when the reference database should be extended or the wavenumbers of interes might change. - Classification: This last stage is the core part of the project in the sense that at this stage real environmental samples are to be classified in a user-friendly way to ease the categorization process. That means that some accuracy values of the classification need to be easily accesiable as well as some possibilities for a human agent to assess the accuracy</p>
+<p>Welcome to my research website. Here I present the results of my work for a master’s seminar at the University of Marburg concerned with microplastic in the environment.<br />
+The seminar was placed in the context of a broader <a href="https://www.uni-marburg.de/administration/verwaltung/stab/umr2027/aktuelleprojekte/gefoerdertes/mikroplastik">research project</a> between the working group of Soil and Water Ecosystems at the Institute of Geography and the working group of Semiconductor Photonics at the Institute of Physics. It was conducted jointly by <a href="https://www.uni-marburg.de/de/fb19/fachbereich/staff/prof-dr-peter-chifflard">Prof. Dr. Peter Chifflard</a> and <a href="https://www.uni-marburg.de/de/fb13/halbleiterphotonik/team">MSc Julia Prume</a> and was focused on the analysis of envrionmental samples to answer different geographical questions about the how and then of microplastic particles moving in water ecosystems.<br />
+While the most projects during the seminar were focusing on these important geographical questions I set out my project to actually ease the cumbersome process of categorizing FTIR spectra of particles wihtin the samples to polymer classes. The idea was that up-to-date machine learning models applied to the high-dimensional spectral data of particles found in samples could minimize the need for human intervention in the classifcation process and thus significantly speed up the process of categorizing particles to reference polymers.</p>
+<p>To achieve this aim this project consisted of basically four distinguishable work steps. These are: * Preparation: At first the establishment of a comprehensive database of reference spectra was mandatory to allow the application of machine learning models. The preparation steps included spectral resampling and labeling of reference polymers and natural particles. Later, this database underwent some steps of baseline corrections as well as different level of pre-processing such as normalisation and Savtizkiy-Golay filtering. * Exploration: At the different types of pre-processing techniques were assessed by a brute-force method in which all different levels of the data were presented to different machine learning models and their capability to correctly classify the dataset was captured. Additionally, different levels of noise was added to the data so that the models and pre-processing types which most robustly classify the spectra could be identified. * Calibration: After the explorative stage, a applicable algorithm which can be calibrated to a potentially changing database needed to be established. That was important, so that the code can be used in the future as well e.g. when the reference database should be extended or the wavenumbers of interes might change. * Classification: This last stage is the core part of the project in the sense that at this stage real environmental samples are to be classified in a user-friendly way to ease the categorization process. That means that some accuracy values of the classification need to be easily accesiable as well as some possibilities for a human agent to assess the accuracy</p>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
