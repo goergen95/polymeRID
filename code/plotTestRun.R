@@ -2,7 +2,7 @@
 source("code/setup.R")
 library(plotly)
 
-results = readRDS(paste0(output,"natural/natural_testRun.rds"))
+results = readRDS(paste0(output,"svm/first_testRun.rds"))
 results$level = as.character(results$level)
 results$level[1:12] = "noise 0"
 results$level[13:24] = "noise 1"

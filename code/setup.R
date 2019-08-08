@@ -23,8 +23,8 @@ libs <-  c("dplyr",
            "gridExtra",
            "baseline",
            "workflowr",
-           "Rgtsvm")
-           #"e1071")
+           "Rgtsvm",
+           "e1071")
 for (lib in libs){loadandinstall(lib)}
 
 # creating mandatory directories

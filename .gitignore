@@ -2,6 +2,6 @@ run/
 plots/
 output/
 files/
-
 .Rproj.user
 .Rhistory
+packrat/lib*/

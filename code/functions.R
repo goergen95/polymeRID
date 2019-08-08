@@ -199,6 +199,7 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
   }
   counter = 1
   for (rep in 1:repeats){
+    #print(paste0("Starting repeat ",rep," out of ",repeats,"."))
     for (fold in 1:folds){
       variables = ncol(pcaData[[rep]][[fold]][[1]])-1
       x_train = pcaData[[rep]][[fold]][[1]][,1:variables]
@@ -230,22 +231,42 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
       }
 
       if (method == "svm"){
-        tuneGrid = expand.grid(gamma =seq(0.1,1,0.1),cost = seq(1,5,1) )
+        tuneGrid = expand.grid(gamma =seq(0.1,1,0.2),cost = seq(1,5,1) )
         acc = c()
         models = list()
         for ( i in 1:nrow(tuneGrid)){
-          Mods = Rgtsvm::svm(x = x_train, y = y_train,
-                             kernel = "radial",
-                             gamma = tuneGrid$gamma[i],
-                             cost = tuneGrid$cost[i])
+          # Mods = Rgtsvm::svm(x = x_train, y = y_train,
+          #                    kernel = "radial",
+          #                    gamma = tuneGrid$gamma[i],
+          #                    cost = tuneGrid$cost[i])
+          Mods = e1071::svm(x = x_train, y = y_train,
+                            kernel = "radial",
+                            gamma = tuneGrid$gamma[i],
+                            cost = tuneGrid$cost[i])
           acc = c(acc,Mods$fitted.accuracy)
           models[[i]] = Mods
         }
 
         bestMod = models[[which(acc == max(acc))[1]]]
+
+        ## automated tuning ###
         #Mods = Rgtsvm::tune.svm(x = x_train,y = y_train,data=data,gamma=seq(0.1,10,0.3),cost=seq(1,10,1),
          #                       tunecontrol=tune.control(sampling = "fix",fix=1))
-        #Mod = Rgtsvm::svm(class~.,data=df,gamma=0.250,cost = 1, verbose = T)
+
+
+        ### benchmarking start ###
+        # print(paste0("GPU based: \n",system.time(Rgtsvm::svm(x = x_train, y = y_train,
+        #                               kernel = "radial",
+        #                               gamma = tuneGrid$gamma[i],
+        #                               cost = tuneGrid$cost[i]))))
+        #
+        # print(paste0("CPU based: \n",system.time(e1071::svm(x = x_train, y = y_train,
+        #                                                      kernel = "radial",
+        #                                                      gamma = tuneGrid$gamma[i],
+        #                                                      cost = tuneGrid$cost[i]))))
+        ### benchmarking end ###
+
+
         pred = predict(bestMod,x_test)
         confMat = caret::confusionMatrix(pred,y_test)
         foldMetric = confMat$overall[metric]
