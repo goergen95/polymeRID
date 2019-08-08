@@ -2,6 +2,7 @@ run/
 plots/
 output/
 files/
+packrat/src
 .Rproj.user
 .Rhistory
 .Rprofile
