@@ -3,8 +3,10 @@ plots/
 output/
 files/
 packrat/src
+packrat/lib
 .Rproj.user
 .Rhistory
 .Rprofile
 polymeRID.Rproj
+packrat/lib/
 packrat/lib*/
