@@ -23,7 +23,7 @@ libs <-  c("dplyr",
            "gridExtra",
            "baseline",
            "workflowr",
-           "Rgtsvm",
+           #"Rgtsvm",
            "e1071")
 for (lib in libs){loadandinstall(lib)}
 
