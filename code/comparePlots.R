@@ -8,14 +8,14 @@ meanplot = function(data,wavenumbers,class){
   MIN = Rfast::colMins(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
   MAX = Rfast::colMaxs(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
   cldata$id = 1:length(cldata$class)
-  cldata = melt(cldata,id.vars = c("id","class"))
+  cldata = reshape2::melt(cldata,id.vars = c("id","class"))
   cldata = Rmisc::summarySE(cldata,measurevar="value",groupvars = "variable")
   names(cldata)[3] ="mean"
   cldata$min = MIN
   cldata$max = MAX
 
 
-  tmp = ggplot(data=cldata,aes(x=wavenumbers))+
+  tmp = ggplot2::ggplot(data=cldata,aes(x=wavenumbers))+
     geom_ribbon(aes(ymin=mean-sd,ymax=mean+sd),fill="lightgrey",alpha=0.8)+
     geom_line(aes(y=mean),alpha=0.4)+
     geom_line(aes(y=max),linetype="dotted")+
