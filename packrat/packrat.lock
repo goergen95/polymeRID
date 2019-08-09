@@ -15,6 +15,12 @@ Hash: 28767546ebf94ffdd3162956287afc55
 Requires: MASS, car, cluster, ellipse, flashClust, lattice, leaps,
     scatterplot3d
 
+Package: IDPmisc
+Source: CRAN
+Version: 1.1.19
+Hash: 185d9def79b7b166482c1af788acb518
+Requires: lattice
+
 Package: KernSmooth
 Source: CRAN
 Version: 2.23-15
@@ -129,6 +135,23 @@ Package: base64enc
 Source: CRAN
 Version: 0.1-3
 Hash: c590d29e555926af053055e23ee79efb
+
+Package: baseline
+Source: CRAN
+Version: 1.2-1
+Hash: ab1cab09cc8b12503cfc70dbf820b6ad
+Requires: SparseM
+
+Package: bit
+Source: CRAN
+Version: 1.1-14
+Hash: 704eb98fa9be263c95d00df4b2a448dd
+
+Package: bit64
+Source: CRAN
+Version: 0.9-7
+Hash: 4b195615d19ba49c114eb04e09e30a96
+Requires: bit
 
 Package: boot
 Source: CRAN
@@ -859,11 +882,6 @@ GithubRepo: workflowr
 GithubUsername: jdblischak
 GithubRef: master
 GithubSha1: d4edc3503a142033c09c9749301e342b52bd439d
-RemoteHost: api.github.com
-RemoteRepo: workflowr
-RemoteUsername: jdblischak
-RemoteRef: master
-RemoteSha: d4edc3503a142033c09c9749301e342b52bd439d
 
 Package: xfun
 Source: CRAN
