@@ -1,61 +1,106 @@
-createTestDataset = function(data,category = "Abbreviation",noise = c(0,10,100,250,500),savG = list(p=3,w=11)){
-  if(!category %in% names(data)) print("The categorial variable you provided does not match any column in the dataframe")
-
-  addNoise = function(data,nlevel){
-    tmp = as.matrix(data[,1:ncol(data)-1])
-    tmp = as.data.frame(jitter(tmp, nlevel))
-    tmp[category] = data[category]
-    return(tmp)
-  }
+addNoise = function(data,levels = c(0,10,100,250,500),category="class"){
   data.return = list()
-  for (n in noise){
+  for (n in levels){
+    tmp = as.matrix(data[ , 1:ncol(data)-1])
+    tmp = as.data.frame(jitter(tmp, n))
+    tmp[category] = data[category]
+    data.return[[paste("noise", n, sep="")]] = tmp
+  }
+  return(data.return)
+}
 
-    dataSave = data
-    data = addNoise(data,nlevel=n)
 
-    # center and scale data
-    data.norm = as.data.frame(base::scale(data[,-which(names(data)==category)]))
-    data.norm[category] = data[category]
-    # savitzkiy golay filter on raw data
-    data.sg = as.data.frame(prospectr::savitzkyGolay(data[,-which(names(data)==category)], p = savG[[1]], w = savG[[2]], m = 0))
-    data.sg[category] = data[category]
-    data.sg.d1 = as.data.frame(prospectr::savitzkyGolay(data[,-which(names(data)==category)], p = savG[[1]], w = savG[[2]], m = 1))
-    data.sg.d1[category] = data[category]
-    data.sg.d2 = as.data.frame(prospectr::savitzkyGolay(data[,-which(names(data)==category)], p = savG[[1]], w = savG[[2]], m = 2))
-    data.sg.d2[category] = data[category]
-    # savitzkiy golay filter on normalized data
-    data.sg.norm = as.data.frame(prospectr::savitzkyGolay(data.norm[,-which(names(data.norm)==category)], p = savG[[1]], w = savG[[2]], m = 0))
-    data.sg.norm[category] = data.norm[category]
-    data.sg.d1.norm = as.data.frame(prospectr::savitzkyGolay(data.norm[,-which(names(data.norm)==category)], p = savG[[1]], w = savG[[2]], m = 1))
-    data.sg.d1.norm[category] = data.norm[category]
-    data.sg.d2.norm = as.data.frame(prospectr::savitzkyGolay(data.norm[,-which(names(data.norm)==category)], p = savG[[1]], w = savG[[2]], m = 2))
-    data.sg.d2.norm[category] = data.norm[category]
-    # 1st and 2nd derivative on raw data
-    data.d1 = as.data.frame(t(diff(t(data[,-which(names(data)==category)]), differences = 1, lag = 11)))
-    data.d1[category] = data[category]
-    data.d2 = as.data.frame(t(diff(t(data[,-which(names(data)==category)]), differences = 2, lag = 11)))
-    data.d2[category] = data[category]
-    # 1st and 2nd derivative on normalized data
-    data.d1.norm = as.data.frame(t(diff(t(data.norm[,-which(names(data.norm)==category)]), differences = 1, lag = 11)))
-    data.d1.norm[category] = data.norm[category]
-    data.d2.norm = as.data.frame(t(diff(t(data.norm[,-which(names(data.norm)==category)]), differences = 2, lag = 11)))
-    data.d2.norm[category] = data.norm[category]
 
-    # prepare for adding noises
-    data.noised = list(data,
-                       data.norm,
-                       data.sg,
-                       data.sg.d1,
-                       data.sg.d2,
-                       data.sg.norm,
-                       data.sg.d1.norm,
-                       data.sg.d2.norm,
-                       data.d1,
-                       data.d2,
-                       data.d1.norm,
-                       data.d2.norm)
-    data = dataSave
-    data.return[[which(noise == n)]] = data.noised
+preprocess = function(data, category = "class", SGpara = list(p=3,w=11),
+                      type = c("raw", "norm", "sg", "sg.d1", "sg.d2",
+                               "sg.norm", "sg.norm.d1", "sg.norm.d2",
+                               "raw.d1", "raw.d2", "norm.d1", "norm.d2")){
+
+  data.return = list()
+  for (noise in names(data)){
+    if(!category %in% names(data[[noise]])){
+      stop("The categorial variable you provided does not match any column in the dataframe.")
+    }
+    tmp = as.data.frame(data[[noise]])
+    classes = tmp[,category]
+    tmp = tmp[!names(tmp) %in% category]
+
+    if ("raw" %in% type){
+      data.return[[noise]][["raw"]] = tmp
+      data.return[[noise]][["raw"]][category] = classes
+    }
+
+    if ("norm" %in% type){
+      data_norm = as.data.frame(base::scale(tmp, center = TRUE, scale = TRUE))
+      data_norm[category] = classes
+      data.return[[noise]][["norm"]] = data_norm
+    }
+
+    if ("sg" %in% type){
+      data_sg = as.data.frame(prospectr::savitzkyGolay(tmp, p = SGpara[[1]], w = SGpara[[2]], m = 0))
+      data_sg[category] = classes
+      data.return[[noise]][["sg"]] = data_sg
+    }
+
+    if ("sg.d1" %in% type){
+      data_sgd1 = as.data.frame(prospectr::savitzkyGolay(tmp, p = SGpara[[1]], w = SGpara[[2]], m = 1))
+      data_sgd1[category] = classes
+      data.return[[noise]][["sg.d1"]] = data_sgd1
+    }
+
+    if ("sg.d2" %in% type){
+      data_sgd2 = as.data.frame(prospectr::savitzkyGolay(tmp, p = SGpara[[1]], w = SGpara[[2]], m = 2))
+      data_sgd2[category] = classes
+      data.return[[noise]][["sg.d2"]] = data_sgd2
+    }
+
+    if ("sg.norm" %in% type){
+      data_norm = base::scale(tmp, center = TRUE, scale = TRUE)
+      data_sgnorm = as.data.frame(prospectr::savitzkyGolay(data_norm, p = SGpara[[1]], w = SGpara[[2]], m = 0))
+      data_sgnorm[category] = classes
+      data.return[[noise]][["sg.norm"]] = data_sgnorm
+    }
+
+    if ("sg.norm.d1" %in% type){
+      data_norm = base::scale(tmp, center = TRUE, scale = TRUE)
+      data_sgnormd1 = as.data.frame(prospectr::savitzkyGolay(data_norm, p = SGpara[[1]], w = SGpara[[2]], m = 1))
+      data_sgnormd1[category] = classes
+      data.return[[noise]][["sg.norm.d1"]] = data_sgnormd1
+    }
+
+    if ("sg.norm.d2" %in% type){
+      data_norm = base::scale(tmp, center = TRUE, scale = TRUE)
+      data_sgnormd2 = as.data.frame(prospectr::savitzkyGolay(data_norm, p = SGpara[[1]], w = SGpara[[2]], m = 2))
+      data_sgnormd2[category] = classes
+      data.return[[noise]][["sg.norm.d2"]] = data_sgnormd2
+    }
+
+    if ("raw.d1" %in% type){
+      data_rawd1 = as.data.frame(t(diff(t(tmp), differences = 1, lag = 15)))
+      data_rawd1[category] = data[category]
+      data.return[[noise]][["raw.d1"]] = data_rawd1
+    }
+
+    if ("raw.d2" %in% type){
+      data_rawd2 = as.data.frame(t(diff(t(tmp), differences = 2, lag = 15)))
+      data_rawd2[category] = data[category]
+      data.return[[noise]][["raw.d2"]] = data_rawd2
+    }
+
+    if ("raw.norm.d1" %in% type){
+      data_norm = base::scale(tmp, center = TRUE, scale = TRUE)
+      data_normd1 = as.data.frame(t(diff(t(data_norm), differences = 1, lag = 15)))
+      data_normd1[category] = data[category]
+      data.return[[noise]][["norm.d1"]] = data_normd1
+    }
+
+    if ("raw.norm.d2" %in% type){
+      data_norm = base::scale(tmp, center = TRUE, scale = TRUE)
+      data_normd2 = as.data.frame(t(diff(t(data_norm), differences = 2, lag = 15)))
+      data_normd2[category] = data[category]
+      data.return[[noise]][["norm.d2"]] = data_norm2
+    }
+
   }
   return(data.return)
 }
@@ -235,10 +280,6 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
         acc = c()
         models = list()
         for ( i in 1:nrow(tuneGrid)){
-          # Mods = Rgtsvm::svm(x = x_train, y = y_train,
-          #                    kernel = "radial",
-          #                    gamma = tuneGrid$gamma[i],
-          #                    cost = tuneGrid$cost[i])
           Mods = e1071::svm(x = x_train, y = y_train,
                             kernel = "radial",
                             gamma = tuneGrid$gamma[i],
@@ -248,25 +289,6 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
         }
 
         bestMod = models[[which(acc == max(acc))[1]]]
-
-        ## automated tuning ###
-        #Mods = Rgtsvm::tune.svm(x = x_train,y = y_train,data=data,gamma=seq(0.1,10,0.3),cost=seq(1,10,1),
-         #                       tunecontrol=tune.control(sampling = "fix",fix=1))
-
-
-        ### benchmarking start ###
-        # print(paste0("GPU based: \n",system.time(Rgtsvm::svm(x = x_train, y = y_train,
-        #                               kernel = "radial",
-        #                               gamma = tuneGrid$gamma[i],
-        #                               cost = tuneGrid$cost[i]))))
-        #
-        # print(paste0("CPU based: \n",system.time(e1071::svm(x = x_train, y = y_train,
-        #                                                      kernel = "radial",
-        #                                                      gamma = tuneGrid$gamma[i],
-        #                                                      cost = tuneGrid$cost[i]))))
-        ### benchmarking end ###
-
-
         pred = predict(bestMod,x_test)
         confMat = caret::confusionMatrix(pred,y_test)
         foldMetric = confMat$overall[metric]
@@ -297,7 +319,7 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
   }
   if (method == "svm"){
     index = which(metrics$metric == max(metrics$metric))
-    ModFinal = Rgtsvm::svm(predictors,response,gamma=metrics$gamma[index],cost = metrics$cost[index])
+    ModFinal = e1071::svm(predictors,response,gamma=metrics$gamma[index],cost = metrics$cost[index])
   }
   output = list()
   output[[1]] = acc_metric

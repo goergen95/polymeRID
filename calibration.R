@@ -14,24 +14,33 @@ TYPE = "FUSION"
 #TYPE = "SGNORM"
 #TYPE = "NORM"
 category = "class"
-TIME = format(Sys.time(),"%Y%m%d_%H%M")
-dir.create(paste0(mod,TIME))
+window = c(3800,400) # window of wavnumbers included in training
+TIME = format(Sys.time(), "%Y%m%d_%H%M")
+dir.create(paste0(mod, TIME))
 
+                    # Don't change anything below this line #
+#==============================================================================#
 
-
-classes = readLines(paste0(ref,"classes.txt"))
-data = lapply(classes,function(x){
-  print(x)
-  specs = read.csv(list.files(ref,full.names=T)[grep(paste(x,".csv",sep=""),list.files(ref))],header=T)
-  return(specs)
+# reading data based on class control file
+classes = readLines(paste0(ref, "classes.txt"))
+data = lapply(classes,function(class){
+  print(class)
+  files = list.files(ref, full.names=TRUE)
+  file = files[grep(paste(class, ".csv", sep=""), files)]
+  data = read.csv(file, header = TRUE)
+  return(data)
 })
 data = do.call("rbind",data)
-window = c(3800,400)
-wavenumbers = as.numeric(stringr::str_remove(names(data),pattern = "wvn"))[1:ncol(data)-1]
+
+# extracting wavenumbers from reference database
+waveChar = stringr::str_remove(names(data[!names(data) %in% category]),
+                               pattern = "wvn")
+wavenumbers = as.numeric(waveChar)
 index = which(wavenumbers<=window[1] & wavenumbers>=window[2])
 wavenumbers = wavenumbers[index]
+data = data[,c(index,which(names(data) %in% category))]
+# save wavenumbers for classification purposes
 saveRDS(wavenumbers,paste0(mod,TIME,"/wavenumbers_",TIME,".rds"))
-data = data[,c(index,ncol(data))]
 
 
 if (TYPE == "FUSION"){
