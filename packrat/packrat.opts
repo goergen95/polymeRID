@@ -6,7 +6,7 @@ vcs.ignore.src: FALSE
 external.packages: 
 local.repos: packrat/src_ext/
 load.external.packages.on.startup: TRUE
-ignored.packages: Rgtsvm
+ignored.packages: 
 ignored.directories:
     data
     inst
