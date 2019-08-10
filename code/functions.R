@@ -9,94 +9,163 @@ addNoise = function(data,levels = c(0,10,100,250,500),category="class"){
   return(data.return)
 }
 
+preprocess = function(data, SGpara = list(p=3,w=11), lag = 15,
+                      type = c("norm", "sg", "sg.d1", "sg.d2",
+                               "sg.norm", "sg.norm.d1", "sg.norm.d2",
+                               "raw.d1", "raw.d2", "norm.d1", "norm.d2")){
+  if (length(type)!= 1){
+    stop("Please provide only one type argument ot preprocess.")
+  }
+  types =  c("norm", "sg", "sg.d1", "sg.d2",
+             "sg.norm", "sg.norm.d1", "sg.norm.d2",
+             "raw.d1", "raw.d2", "norm.d1", "norm.d2")
+  if (!type %in%  types){
+    stop("The provided pre-processing type is unknown.")
+  }
+
+  if (type == "norm"){
+    data.return = as.data.frame(base::scale(data, center = TRUE, scale = TRUE))
+  }
+
+  if (type == "sg"){
+    data.return = as.data.frame(prospectr::savitzkyGolay(data, p = SGpara[[1]], w = SGpara[[2]], m = 0))
+  }
+
+  if (type == "sg.d1"){
+    data.return = as.data.frame(prospectr::savitzkyGolay(data, p = SGpara[[1]], w = SGpara[[2]], m = 1))
+  }
+
+  if (type == "sg.d2"){
+    data.return = as.data.frame(prospectr::savitzkyGolay(data, p = SGpara[[1]], w = SGpara[[2]], m = 2))
+  }
+
+  if (type == "sg.norm"){
+    data_norm = base::scale(data, center = TRUE, scale = TRUE)
+    data.return= as.data.frame(prospectr::savitzkyGolay(data_norm, p = SGpara[[1]], w = SGpara[[2]], m = 0))
+  }
+
+  if (type == "sg.norm.d1"){
+    data_norm = base::scale(data, center = TRUE, scale = TRUE)
+    data.return = as.data.frame(prospectr::savitzkyGolay(data_norm, p = SGpara[[1]], w = SGpara[[2]], m = 1))
+  }
+
+  if (type == "sg.norm.d2"){
+    data_norm = base::scale(data, center = TRUE, scale = TRUE)
+    data.return = as.data.frame(prospectr::savitzkyGolay(data_norm, p = SGpara[[1]], w = SGpara[[2]], m = 2))
+  }
+
+  if (type == "raw.d1"){
+    data.return = as.data.frame(t(diff(t(data), differences = 1, lag = lag)))
+  }
+
+  if (type == "raw.d2"){
+    data.return = as.data.frame(t(diff(t(data), differences = 2, lag = lag)))
+  }
+
+  if (type == "raw.norm.d1"){
+    data_norm = base::scale(data, center = TRUE, scale = TRUE)
+    data.return = as.data.frame(t(diff(t(data_norm), differences = 1, lag = lag)))
+  }
+
+  if ("raw.norm.d2" %in% type){
+    data_norm = base::scale(data, center = TRUE, scale = TRUE)
+    data.return = as.data.frame(t(diff(t(data_norm), differences = 2, lag = lag)))
+  }
+
+  return(data.return)
+}
 
 
-preprocess = function(data, category = "class", SGpara = list(p=3,w=11),
-                      type = c("raw", "norm", "sg", "sg.d1", "sg.d2",
+
+createTrainingSet = function(data, category = "class",
+                             SGpara = list(p=3,w=11), lag = 15,
+                             type = c("raw", "norm", "sg", "sg.d1", "sg.d2",
                                "sg.norm", "sg.norm.d1", "sg.norm.d2",
                                "raw.d1", "raw.d2", "norm.d1", "norm.d2")){
 
+
+
+  types =  c("raw","norm", "sg", "sg.d1", "sg.d2",
+             "sg.norm", "sg.norm.d1", "sg.norm.d2",
+             "raw.d1", "raw.d2", "norm.d1", "norm.d2")
+  if (sum(!type %in%  types) != 0 ){
+    stop("There are unknown preprocessing types provided.")
+  }
+
+
   data.return = list()
   for (noise in names(data)){
-    if(!category %in% names(data[[noise]])){
-      stop("The categorial variable you provided does not match any column in the dataframe.")
-    }
+
     tmp = as.data.frame(data[[noise]])
     classes = tmp[,category]
     tmp = tmp[!names(tmp) %in% category]
 
     if ("raw" %in% type){
-      data.return[[noise]][["raw"]] = tmp
-      data.return[[noise]][["raw"]][category] = classes
+      data.return[[noise]][["raw"]] = as.data.frame(data[[noise]])
     }
 
     if ("norm" %in% type){
-      data_norm = as.data.frame(base::scale(tmp, center = TRUE, scale = TRUE))
+      data_norm = preprocess(tmp, type="norm")
       data_norm[category] = classes
       data.return[[noise]][["norm"]] = data_norm
     }
 
     if ("sg" %in% type){
-      data_sg = as.data.frame(prospectr::savitzkyGolay(tmp, p = SGpara[[1]], w = SGpara[[2]], m = 0))
+      data_sg = preprocess(tmp, type="sg", SGpara = SGpara)
       data_sg[category] = classes
       data.return[[noise]][["sg"]] = data_sg
     }
 
     if ("sg.d1" %in% type){
-      data_sgd1 = as.data.frame(prospectr::savitzkyGolay(tmp, p = SGpara[[1]], w = SGpara[[2]], m = 1))
+      data_sgd1 = preprocess(tmp, type="sg.d1", SGpara = SGpara)
       data_sgd1[category] = classes
       data.return[[noise]][["sg.d1"]] = data_sgd1
     }
 
     if ("sg.d2" %in% type){
-      data_sgd2 = as.data.frame(prospectr::savitzkyGolay(tmp, p = SGpara[[1]], w = SGpara[[2]], m = 2))
+      data_sgd2 = preprocess(tmp, type="sg.d2", SGpara = SGpara)
       data_sgd2[category] = classes
       data.return[[noise]][["sg.d2"]] = data_sgd2
     }
 
     if ("sg.norm" %in% type){
-      data_norm = base::scale(tmp, center = TRUE, scale = TRUE)
-      data_sgnorm = as.data.frame(prospectr::savitzkyGolay(data_norm, p = SGpara[[1]], w = SGpara[[2]], m = 0))
+      data_sgnorm = preprocess(tmp, type="sg.norm", SGpara = SGpara)
       data_sgnorm[category] = classes
       data.return[[noise]][["sg.norm"]] = data_sgnorm
     }
 
     if ("sg.norm.d1" %in% type){
-      data_norm = base::scale(tmp, center = TRUE, scale = TRUE)
-      data_sgnormd1 = as.data.frame(prospectr::savitzkyGolay(data_norm, p = SGpara[[1]], w = SGpara[[2]], m = 1))
+      data_sgnormd1 = preprocess(tmp, type="sg.norm.d1", SGpara = SGpara)
       data_sgnormd1[category] = classes
       data.return[[noise]][["sg.norm.d1"]] = data_sgnormd1
     }
 
     if ("sg.norm.d2" %in% type){
-      data_norm = base::scale(tmp, center = TRUE, scale = TRUE)
-      data_sgnormd2 = as.data.frame(prospectr::savitzkyGolay(data_norm, p = SGpara[[1]], w = SGpara[[2]], m = 2))
+      data_sgnormd2 = preprocess(tmp, type="sg.norm.d2", SGpara = SGpara)
       data_sgnormd2[category] = classes
       data.return[[noise]][["sg.norm.d2"]] = data_sgnormd2
     }
 
     if ("raw.d1" %in% type){
-      data_rawd1 = as.data.frame(t(diff(t(tmp), differences = 1, lag = 15)))
+      data_rawd1 = preprocess(tmp, type="raw.d1", lag = lag)
       data_rawd1[category] = data[category]
       data.return[[noise]][["raw.d1"]] = data_rawd1
     }
 
     if ("raw.d2" %in% type){
-      data_rawd2 = as.data.frame(t(diff(t(tmp), differences = 2, lag = 15)))
+      data_rawd2 = preprocess(tmp, type="raw.d2", lag = lag)
       data_rawd2[category] = data[category]
       data.return[[noise]][["raw.d2"]] = data_rawd2
     }
 
     if ("raw.norm.d1" %in% type){
-      data_norm = base::scale(tmp, center = TRUE, scale = TRUE)
-      data_normd1 = as.data.frame(t(diff(t(data_norm), differences = 1, lag = 15)))
+      data_norm = preprocess(tmp, type="raw.norm.d1", lag = lag)
       data_normd1[category] = data[category]
       data.return[[noise]][["norm.d1"]] = data_normd1
     }
 
     if ("raw.norm.d2" %in% type){
-      data_norm = base::scale(tmp, center = TRUE, scale = TRUE)
-      data_normd2 = as.data.frame(t(diff(t(data_norm), differences = 2, lag = 15)))
+      data_norm = preprocess(tmp, type="raw.norm.d2", lag = lag)
       data_normd2[category] = data[category]
       data.return[[noise]][["norm.d2"]] = data_norm2
     }
@@ -104,42 +173,6 @@ preprocess = function(data, category = "class", SGpara = list(p=3,w=11),
   }
   return(data.return)
 }
-
-
-
-trainTestDataset = function(data,category = "Abbreviation", ntree = 200, metric = "Kappa", clusterNumber = 7, levels = c("clean","noise10","noise50","noise100","noise250","noise500"),
-                            types = c("raw","norm","sg","sg.d1","sg.d2","sg.norm","sg.norm.d1","sg.norm.d2","raw.d1","raw.d2","norm.d1","norm.d2")){
-  levels = levels
-  types = types
-  variables = data.frame(var = 1:20,imp = 1:20)
-  for (level in 1:length(levels)){
-    levelData = data[[level]]
-    for (type in 1:length(types)){
-      trainingData = levelData[[type]]
-      trCnt = trainCt = trainControl(method = "LOOCV", classProbs = TRUE)
-      trainingData[,category] = as.factor(trainingData[,category])
-
-      cl = parallel::makeCluster(clusterNumber)
-      doParallel::registerDoParallel(cl)
-      rfModel = train(x = trainingData[,1:ncol(trainingData)-1], y = trainingData[,category], method = "rf", trControl = trCnt, metric = metric, ntree = ntree)
-      parallel::stopCluster(cl)
-      saveRDS(rfModel, file = paste0("models/rfmodel_",levels[level],"_",types[type],".rds"))
-      imp = varImp(rfModel)
-
-      variables$var = attributes(imp$importance)$row.names[which(imp$importance$Overall %in% sort(imp$importance$Overall, decreasing = T)[1:20])]
-      variables$imp = imp$importance$Overall[which(imp$importance$Overall %in% sort(imp$importance$Overall, decreasing = T)[1:20])]
-      accuracy = rfModel$results[which(rfModel$results$Kappa == max(rfModel$results$Kappa)),]
-      print(paste0("Level: ",levels[level]," Type: ",types[type]))
-      print(accuracy)
-      predictive = rfModel$pred
-      conf = rfModel$finalModel$confusion
-      results = list(variables,accuracy,predictive,conf)
-      saveRDS(results,file = paste0("results/results_",levels[level],"_",types[type],".rds"))
-
-    }
-  }
-}
-
 
 
 meanplot = function(data,wavenumbers,class){
@@ -216,15 +249,18 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
   for (rep in 1:repeats){
     tmpIndex = foldIndex[(rep*folds-folds+1):(rep*folds)] #always jump to the correct number of folds forward for each repeat
     pcaDataFold = lapply(1:folds,function(x){
+
       training = data[unlist(tmpIndex[x]),]
       validation = data[-unlist(tmpIndex[x]),]
       responseTrain = training$class
       responseVal = validation$class
+
       pcaMod = prcomp(training[,1:ncol(data)-1])
       varInfo = factoextra::get_eigenvalue(pcaMod)
       thresInd = which(varInfo$cumulative.variance.percent>=threshold)[1]
       pcaTrain = pcaMod$x[,1:thresInd]
       pcaVal = predict(pcaMod,validation)[,1:thresInd]
+
       training = as.data.frame(pcaTrain)
       training$response = responseTrain
       validation = as.data.frame(pcaVal)

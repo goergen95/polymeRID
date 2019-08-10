@@ -25,8 +25,9 @@ wavenumbers = readRDS(paste0(ref,"wavenumbers.rds"))
 noisyData = addNoise(data,levels = c(0,10,100,250,500), category = category)
 
 # Second we apply different types of pre-processing to the data
-testDataset = preprocess(data, category = category, SGpara = list(p=3, w=11),
-                         type = c("raw", "norm", "sg", "sg.d1", "sg.d2",
+testDataset = createTrainingSet(noisyData, category = category,
+                                SGpara = list(p=3, w=11), lag=15,
+                                type = c("raw", "norm", "sg", "sg.d1", "sg.d2",
                                   "sg.norm", "sg.norm.d1", "sg.norm.d2",
                                   "raw.d1", "raw.d2", "norm.d1", "norm.d2"))
 
