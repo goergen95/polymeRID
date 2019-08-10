@@ -221,6 +221,12 @@ Source: CRAN
 Version: 1.4-1
 Hash: 60a56e9998b8b58ee378db3dc91b27a5
 
+Package: config
+Source: CRAN
+Version: 0.3
+Hash: 00b1a8d447124dc267d0bd36796b4024
+Requires: yaml
+
 Package: cowplot
 Source: CRAN
 Version: 1.0.0
@@ -465,6 +471,13 @@ Package: jsonlite
 Source: CRAN
 Version: 1.6
 Hash: 5f969e213e966135393e3e304abf3f49
+
+Package: keras
+Source: CRAN
+Version: 2.2.4.1
+Hash: a524057ee44fa497c7a6738342dfaee3
+Requires: R6, generics, magrittr, reticulate, tensorflow, tfruns,
+    zeallot
 
 Package: knitr
 Source: CRAN
@@ -725,6 +738,12 @@ Version: 1.4.3
 Hash: b7ea8a2e7a9df39c2346e78bd83e26f8
 Requires: Rcpp, plyr, stringr
 
+Package: reticulate
+Source: CRAN
+Version: 1.13
+Hash: 8f6c2b15f8585aa41e9b85653eda737b
+Requires: Matrix, Rcpp, jsonlite
+
 Package: rio
 Source: CRAN
 Version: 0.5.16
@@ -809,6 +828,20 @@ Package: sys
 Source: CRAN
 Version: 3.2
 Hash: aaa3f56d4255306a32ea30df8ef63901
+
+Package: tensorflow
+Source: CRAN
+Version: 1.14.0
+Hash: 890557678a0f824b414e0220b65c1e8f
+Requires: config, jsonlite, processx, reticulate, rstudioapi, tfruns,
+    yaml
+
+Package: tfruns
+Source: CRAN
+Version: 1.4
+Hash: 50c6661cfd0bcd70a03d565b6ff78844
+Requires: base64enc, config, jsonlite, magrittr, reticulate, rlang,
+    rstudioapi, tidyselect, whisker, yaml
 
 Package: tibble
 Source: CRAN
