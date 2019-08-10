@@ -56,7 +56,7 @@ levels = lapply(names(testDataset), function(x){
 levels = unlist(levels)
 results = data.frame(level=levels,type = types, kappa = rep(0,length(levels)))
 
-for (level in levels){
+for (level in unique(levels)){
   for (type in types){
 
     print(paste0("Level: ",level," Type: ",type))

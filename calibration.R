@@ -38,12 +38,13 @@ waveChar = stringr::str_remove(names(data[!names(data) %in% category]),
 wavenumbers = as.numeric(waveChar)
 index = which(wavenumbers<=window[1] & wavenumbers>=window[2])
 wavenumbers = wavenumbers[index]
-data = data[,c(index,which(names(data) %in% category))]
+data = data[,c(index, which(names(data) %in% category))]
 # save wavenumbers for classification purposes
 saveRDS(wavenumbers,paste0(mod,TIME,"/wavenumbers_",TIME,".rds"))
 
 
 if (TYPE == "FUSION"){
+  data.norm = preprocess(data,type="norm")
   data.norm = as.data.frame(base::scale(data[,-which(names(data)==category)]))
   data.norm[category] = data[category]
   data.sg.norm = as.data.frame(prospectr::savitzkyGolay(data.norm[,-which(names(data.norm)==category)], p = 3, w = 11, m = 0))

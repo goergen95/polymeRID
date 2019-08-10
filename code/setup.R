@@ -23,8 +23,9 @@ libs <-  c("dplyr",
            "gridExtra",
            "baseline",
            "workflowr",
-           #"Rgtsvm",
-           "e1071")
+           "keras",
+           "e1071",
+           "abind")
 for (lib in libs){loadandinstall(lib)}
 
 # creating mandatory directories
@@ -43,3 +44,11 @@ for (dir in subDir){if(!dir.exists(file.path(root, dir))){dir.create(file.path(r
 
 # create path variables
 for (dir in subDir){assign(dir,paste(root,"/", paste(dir,"/",sep=""),sep=""))}
+
+
+
+# setting up keras on GPU
+library(tensorflow)
+Sys.setenv(CUDA_HOME="/usr/local/cuda")
+#install_tensorflow(version = "gpu")
+

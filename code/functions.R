@@ -80,8 +80,8 @@ preprocess = function(data, SGpara = list(p=3,w=11), lag = 15,
 createTrainingSet = function(data, category = "class",
                              SGpara = list(p=3,w=11), lag = 15,
                              type = c("raw", "norm", "sg", "sg.d1", "sg.d2",
-                               "sg.norm", "sg.norm.d1", "sg.norm.d2",
-                               "raw.d1", "raw.d2", "norm.d1", "norm.d2")){
+                                      "sg.norm", "sg.norm.d1", "sg.norm.d2",
+                                      "raw.d1", "raw.d2", "norm.d1", "norm.d2")){
 
 
 
@@ -148,25 +148,25 @@ createTrainingSet = function(data, category = "class",
 
     if ("raw.d1" %in% type){
       data_rawd1 = preprocess(tmp, type="raw.d1", lag = lag)
-      data_rawd1[category] = data[category]
+      data_rawd1[category] = classes
       data.return[[noise]][["raw.d1"]] = data_rawd1
     }
 
     if ("raw.d2" %in% type){
       data_rawd2 = preprocess(tmp, type="raw.d2", lag = lag)
-      data_rawd2[category] = data[category]
+      data_rawd2[category] = classes
       data.return[[noise]][["raw.d2"]] = data_rawd2
     }
 
     if ("raw.norm.d1" %in% type){
       data_norm = preprocess(tmp, type="raw.norm.d1", lag = lag)
-      data_normd1[category] = data[category]
+      data_normd1[category] = classes
       data.return[[noise]][["norm.d1"]] = data_normd1
     }
 
     if ("raw.norm.d2" %in% type){
       data_norm = preprocess(tmp, type="raw.norm.d2", lag = lag)
-      data_normd2[category] = data[category]
+      data_normd2[category] = classes
       data.return[[noise]][["norm.d2"]] = data_norm2
     }
 
@@ -252,21 +252,27 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
 
       training = data[unlist(tmpIndex[x]),]
       validation = data[-unlist(tmpIndex[x]),]
-      responseTrain = training$class
-      responseVal = validation$class
+      if (method == "convNet"){
+        foldtmp = list(training,validation)
+        return(foldtmp)
+        next
+      } else{
+        responseTrain = training$class
+        responseVal = validation$class
 
-      pcaMod = prcomp(training[,1:ncol(data)-1])
-      varInfo = factoextra::get_eigenvalue(pcaMod)
-      thresInd = which(varInfo$cumulative.variance.percent>=threshold)[1]
-      pcaTrain = pcaMod$x[,1:thresInd]
-      pcaVal = predict(pcaMod,validation)[,1:thresInd]
+        pcaMod = prcomp(training[,1:ncol(data)-1])
+        varInfo = factoextra::get_eigenvalue(pcaMod)
+        thresInd = which(varInfo$cumulative.variance.percent>=threshold)[1]
+        pcaTrain = pcaMod$x[,1:thresInd]
+        pcaVal = predict(pcaMod,validation)[,1:thresInd]
 
-      training = as.data.frame(pcaTrain)
-      training$response = responseTrain
-      validation = as.data.frame(pcaVal)
-      validation$response = responseVal
-      foldtmp = list(training,validation)
-      return(foldtmp)
+        training = as.data.frame(pcaTrain)
+        training$response = responseTrain
+        validation = as.data.frame(pcaVal)
+        validation$response = responseVal
+        foldtmp = list(training,validation)
+        return(foldtmp)
+      }
     })
     pcaData[[rep]] = pcaDataFold
   }
@@ -287,7 +293,8 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
       y_train = unlist(pcaData[[rep]][[fold]][[1]][1+variables])
       x_test = pcaData[[rep]][[fold]][[2]][,1:variables]
       y_test = unlist(pcaData[[rep]][[fold]][[2]][1+variables])
-
+      nObsv = nrow(x_train)
+      nOutcome = length(levels(y_train))
 
       if (method == "rf"){
         first = floor(sqrt(ncol(x_train)))/3
@@ -301,7 +308,7 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
         for (mtry in mtries){
           Mods[which(mtries==mtry)] = list(randomForest::randomForest(x_train,y_train,ntree=500,mtry=mtry))
           pred = predict(Mods[[which(mtries==mtry)]],x_test)
-          met = confusionMatrix(pred,y_test)$overall[metric]
+          met = caret::confusionMatrix(pred,y_test)$overall[metric]
           accuracy = c(accuracy,met)
         }
         Mod = Mods[[which(accuracy == max(accuracy))[1]]]
