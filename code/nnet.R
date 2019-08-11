@@ -1,5 +1,6 @@
-source("code/setup.R")
-
+source("/mnt/SSD/polymer/polymeRID/code/setup.R")
+source("/mnt/SSD/polymer/polymeRID/code/functions.R")
+#system("source misc/cuda10.1-env")
 # reading data based on class control file
 classes = readLines(paste0(ref, "classes.txt"))
 data = lapply(classes,function(class){
@@ -9,171 +10,222 @@ data = lapply(classes,function(class){
   data = read.csv(file, header = TRUE)
   return(data)
 })
-data = do.call("rbind",data)
+data2 = do.call("rbind",data)
+types = c("norm", "sg", "sg.d1", "sg.d2",
+         "sg.norm", "sg.norm.d1", "sg.norm.d2",
+         "raw.d1", "raw.d2", "norm.d1", "norm.d2")
 
-# we keep kernel size fixed at 50
-# this is apprx. window for peaks
-kernel = 50
 
-# splitting between training and test
-index = caret::createDataPartition(y=data$class,p=.7)
-train = data[index$Resample1,]
-test = data[-index$Resample1,]
+kernels = c(10,25,50,75,100)
 
-#number of preditors and unique targets
-variables = ncol(data)-1
-nOutcome = length(levels(y_train))
 
-# splitting predictors and labels
-x_train = train[,1:variables]
-y_train = train[,1+variables]
-x_test = test[,1:variables]
-y_test = test[,1+variables]
+for (kernel in kernels){
+  results = data.frame(type = types, loss = rep(0,11), acc = rep(0,11),vloss=rep(0,11),vacc=rep(0,11))
+  for (type in types){
+    data = preprocess(data2[,1:1863], type =type)
+    data$class =data2$class
+    # we keep kernel size fixed at 50
+    # this is apprx. window for peaks
 
-# function to get keras array for dataframes
-K <- keras::backend()
-df_to_karray <- function(df){
-  tmp = as.matrix(df)
-  tmp = K$expand_dims(tmp, axis = 2L)
-  tmp = K$eval(tmp)
+    # splitting between training and test
+    index = caret::createDataPartition(y=data$class,p=.7)
+    train = data[index$Resample1,]
+    test = data[-index$Resample1,]
+
+    variables = ncol(data)-1
+    # splitting predictors and labels
+    x_train = train[,1:variables]
+    y_train = train[,1+variables]
+    x_test = test[,1:variables]
+    y_test = test[,1+variables]
+
+    #number of preditors and unique targets
+    nOutcome = length(levels(y_train))
+
+    # function to get keras array for dataframes
+    K <- keras::backend()
+    df_to_karray <- function(df){
+      tmp = as.matrix(df)
+      tmp = K$expand_dims(tmp, axis = 2L)
+      tmp = K$eval(tmp)
+    }
+
+    # coerce data to keras structure
+    x_train = df_to_karray(x_train)
+    x_test = df_to_karray(x_test)
+    y_train = keras::to_categorical(as.numeric(y_train)-1,nOutcome)
+    y_test = keras::to_categorical(as.numeric(y_test)-1,nOutcome)
+
+    # we apply two different neural nets to the data,
+    # one representing a "large" neural network, e.g. much units, few layers,
+    # and a "deep" neural network, e.g. few units much layers
+
+    # contstruction of "large" neural network
+
+    modelL = keras_model_sequential()
+    modelL %>%
+      # block 1
+      layer_conv_1d(filters = 100,
+                    kernel_size = kernel,
+                    input_shape = c(variables,1),
+                    name = "block1_conv1",) %>%
+      layer_activation_relu(name="block1_relu1") %>%
+      layer_conv_1d(filters = 100,
+                    kernel_size = kernel,
+                    name = "block1_conv2") %>%
+      layer_activation_relu(name="block1_relu2") %>%
+      layer_max_pooling_1d(strides=2,
+                           pool_size = 5,
+                           name="block1_max_pool1") %>%
+
+      # block 2
+      layer_conv_1d(filters = 200,
+                    kernel_size = kernel,
+                    name = "block2_conv1") %>%
+      layer_activation_relu(name="block2_relu1") %>%
+      layer_conv_1d(filters = 200,
+                    kernel_size = kernel,
+                    name = "block2_conv2") %>%
+      layer_activation_relu(name="block2_relu2") %>%
+      layer_max_pooling_1d(strides=2,
+                           pool_size = 5,
+                           name="block2_max_pool1") %>%
+
+      # exit block
+      layer_global_average_pooling_1d(name="exit_average_pool") %>%
+      layer_dropout(rate=0.5) %>%
+      layer_dense(units = nOutcome, activation = "softmax")
+
+    # we compile for a classification with the categorcial crossentropy loss function
+    # and use adam as optimizer function
+    compile(modelL,loss="categorical_crossentropy",optimizer="adam",metrics="accuracy")
+
+    #consruction of "deep" neural network
+
+    # modelD = keras_model_sequential()
+    # modelD %>%
+    #   # block 1
+    #   layer_conv_1d(filters = 128,
+    #                 kernel_size = kernel,
+    #                 input_shape = c(variables,1),
+    #                 name = "block1_conv1",) %>%
+    #   layer_activation_relu(name="block1_relu1") %>%
+    #   layer_conv_1d(filters = 128,
+    #                 kernel_size = kernel,
+    #                 name = "block1_conv2") %>%
+    #   layer_activation_relu(name="block1_relu2") %>%
+    #   layer_max_pooling_1d(strides=2,
+    #                        pool_size = 2,
+    #                        name="block1_pool") %>%
+    #
+    #   # block 2
+    #   layer_conv_1d(filters = 64,
+    #                 kernel_size = kernel,
+    #                 name = "block2_conv1") %>%
+    #   layer_activation_relu(name="block2_relu1") %>%
+    #   layer_conv_1d(filters = 64,
+    #                 kernel_size = kernel,
+    #                 name = "block2_conv2") %>%
+    #   layer_activation_relu(name="block2_relu2") %>%
+    #   # layer_max_pooling_1d(strides=2,
+    #   #                      pool_size = 5,
+    #   #                      name="block2_pool") %>%
+    #   # block 3
+    #   layer_conv_1d(filters = 32,
+    #                 kernel_size = kernel,
+    #                 name = "block3_conv1") %>%
+    #   layer_activation_relu(name="block3_relu1") %>%
+    #   layer_conv_1d(filters = 32,
+    #                 kernel_size = kernel,
+    #                 name = "block3_conv2") %>%
+    #   layer_activation_relu(name="block3_relu2") %>%
+    #   layer_max_pooling_1d(strides=2,
+    #                        pool_size = 5,
+    #                        name="block3_pool") %>%
+    #   #block 4
+    #   layer_conv_1d(filters = 32,
+    #                 kernel_size = kernel,
+    #                 name = "block4_conv1") %>%
+    #   layer_activation_relu(name="block4_relu1") %>%
+    #   layer_conv_1d(filters = 32,
+    #                 kernel_size = kernel,
+    #                 name = "block4_conv2") %>%
+    #   layer_activation_relu(name="block4_relu2") %>%
+    #   # layer_max_pooling_1d(strides=2,
+    #   #                      pool_size = 5,
+    #   #                      name="block4_pool") %>%
+    #   # block 5
+    #   layer_conv_1d(filters = 32,
+    #                 kernel_size = kernel/2,
+    #                 name = "block5_conv1") %>%
+    #   layer_activation_relu(name="block5_relu1") %>%
+    #   layer_conv_1d(filters = 32,
+    #                 kernel_size = kernel/2,
+    #                 name = "block5_conv2") %>%
+    #   layer_activation_relu(name="block5_relu2") %>%
+    #   layer_max_pooling_1d(strides=2,
+    #                        pool_size = 5,
+    #                        name="block5_pool") %>%
+    #
+    #   # block 6
+    #   layer_conv_1d(filters = 16,
+    #                 kernel_size = kernel/3,
+    #                 name = "block6_conv1") %>%
+    #   layer_activation_relu(name="block6_relu1") %>%
+    #   layer_conv_1d(filters = 16,
+    #                 kernel_size = kernel/3,
+    #                 name = "block6_conv2") %>%
+    #   layer_activation_relu(name="block6_relu2") %>%
+    #   # layer_max_pooling_1d(strides=2,
+    #   #                      pool_size = 5,
+    #   #                      name="block6_pool") %>%
+    #   # block 7
+    #   layer_conv_1d(filters = 16,
+    #                 kernel_size = kernel/4,
+    #                 name = "block7_conv1") %>%
+    #   layer_activation_relu(name="block7_relu1") %>%
+    #   layer_conv_1d(filters = 16,
+    #                 kernel_size = kernel/4,
+    #                 name = "block7_conv2") %>%
+    #   layer_activation_relu(name="block7_relu2") %>%
+    #   layer_max_pooling_1d(strides=2,
+    #                        pool_size = 5,
+    #                        name="block7_pool") %>%
+    #
+    #   # exit block
+    #   layer_global_average_pooling_1d(name="Exit_average_pool1") %>%
+    #   layer_dropout(rate=0.5) %>%
+    #   layer_dense(units = nOutcome, activation = "softmax")
+    #
+    #
+    # # we use the same compilation as for the "large" neural network
+    # compile(modelD,loss="categorical_crossentropy",optimizer="adam",metrics="accuracy")
+
+
+    # let's proceed with a test run wich inclueds saving the results in a tensorflow
+    # format to a log directory
+
+    # historyD = keras::fit(modelD, x = x_train, y = y_train,
+    #                       epochs=100, #steps_per_epoch= 5,
+    #                       callbacks =  callback_tensorboard(paste0(output,"logs")),
+    # 		      validation_data=list(x_test,y_test))
+    # saveRDS(modelD, file = paste0(output,"modelD.rds"))
+    # saveRDS(historyD, file = paste0(output,"historyD.rds"))
+    #
+    historyL = keras::fit(modelL, x = x_train, y = y_train,
+                          epochs=100, validation_data = list(x_test,y_test),
+                          callbacks =  callback_tensorboard(paste0(output,"logs")))
+
+    saveRDS(modelL, file = paste0(output,"modelL_",type,"_",kernel,".rds"))
+    saveRDS(historyL, file = paste0(output,"historyL_",type,"_",kernel,".rds"))
+    results$loss[results$type == type] = historyL$metrics$loss[100]
+    results$acc[results$type == type] = historyL$metrics$acc[100]
+    results$vloss[results$type == type] = historyL$metrics$val_loss[100]
+    results$vacc[results$type == type] = historyL$metrics$val_acc[100]
+
+  }
+
+  write.csv(results, file = paste0(output,"largeNNET",kernel,".csv"))
 }
-
-# coerce data to keras structure
-x_train = df_to_karray(x_train)
-x_test = df_to_karray(x_test)
-y_train = keras::to_categorical(as.numeric(y_train)-1,nOutcome)
-y_test = keras::to_categorical(as.numeric(y_test)-1,nOutcome)
-
-# we apply two different neural nets to the data,
-# one representing a "large" neural network, e.g. much units, few layers,
-# and a "deep" neural network, e.g. few units much layers
-
-# contstruction of "large" neural network
-
-modelL = keras_model_sequential()
-modelL %>%
-  # block 1
-  layer_conv_1d(filters = 100,
-                kernel_size = kernel,
-                input_shape = c(variables,1),
-                name = "block1_conv1",) %>%
-  layer_activation_relu(name="block1_relu1") %>%
-  layer_conv_1d(filters = 100,
-                kernel_size = kernel,
-                name = "block1_conv2") %>%
-  layer_activation_relu(name="block1_relu2") %>%
-  layer_max_pooling_1d(strides=2,
-                       pool_size = 5,
-                       name="block1_max_pool1") %>%
-
-  # block 2
-  layer_conv_1d(filters = 200,
-                kernel_size = kernel,
-                name = "block2_conv1") %>%
-  layer_activation_relu(name="block2_relu1") %>%
-  layer_conv_1d(filters = 200,
-                kernel_size = kernel,
-                name = "block2_conv2") %>%
-  layer_activation_relu(name="block2_relu2") %>%
-  layer_max_pooling_1d(strides=2,
-                       pool_size = 5,
-                       name="block2_max_pool1") %>%
-
-  # exit block
-  layer_global_average_pooling_1d(name="exit_average_pool") %>%
-  layer_dropout(rate=0.5) %>%
-  layer_dense(units = nOutcome, activation = "softmax")
-
-# we compile for a classification with the categorcial crossentropy loss function
-# and use adam as optimizer function
-compile(modelL,loss="categorical_crossentropy",optimizer="adam",metrics="accuracy")
-
-#consruction of "deep" neural network
-
-modelD = keras_model_sequential()
-modelD %>%
-  # block 1
-  layer_conv_1d(filters = 8,
-                kernel_size = kernel,
-                input_shape = c(variables,1),
-                name = "block1_conv1",) %>%
-  layer_activation_relu(name="block1_relu1") %>%
-  layer_conv_1d(filters = 8,
-                kernel_size = kernel,
-                name = "block1_conv2") %>%
-  layer_activation_relu(name="block1_relu2") %>%
-  layer_max_pooling_1d(strides=2,
-                       pool_size = 2,
-                       name="block1_pool") %>%
-
-  # block 2
-  layer_conv_1d(filters = 16,
-                kernel_size = kernel,
-                name = "block2_conv1") %>%
-  layer_activation_relu(name="block2_relu1") %>%
-  layer_conv_1d(filters = 16,
-                kernel_size = kernel,
-                name = "block2_conv2") %>%
-  layer_activation_relu(name="block2_relu2") %>%
-  layer_max_pooling_1d(strides=2,
-                       pool_size = 5,
-                       name="block2_pool") %>%
-  # block 3
-  layer_conv_1d(filters = 32,
-                kernel_size = kernel,
-                name = "block3_conv1") %>%
-  layer_activation_relu(name="block3_relu1") %>%
-  layer_conv_1d(filters = 32,
-                kernel_size = kernel,
-                name = "block3_conv2") %>%
-  layer_activation_relu(name="block3_relu2") %>%
-  # layer_max_pooling_1d(strides=2,
-  #                      pool_size = 5,
-  #                      name="block3_pool") %>%
-  # block 4
-  layer_conv_1d(filters = 32,
-                kernel_size = kernel,
-                name = "block4_conv1") %>%
-  layer_activation_relu(name="block4_relu1") %>%
-  layer_conv_1d(filters = 32,
-                kernel_size = kernel,
-                name = "block4_conv2") %>%
-  layer_activation_relu(name="block4_relu2") %>%
-  layer_max_pooling_1d(strides=2,
-                       pool_size = 5,
-                       name="block4_pool") %>%
-  # block 5
-  layer_conv_1d(filters = 16,
-                kernel_size = kernel/2,
-                name = "block5_conv1") %>%
-  layer_activation_relu(name="block5_relu1") %>%
-  layer_conv_1d(filters = 16,
-                kernel_size = kernel/2,
-                name = "block5_conv2") %>%
-  layer_activation_relu(name="block5_relu2") %>%
-
-  # exit block
-  layer_global_average_pooling_1d(name="Exit_average_pool1") %>%
-  layer_dropout(rate=0.5) %>%
-  layer_dense(units = nOutcome, activation = "softmax")
-
-
-# we use the same compilation as for the "large" neural network
-compile(modelD,loss="categorical_crossentropy",optimizer="adam",metrics="accuracy")
-
-
-# let's proceed with a test run wich inclueds saving the results in a tensorflow
-# format to a log directory
-
-historyD = keras::fit(modelD, x = x_train, y = y_train,
-                      epochs=50, steps_per_epoch= 5,
-                      callbacks =  callback_tensorboard(paste0(output,"logs")))
-
-historyL = keras::fit(modelL, x = x_train, y = y_train,
-                      epochs=50, steps_per_epoch= 5,
-                      callbacks =  callback_tensorboard(paste0(output,"logs")))
-
-
-
 
 
