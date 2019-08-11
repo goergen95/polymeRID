@@ -80,8 +80,8 @@ preprocess = function(data, SGpara = list(p=3,w=11), lag = 15,
 createTrainingSet = function(data, category = "class",
                              SGpara = list(p=3,w=11), lag = 15,
                              type = c("raw", "norm", "sg", "sg.d1", "sg.d2",
-                                      "sg.norm", "sg.norm.d1", "sg.norm.d2",
-                                      "raw.d1", "raw.d2", "norm.d1", "norm.d2")){
+                               "sg.norm", "sg.norm.d1", "sg.norm.d2",
+                               "raw.d1", "raw.d2", "norm.d1", "norm.d2")){
 
 
 
