@@ -404,7 +404,7 @@ prepNNET <- function(kernel,variables,nOutcome){
                        name="block2_max_pool1") %>%
 
   # exit block
-  layer_global_average_pooling_1d(name="exit_average_pool") %>%
+  layer_global_max_pooling_1d(name="exit_average_pool") %>%
   layer_dropout(rate=0.5) %>%
   layer_dense(units = nOutcome, activation = "softmax")
 

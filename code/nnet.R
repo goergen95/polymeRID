@@ -15,8 +15,8 @@ data2 = do.call("rbind",data)
 
 kernels = c(2:100)
 types = c("raw","norm", "sg", "sg.d1", "sg.d2",
-         "sg.norm", "sg.norm.d1", "sg.norm.d2",
-         "raw.d1", "raw.d2", "norm.d1", "norm.d2")
+          "sg.norm", "sg.norm.d1", "sg.norm.d2",
+          "raw.d1", "raw.d2", "norm.d1", "norm.d2")
 types = "raw"
 
 
@@ -33,10 +33,10 @@ for (kernel in kernels){
   for (type in types){
     if (type == "raw"){
       data = data2
-      }else{
+    }else{
       data = preprocess(data2[,1:variables], type = type)
       data$class =data2$class
-      }
+    }
     # we keep kernel size fixed at 50
     # this is apprx. window for peaks
     variables = ncol(data)-1
@@ -75,16 +75,16 @@ for (kernel in kernels){
     # and a "deep" neural network, e.g. few units much layers
 
     # contstruction of "large" neural network
-  modelL = prepNNET(kernel, variables)
+    model = prepNNET(kernel, variables)
 
     print(paste0("Training model with kernel size ",kernel," and preprocessing ",type))
-    historyL = keras::fit(modelL, x = x_train, y = y_train,
+    history = keras::fit(model, x = x_train, y = y_train,
                           epochs=100, validation_data = list(x_test,y_test),
                           callbacks =  callback_tensorboard(paste0(output,"nnet/logs")),
                           batch_size = 10 )
 
-    saveRDS(modelL, file = paste0(output,"nnet/large/large_model_",type,"_kernel_",kernel,".rds"))
-    saveRDS(historyL, file = paste0(output,"nnet/large/large_history_",type,"_kernel_",kernel,".rds"))
+    saveRDS(model, file = paste0(output,"nnet/large/large_model_",type,"_kernel_",kernel,".rds"))
+    saveRDS(history, file = paste0(output,"nnet/large/large_history_",type,"_kernel_",kernel,".rds"))
     results$loss[results$kernel == kernel] = historyL$metrics$loss[100]
     results$acc[results$kernel == kernel] = historyL$metrics$acc[100]
     results$val_loss[results$kernel == kernel] = historyL$metrics$val_loss[100]
@@ -92,7 +92,7 @@ for (kernel in kernels){
 
   }
 
-print(results)
+  print(results)
 }
 
 write.csv(results, file = paste0(output,"nnet/large/large_kernels.csv"))
