@@ -8,7 +8,7 @@
 source("code/setup.R")
 source("code/functions.R")
 
-TYPE = "FUSION"
+TYPE = "NNET"
 # alternatives would be
 #TYPE = "SG"
 #TYPE = "SGNORM"
@@ -17,6 +17,7 @@ category = "class"
 window = c(3800,400) # window of wavnumbers included in training
 TIME = format(Sys.time(), "%Y%m%d_%H%M")
 dir.create(paste0(mod, TIME))
+dir.create(paste0(mod, TIME,"/logs"))
 
                     # Don't change anything below this line #
 #==============================================================================#
@@ -42,6 +43,28 @@ data = data[,c(index, which(names(data) %in% category))]
 # save wavenumbers for classification purposes
 saveRDS(wavenumbers,paste0(mod,TIME,"/wavenumbers_",TIME,".rds"))
 
+if (TYPE == "NNET"){
+  # prepare data
+  K <- keras::backend()
+  df_to_karray <- function(df){
+    tmp = as.matrix(df)
+    tmp = K$expand_dims(tmp, axis = 2L)
+    tmp = K$eval(tmp)
+  }
+  index = which(wavenumbers<=2420 & wavenumbers>=1900)
+  data[,index] = 0
+
+  predictors = df_to_karray(data[,-which(names(data)==category)])
+  target = keras::to_categorical(as.numeric(data[,category])-1, length(classes))
+
+  convNet = prepNNET(kernel = 89, variables = length(wavenumbers), nOutcome = length(classes))
+  history = fit(convNet, x = predictors, y = target,
+                callbacks =  callback_tensorboard(paste0(mod,TIME,"/logs")),
+                epochs = 300, batch_size = 10)
+  cat(paste0("The final accuracy for the neural network is ",round(mean(history$metrics$acc[300]),3)))
+  keras::save_model_hdf5(convNet,  filepath = paste0(mod,TIME,"/",TIME,"_convnet.hdf"))
+  saveRDS(history, file = paste0(mod,TIME,"/",TIME,"_history.rds"))
+}
 
 if (TYPE == "FUSION"){
   data.norm = preprocess(data,type="norm")

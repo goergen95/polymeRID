@@ -1,5 +1,5 @@
 source("code/setup.R")
-files = list.files("~/Downloads/O1/",pattern=".dpt",full.names = T)
+files = list.files("~/Downloads/O2/",pattern=".dpt",full.names = T)
 file.copy(files,paste(str_sub(files,0,-5),".txt",sep=""))
-files = list.files("~/Downloads/O1/",pattern=".txt",full.names = T)
+files = list.files("~/Downloads/O2/",pattern=".txt",full.names = T)
 file.copy(files,paste0(smp))

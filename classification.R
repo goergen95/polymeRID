@@ -1,8 +1,8 @@
 # classification
 source("code/setup.R")
 source("code/functions.R")
-MODEL = "20190805_1042"
-TYPE = "FUSION"
+MODEL = "20190812_1717"
+TYPE = "NNET"
 FORMAT = ".txt"
 PROBS = TRUE
 TIME = format(Sys.time(),"%Y%m%d_%H%M")
@@ -14,17 +14,17 @@ dir.create(plots)
 dir.create(raw)
 model = paste0(mod,MODEL)
 
-classes = readLines(paste0(ref,"classes.txt"))
-data = lapply(classes,function(x){
-  specs = read.csv(list.files(ref,full.names=T)[grep(paste(x,".csv",sep=""),list.files(ref))],header=T)
-  return(specs)
-})
-data = do.call("rbind",data)
-wavenumbers = readRDS(paste0(model,"/wavenumbers_",MODEL,".rds"))
-#wavenumbers = wavenumbers[1:2300]
-wvn = as.numeric(str_remove(names(data)[-ncol(data)],"wvn"))
-index = which(wvn %in% wavenumbers)
-data = data[,c(index,ncol(data))]
+ classes = readLines(paste0(ref,"classes.txt"))
+ data = lapply(classes,function(x){
+   specs = read.csv(list.files(ref,full.names=T)[grep(paste(x,".csv",sep=""),list.files(ref))],header=T)
+   return(specs)
+ })
+ data = do.call("rbind",data)
+ wavenumbers = readRDS(paste0(model,"/wavenumbers_",MODEL,".rds"))
+# #wavenumbers = wavenumbers[1:2300]
+ wvn = as.numeric(str_remove(names(data)[-ncol(data)],"wvn"))
+ index = which(wvn %in% wavenumbers)
+ data = data[,c(index,ncol(data))]
 
 sampleList = list.files(smp,pattern=FORMAT,full.names = TRUE)
 if (length(sampleList)==0){
@@ -50,10 +50,71 @@ wvn = as.numeric(str_remove(names(samples),"wvn"))
 index = which(wvn %in% wavenumbers)
 samples = samples[,index]
 
+
 modsList = list.files(model,full.names = TRUE)
 modsList = modsList[-grep("wavenumbers",modsList)]
 
 ids = list.files(smp,pattern = FORMAT)
+
+
+
+if (TYPE == "NNET"){
+  index = which(wavenumbers<=2420 & wavenumbers>=1900)
+  samples[,index] = 0
+  model = keras::load_model_hdf5(paste0(mod,MODEL,"/",MODEL,"_convnet.hdf"))
+  K <- keras::backend()
+  df_to_karray <- function(df){
+    tmp = as.matrix(df)
+    tmp = K$expand_dims(tmp, axis = 2L)
+    tmp = K$eval(tmp)
+  }
+  predictors = df_to_karray(samples)
+  pred = keras::predict_proba(model,predictors)
+
+  outcomes = data.frame(class1 = rep(0,nrow(pred)),
+                        class2 = rep(0,nrow(pred)),
+                        class3 = rep(0,nrow(pred)))
+  probs = data.frame(class1 = rep(0,nrow(pred)),
+                     class2 = rep(0,nrow(pred)),
+                     class3 = rep(0,nrow(pred)))
+  conf = data.frame(conf = rep(0,nrow(pred)))
+  for (id in ids){
+    index = which(id == ids)
+    sample = as.data.frame(t(samples[index,]))
+    sample$wavenmubers = wavenumbers
+    names(sample)[1] = c("reflectance")
+
+    hits = sort(pred[index,],decreasing = TRUE)[1:3]
+    hitsIndex = which(pred[index,] %in% hits)
+    classVec = classes[hitsIndex]
+    outcomes[index,] = classVec
+    probs[index,] = hits
+    if (hits[1]<0.5) confidence = "no confidence"
+    if (hits[1]>=0.5 & hits[1]<0.6) confidence = "very low confidence"
+    if (hits[1]>=0.6 & hits[1]<0.7) confidence = "low confidence"
+    if (hits[1]>=0.7 & hits[1]<0.8) confidence = "medium confidence"
+    if (hits[1]>=0.8 & hits[1]<0.9) confidence = "high confidence"
+    if (hits[1]>=0.9) confidence = "very high confidence"
+    conf[index,confidence]
+    annotation = paste0(confidence," ",
+                        classVec[1],": ",round(hits[1],10),"\n",
+                        classVec[2],": ",round(hits[2],10),"\n",
+                        classVec[3],": ",round(hits[3],10))
+    class1 = samplePlot(data = data, sample = sample, class = classVec[1],prob = annotation, name = id)
+    class2 = samplePlot(data = data, sample = sample, class = classVec[2])
+    class3 = samplePlot(data = data, sample = sample, class = classVec[3])
+    multiclass = gridExtra::grid.arrange(class1,class2,class3)
+    ggsave(plot=multiclass,file=paste0(plots,"/",id,"_probClasses.png"),dpi=300,device="png",units="cm",width=50,height=30)
+  }
+  results = data.frame(id = ids,conf = conf$conf,
+                       class1=outcomes$class1,prop1=probs$class1,
+                       class2=outcomes$class2,prop2=probs$class2,
+                       class3=outcomes$class3,prop3=probs$class3)
+  write.csv(results, file = paste0(file = paste0(root,"/",TYPE,"_results.csv"),row.names = FALSE))
+  for (i in 1:length(sampleList)){
+    file.copy(sampleList[i],paste0(raw,"/",ids[i]))
+  }
+}
 #lapply(ids,function(x){dir.create(paste0(smp,TIME,"/",x))})
 if (TYPE == "FUSION"){
 
