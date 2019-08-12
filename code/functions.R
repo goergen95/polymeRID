@@ -62,12 +62,12 @@ preprocess = function(data, SGpara = list(p=3,w=11), lag = 15,
     data.return = as.data.frame(t(diff(t(data), differences = 2, lag = lag)))
   }
 
-  if (type == "raw.norm.d1"){
+  if (type == "norm.d1"){
     data_norm = base::scale(data, center = TRUE, scale = TRUE)
     data.return = as.data.frame(t(diff(t(data_norm), differences = 1, lag = lag)))
   }
 
-  if ("raw.norm.d2" %in% type){
+  if ("norm.d2" %in% type){
     data_norm = base::scale(data, center = TRUE, scale = TRUE)
     data.return = as.data.frame(t(diff(t(data_norm), differences = 2, lag = lag)))
   }
