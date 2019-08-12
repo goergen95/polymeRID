@@ -469,7 +469,7 @@ nnetCV <- function(data,folds=10,repeats=15,p=0.5, kernel, seed=42, nOutcome){
       # fitting the model
       kernelMod = prepNNET(kernel, variables, nOutcome = nOutcome)
       historyMod =  keras::fit(kernelMod, x = x_train, y = y_train,
-                               epochs=200,
+                               epochs=300,
                                callbacks =  callback_tensorboard(paste0(output,"nnet/logs")),
                                batch_size = 10 )
       #saveRDS(historyMod, file = paste0(output,"cv/history_K",kernel,".rds"))
