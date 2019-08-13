@@ -59,7 +59,7 @@ if (TYPE == "NNET"){
 
   convNet = prepNNET(kernel = 89, variables = length(wavenumbers), nOutcome = length(classes))
   history = fit(convNet, x = predictors, y = target,
-                callbacks =  callback_tensorboard(paste0(mod,TIME,"/logs")),
+                #callbacks =  callback_tensorboard(paste0(mod,TIME,"/logs")),
                 epochs = 300, batch_size = 10)
   cat(paste0("The final accuracy for the neural network is ",round(mean(history$metrics$acc[300]),3)))
   keras::save_model_hdf5(convNet,  filepath = paste0(mod,TIME,"/",TIME,"_convnet.hdf"))

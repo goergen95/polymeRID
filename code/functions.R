@@ -404,7 +404,7 @@ prepNNET <- function(kernel,variables,nOutcome){
                        name="block2_max_pool1") %>%
 
   # exit block
-  layer_global_max_pooling_1d(name="exit_average_pool") %>%
+  layer_global_max_pooling_1d(name="exit_max_pool") %>%
   layer_dropout(rate=0.5) %>%
   layer_dense(units = nOutcome, activation = "softmax")
 
@@ -470,7 +470,7 @@ nnetCV <- function(data,folds=10,repeats=15,p=0.5, kernel, seed=42, nOutcome){
       kernelMod = prepNNET(kernel, variables, nOutcome = nOutcome)
       historyMod =  keras::fit(kernelMod, x = x_train, y = y_train,
                                epochs=300,
-                               callbacks =  callback_tensorboard(paste0(output,"nnet/logs")),
+                               #callbacks =  callback_tensorboard(paste0(output,"nnet/logs")),
                                batch_size = 10 )
       #saveRDS(historyMod, file = paste0(output,"cv/history_K",kernel,".rds"))
       #saveRDS(kernelMod, file = paste0(output,"cv/model_K",kernel,".rds"))
@@ -483,7 +483,7 @@ nnetCV <- function(data,folds=10,repeats=15,p=0.5, kernel, seed=42, nOutcome){
       results$acc[counter] = evalK$acc
       print(results[counter,])
       counter = counter + 1
-      write.csv(results, file = paste0(output,"nnet/cv/cvResults_K",kernel,".csv"))
+      #write.csv(results, file = paste0(output,"nnet/cv/cvResults_K",kernel,".csv"))
     }
   }
   return(results)

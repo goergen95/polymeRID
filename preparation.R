@@ -57,52 +57,52 @@ syntPolymer$class[grep("LDPE",syntPolymer$class)] = "PE"
 
 #==============================================================================#
               ### Working on our own sample data ###
-
-refFiles = list.files(run, full.names=TRUE, pattern=".txt") # files come as .txt
-
-resample_spectrum = function(file,targetRes){
-
-  data = read.csv(file, header= FALSE, sep="")
-  # Naming convention of reference sample files:
-   #01012000_CLASS_X.txt: date_classAbbreviation_number.txt"
-
-  if (ncol(data) != 2){
-    stop("Stopping! Sample data must be presented as a two columns dataframe!\n
-          Expecting wavenumbers in first column, reflectance values in second columns")
-  }
-  names(data) = c("wavenumber", "reflectance")
-  tmp = prospectr::resample2(data$reflectance, data$wavenumber, targetRes)
-  data = as.data.frame(t(tmp)) # transpose data to match data from Primpke
-  names(data) = paste("wvn", targetRes, sep="")
-  splitName = stringr::str_split(file, "/" )[[1]]
-  filename = gsub(dplyr::last(splitName), pattern =".txt", replacement="")
-  className = stringr::str_split(filename,"_")[[1]][2]
-  data$class = className
-  return(data)
-
-}
-
-refData = lapply(refFiles, resample_spectrum, targetRes=wavenumbers)
-refData = do.call("rbind", refData)
-refData$class[grep("Nylon", refData$class)] = "PA"
-
-
-# baseline correction for our sample data
-dummy = as.matrix(refData[ , 1:ncol(refData)-1])
-baslineDummy = baseline::baseline(dummy,
-                                  method="rfbaseline",
-                                  span=NULL,
-                                  NoXP=64,
-                                  maxit=c(10))
-
-corr_spectra = as.data.frame(baseline::getCorrected(baslineDummy))
-corr_spectra$class = as.factor(refData$class)
+#
+# refFiles = list.files(run, full.names=TRUE, pattern=".txt") # files come as .txt
+#
+# resample_spectrum = function(file,targetRes){
+#
+#   data = read.csv(file, header= FALSE, sep="")
+#   # Naming convention of reference sample files:
+#    #01012000_CLASS_X.txt: date_classAbbreviation_number.txt"
+#
+#   if (ncol(data) != 2){
+#     stop("Stopping! Sample data must be presented as a two columns dataframe!\n
+#           Expecting wavenumbers in first column, reflectance values in second columns")
+#   }
+#   names(data) = c("wavenumber", "reflectance")
+#   tmp = prospectr::resample2(data$reflectance, data$wavenumber, targetRes)
+#   data = as.data.frame(t(tmp)) # transpose data to match data from Primpke
+#   names(data) = paste("wvn", targetRes, sep="")
+#   splitName = stringr::str_split(file, "/" )[[1]]
+#   filename = gsub(dplyr::last(splitName), pattern =".txt", replacement="")
+#   className = stringr::str_split(filename,"_")[[1]][2]
+#   data$class = className
+#   return(data)
+#
+# }
+#
+# refData = lapply(refFiles, resample_spectrum, targetRes=wavenumbers)
+# refData = do.call("rbind", refData)
+# refData$class[grep("Nylon", refData$class)] = "PA"
+#
+#
+# # baseline correction for our sample data
+# dummy = as.matrix(refData[ , 1:ncol(refData)-1])
+# baslineDummy = baseline::baseline(dummy,
+#                                   method="rfbaseline",
+#                                   span=NULL,
+#                                   NoXP=64,
+#                                   maxit=c(10))
+#
+# corr_spectra = as.data.frame(baseline::getCorrected(baslineDummy))
+# corr_spectra$class = as.factor(refData$class)
 
 
 #==============================================================================#
                   ### Bringing the two databases together ###
 
-data = rbind(furs,wood,fibre,syntPolymer,corr_spectra)
+data = rbind(furs,wood,fibre,syntPolymer) #
 data$class = as.factor(data$class)
 descrip = as.data.frame(t(summary(data$class)))
 cat("Overview of the distribution of classes in the database:\n",

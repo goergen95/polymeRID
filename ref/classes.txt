@@ -9,6 +9,3 @@ PET
 PP
 PC
 PUR
-ABS
-PMMA
-PVC

@@ -75,20 +75,20 @@ for (kernel in kernels){
     # and a "deep" neural network, e.g. few units much layers
 
     # contstruction of "large" neural network
-    model = prepNNET(kernel, variables)
+    model = prepNNET(kernel, variables, nOutcome)
 
     print(paste0("Training model with kernel size ",kernel," and preprocessing ",type))
     history = keras::fit(model, x = x_train, y = y_train,
-                          epochs=100, validation_data = list(x_test,y_test),
+                          epochs=300, validation_data = list(x_test,y_test),
                           callbacks =  callback_tensorboard(paste0(output,"nnet/logs")),
                           batch_size = 10 )
 
     saveRDS(model, file = paste0(output,"nnet/large/large_model_",type,"_kernel_",kernel,".rds"))
     saveRDS(history, file = paste0(output,"nnet/large/large_history_",type,"_kernel_",kernel,".rds"))
-    results$loss[results$kernel == kernel] = historyL$metrics$loss[100]
-    results$acc[results$kernel == kernel] = historyL$metrics$acc[100]
-    results$val_loss[results$kernel == kernel] = historyL$metrics$val_loss[100]
-    results$val_acc[results$kernel == kernel] = historyL$metrics$val_acc[100]
+    results$loss[results$kernel == kernel] = history$metrics$loss[100]
+    results$acc[results$kernel == kernel] = history$metrics$acc[100]
+    results$val_loss[results$kernel == kernel] = history$metrics$val_loss[100]
+    results$val_acc[results$kernel == kernel] = history$metrics$val_acc[100]
 
   }
 

@@ -16,13 +16,14 @@ data = do.call("rbind",data)
 results = read.csv(paste0(output,"nnet/large/large_kernels.csv"))
 # get kernel numbers for accuracies higher than 90
 kernelInd = results$kernel[which(results$val_acc>0.9)]
-
+kernelInd = 89
 cvResults = lapply(kernelInd, nnetCV,
                    nOutcome = length(levels(data$class)),
                    data=data,
                    folds=10,
                    repeats=5,
-                   p=0.5,
+                   p=0.9,
                    seed = 42)
+write.csv(cvResults, file = "~/Desktop/p09.csv")
 
 
