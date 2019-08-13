@@ -15,8 +15,8 @@ link-citations: yes
 source("code/setup_website.R")
 source("code/functions.R")
 library(plotly)
-data = read.csv("ref/reference_database.csv",header=TRUE)
-wvn = readRDS("ref/wavenumbers.rds")
+data = read.csv(paste0(ref,"reference_database.csv"),header=TRUE)
+wvn = readRDS(paste0(ref,"wavenumbers.rds"))
 ```
 
 
