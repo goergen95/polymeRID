@@ -41,8 +41,7 @@ for (kernel in kernels){
     # this is apprx. window for peaks
     variables = ncol(data)-1
     # splitting between training and test
-    set.seed(42)
-    index = caret::createDataPartition(y=data$class,p=.5)
+    index = caret::createDataPartition(y=data$class,p=.8)
     train = data[index$Resample1,]
     test = data[-index$Resample1,]
 
