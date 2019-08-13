@@ -1,25 +1,73 @@
 ---
 title: "Home"
+author: Darius Goergen
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
     toc: false
 editor_options:
   chunk_output_type: console
+bibliography: library.bib
+link-citations: yes
 ---
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+source("code/setup.R")
+source("code/functions.R")
+library(plotly)
+data = read.csv("ref/reference_database.csv",header=TRUE)
+wvn = readRDS("ref/wavenumbers.rds")
+```
+
+
 
 ## Welcome to my website on polymeRID!  
 
 
-Here I present the results of my work for a master's seminar at the University of Marburg concerned with microplastic in the environment.  
+Here I present the results of my work for a master's seminar at the 
+University of Marburg concerned with microplastic in the environment.  
 <br>
 ![Probe Seperators](assets/images/seperators.jpg)<br>
 *Photo of two sediment separators taken by Sarah Brüning*
 
-The seminar was placed in the context of a [research project](https://www.uni-marburg.de/administration/verwaltung/stab/umr2027/aktuelleprojekte/gefoerdertes/mikroplastik) between the working group of Soil and Water Ecosystems at the Institute of Geography and the working group of Semiconductor Photonics at the Institute of Physics. It was conducted jointly by [Prof. Dr. Peter Chifflard](https://www.uni-marburg.de/de/fb19/fachbereich/staff/prof-dr-peter-chifflard) and [MSc Julia Prume](https://www.uni-marburg.de/de/fb13/halbleiterphotonik/team) and was focused on the analysis of environmental samples to answer different geographical questions about the how and then of micro-plastic particles moving in water ecosystems.  
-While the most projects during the seminar were focusing on these important geographical questions I set out my project to actually ease the cumbersome process of categorizing FTIR spectra of particles within the samples to polymer classes. The idea was that up-to-date machine learning models applied to the high-dimensional spectral data of particles found in samples could minimize the need for human intervention in the classification process and thus significantly speed up the process of categorizing particles to reference polymers.  
+Microplastic particles polluting the envrionment have been in the public focuse
+for some time now. The scientific efforts of analysing the occurences
+of particles in the envrionment and their effects on ecosystems and human health
+is manifold, yet there is a lack of consensus on methods for sampling, sample handling,
+analysis and identification, especially for samples from aquatic ecosystems.
+Some of the most urgent research questions concerned with microplastic in the envrionment
+are the analysis of effects on biological lifeforms [@Zhang2019], their movement and
+distribution in the marine environment [@Auta2017] as well as in freshwater systems [@Li2018b].
 
-To achieve this aim this project consists of four distinguishable work steps. These are:    
+Different research questions demand for different methodologies for sampling,
+sample handling and labroratory analysis. However, the link between these 
+knowledge gaps is that any analysis of microplastics in the environment needs a 
+robust identification method to enable scientist to draw the right conclusions 
+and to bring forward recommendations to the public and decision makers to act upon
+their research findings.
+
+Evidently, there also exist a broad spectrum of different polymer identification
+strategies [@Loder2015;@Rocha-Santos2015a;@Shim2017], ranging from traditional microscopy 
+to spectroscopy as well as destructive methods of thermal analysis. A destinction
+has to be made concerning towards the extent of automatisation in identification
+processes. Lately, different approaches to automate in the identification process,
+either by individual elements or for whole samples on a focal plane, have reported 
+to the scientifc community [@Masoumi2012;@Primpke2017;@Lorenzo-Navarro2018;@Zhang2018;@Primpke2019]
+
+This project sets out to contribute to the ease of the cumbersome process of 
+classfiying indivdual particles based on their spectral reflectance by hand.
+The idea is that up-to-date machine learning models applied to the 
+high-dimensional spectral data of particles found in envrionmental samples can 
+minimize the need for human intervention in the classification process and 
+thus significantly speed up the process of categorizing found particles.
+Other studies have reported substantial accuracies by applying different sorts
+of machine learning algorithms such as hirarchial clustering [@Primpke2017], 
+support-vector-machines [@bianco2019], random forest [@Hufnagl2019], as well as
+convolutional neural networks [@Liu2017] to classify microplastics and other materials spectra.
+
+This project was grouped into different working steps, which also were designed
+to allow reproducibility as well individual alteration of the code and data base. 
+These working steps are:    
 
 * **Preparation**: At first the establishment of a comprehensive database of reference spectra was mandatory to allow the application of machine learning models. The preparation steps included spectral re-sampling and labeling of reference polymers and natural particles. Later, this database underwent some steps of baseline corrections as well as different level of pre-processing such as normalization and Savtizkiy-Golay filtering.  
 
@@ -29,5 +77,12 @@ To achieve this aim this project consists of four distinguishable work steps. Th
 
 * **Classification**: This last stage is the core part of the project in the sense that at this stage real environmental samples are to be classified in a user-friendly way to ease the categorization process. That means that some accuracy values of the classification need to be easily accessible as well as some possibilities for a human agent to assess the accuracy 
 
-<br>![Averaged Spectrum of PET](assets/images/mean_spectrum_PET.png)<br>
-*Average spectrum of PET samples in the database* 
+
+```{r fig.cap = "Averaged spectrum of all PE spectra within the data base.", echo = FALSE, fig.width = 10}
+p = meanplot(data,wavenumbers = wvn, class = "PE")
+p = plotly::ggplotly(p)
+p
+```
+
+## Literature used on this page
+
