@@ -8,6 +8,12 @@ navbar:
   - text: Preparation
     href: preparation.html
   - text: About
+  - text: Exploration
+    href: exploration.html
+  - text: Calibration
+    href: calibration.html
+  - text: Classification
+    href: classification.html
     href: about.html
   - text: License
     href: license.html
