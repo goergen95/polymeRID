@@ -1,0 +1,138 @@
+---
+title: "Preparation"
+author: Darius Goergen
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: false
+editor_options:
+  chunk_output_type: console
+bibliography: library.bib
+link-citations: yes
+---
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+source("code/setup_website.R")
+source("code/functions.R")
+library(plotly)
+```
+
+For the current project we used a data base published by @Primpke2018 online. 
+The data base can be downloaded 
+[here](https://static-content.springer.com/esm/art%3A10.1007%2Fs00216-018-1156-x/MediaObjects/216_2018_1156_MOESM2_ESM.xlsx).
+The authors state were collected by based on the FTIR-spectrometer Bruker Tensor 27 System
+for the spectral range 4000 to 40 1/cm. Additionally, some data of polymer-based
+fibres and spectra of biological origins were received from the [Bremer Faserinstitut](https://www.faserinstitut.de/).
+During preprocess, the applied a concave rubberband correction based on 10 
+iterations and 64 baseline points. They also excluded the C02 band between
+2420 to 2200 1/cm by setting the data points to 0. This should be kept in mind,
+since the inclusion of additional reference samples requires the same procedure
+for the data base to stay in a consistent state. The data provided by @Primpke2018 
+shows a spectral resoultion of 2.1 1/cm. Additional reference samples should be
+resampled to the same spectral resolution.
+
+To ensure this, the data base was read into R and the wavenumber index was saved 
+in a separate file for future use.
+```{r read-in-data}
+library(openxlsx)
+url = "https://static-content.springer.com/esm/art%3A10.1007%2Fs00216-018-1156-x/MediaObjects/216_2018_1156_MOESM2_ESM.xlsx"
+
+data = openxlsx::read.xlsx(url)
+# extract wavenumbers from first row
+wavenumbers = as.numeric(names(data)[2:1864])
+# saving wavenumbers to reference sample directory
+saveRDS(wavenumbers, paste0(ref, "wavenumbers.rds"))
+```
+
+We can take a look at the distribution of the different classes found in the data base.
+Here, I only print the 20 most common classes since there are a lot of reference samples
+only found once.
+```{r analyse-classes}
+data$Abbreviation = as.factor(data$Abbreviation)
+summary(data$Abbreviation)[1:20]
+
+```
+
+Because we are interested in assigning the right class to potential polymer particles
+found in envrionmental samples, the most important classes found in the data base 
+to use are the ones of artificial origins. Sometimes, also particles of biological origins
+are subject to spectral analysis, because they can resamble the apearance of microplastics.
+Any machine learning algorithm trained only with reference samples from plastics
+would assign some plastic class to the particles of biological origin. To reduce the 
+error of False Positives, we thus also include some of the samples of biological origin.
+
+```{r retrieve-target-classes}
+# furs and wools
+indexFur = grep("fur", data$Abbreviation)
+indexWool = grep("wool", data)
+furs = data[c(indexFur, indexWool), ]
+furs = furs[ , c(2:1864)] # leave out index column
+names(furs) = paste("wvn", wavenumbers, sep="")
+furs$class = "FUR"
+
+# fibres
+indexFibre = grep("fibre", data$Abbreviation)
+fibre = data[indexFibre, ]
+fibre = fibre[ , c(2:1864)] # leave out index column
+names(fibre) = paste("wvn", wavenumbers, sep="")
+fibre$class = "FIBRE"
+
+# wood
+indexWood = grep("wood", data$Abbreviation)
+wood = data[indexWood, ]
+wood = wood[ , c(2:1864)] # leave out index colums
+names(wood) = paste("wvn", wavenumbers, sep="")
+wood$class = "WOOD"
+
+# synthetic polymers
+polyIndex = which(data$`Natural./Synthetic` =="synthetic polymer")
+syntPolymer = data[polyIndex,]
+counts = summary(syntPolymer$Abbreviation)
+polyNames = names(counts)[1:11] # only major polymers
+syntPolymer = syntPolymer[which(syntPolymer$Abbreviation %in%  polyNames) , ]
+classes = droplevels(syntPolymer$Abbreviation)
+syntPolymer = syntPolymer[ , c(2:1864)] # leave out index column
+names(syntPolymer) = paste("wvn",wavenumbers,sep="")
+syntPolymer$class = as.character(classes)
+
+# lets group together some synthetic polymer classes
+syntPolymer$class[grep("Nylon",syntPolymer$class)] = "PA"
+syntPolymer$class[grep("HDPE",syntPolymer$class)] = "PE"
+syntPolymer$class[grep("LDPE",syntPolymer$class)] = "PE"
+```
+
+We can now bind these reference sample together and take a look at the distribution
+of classes in the resulting data frame.
+
+```{r binding-data}
+data = rbind(furs,wood,fibre,syntPolymer) 
+data$class = as.factor(data$class)
+summary(data$class)
+
+```
+We see that we have in total 99 reference samples of plastic polymers and 44 of
+biological origin. Within the plastic samples, we find that the data is slightly 
+unbalanced towards PE which dominates the distribution of plastic samples. This
+could proove as an disadvantage if machine learning algorithms pick up this unbalance
+by minimizing their error rate simply with more frequently predicting PE. However,
+at this point we will leave the resulting data base as it is and save it it disk.
+We save the data both, in individual file and a comprehensive data base. This way
+later extensions to the data base will be easier.
+
+```{r write-data}
+write.csv(data, file = paste0(ref, "reference_database.csv"), row.names=FALSE)
+
+# writing class control file
+classIndex = as.character(unique(data$class))
+
+for (class in classIndex){
+  tmp = data[data$class==class , ]
+  write.csv(tmp, file = paste0(ref, "reference_", class, ".csv"), row.names=FALSE)
+}
+
+write(classIndex, paste0(ref, "classes.txt"))
+```
+
+
+## Literature used on this page
+

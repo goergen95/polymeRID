@@ -12,7 +12,7 @@ link-citations: yes
 ---
 
 ```{r setup, include=FALSE, warning=FALSE, message=FALSE}
-source("code/setup.R")
+source("code/setup_website.R")
 source("code/functions.R")
 library(plotly)
 data = read.csv("ref/reference_database.csv",header=TRUE)
@@ -69,16 +69,16 @@ This project was grouped into different working steps, which also were designed
 to allow reproducibility as well individual alteration of the code and data base. 
 These working steps are:    
 
-* **Preparation**: At first the establishment of a comprehensive database of reference spectra was mandatory to allow the application of machine learning models. The preparation steps included spectral re-sampling and labeling of reference polymers and natural particles. Later, this database underwent some steps of baseline corrections as well as different level of pre-processing such as normalization and Savtizkiy-Golay filtering.  
+* [**Preparation**](preparation.html): At first the establishment of a comprehensive database of reference spectra was mandatory to allow the application of machine learning models. The preparation steps included spectral re-sampling and labeling of reference polymers and natural particles. Later, this database underwent some steps of baseline corrections as well as different level of pre-processing such as normalization and Savtizkiy-Golay filtering.  
 
-* **Exploration**: At the different types of pre-processing techniques were assessed by a brute-force method in which all different levels of the data were presented to different machine learning models and their capability to correctly classify the data-set was captured. Additionally, different levels of noise was added to the data so that the models and pre-processing types which most robustly classify the spectra could be identified. 
+* [**Exploration**](exploration.html): At the different types of pre-processing techniques were assessed by a brute-force method in which all different levels of the data were presented to different machine learning models and their capability to correctly classify the data-set was captured. Additionally, different levels of noise was added to the data so that the models and pre-processing types which most robustly classify the spectra could be identified. 
 
-* **Calibration**: After the exploration stage, a applicable algorithm which can be calibrated to a potentially changing database needed to be established. That was important, so that the code can be used in the future as well e.g. when the reference database should be extended or the wave-numbers of interest might change.  
+* [**Calibration**](calibration.html): After the exploration stage, a applicable algorithm which can be calibrated to a potentially changing database needed to be established. That was important, so that the code can be used in the future as well e.g. when the reference database should be extended or the wave-numbers of interest might change.  
 
-* **Classification**: This last stage is the core part of the project in the sense that at this stage real environmental samples are to be classified in a user-friendly way to ease the categorization process. That means that some accuracy values of the classification need to be easily accessible as well as some possibilities for a human agent to assess the accuracy 
+* [**Classification**](classification.html): This last stage is the core part of the project in the sense that at this stage real environmental samples are to be classified in a user-friendly way to ease the categorization process. That means that some accuracy values of the classification need to be easily accessible as well as some possibilities for a human agent to assess the accuracy 
 
 
-```{r fig.cap = "Averaged spectrum of all PE spectra within the data base.", echo = FALSE}
+```{r fig.cap = "**Fig.1**: Example of spectra characteristics for all PE spectra within the data base.", echo = FALSE}
 p = meanplot(data,wavenumbers = wvn, class = "PE")
 p = plotly::ggplotly(p)
 p
