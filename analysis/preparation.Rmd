@@ -20,18 +20,18 @@ library(plotly)
 For the current project we used a data base published by @Primpke2018 online. 
 The data base can be downloaded 
 [here](https://static-content.springer.com/esm/art%3A10.1007%2Fs00216-018-1156-x/MediaObjects/216_2018_1156_MOESM2_ESM.xlsx).
-The authors state were collected by based on the FTIR-spectrometer Bruker Tensor 27 System
+The authors state the samples were collected based on the FTIR-spectrometer Bruker Tensor 27 System
 for the spectral range 4000 to 40 1/cm. Additionally, some data of polymer-based
-fibres and spectra of biological origins were received from the [Bremer Faserinstitut](https://www.faserinstitut.de/).
-During preprocess, the applied a concave rubberband correction based on 10 
+fibers and spectra of biological origins were received from the [Bremer Faserinstitut](https://www.faserinstitut.de/).
+During preprocessing, they applied a concave rubberband correction based on 10 
 iterations and 64 baseline points. They also excluded the C02 band between
 2420 to 2200 1/cm by setting the data points to 0. This should be kept in mind,
 since the inclusion of additional reference samples requires the same procedure
 for the data base to stay in a consistent state. The data provided by @Primpke2018 
-shows a spectral resoultion of 2.1 1/cm. Additional reference samples should be
+shows a spectral resolution of 2.1 1/cm. Additional reference samples need be
 resampled to the same spectral resolution.
 
-To ensure this, the data base was read into R and the wavenumber index was saved 
+To ensure this, the data base was read into R and the wave number index was saved 
 in a separate file for future use.
 ```{r read-in-data}
 library(openxlsx)
@@ -53,13 +53,14 @@ summary(data$Abbreviation)[1:20]
 
 ```
 
-Because we are interested in assigning the right class to potential polymer particles
-found in envrionmental samples, the most important classes found in the data base 
-to use are the ones of artificial origins. Sometimes, also particles of biological origins
-are subject to spectral analysis, because they can resamble the apearance of microplastics.
-Any machine learning algorithm trained only with reference samples from plastics
-would assign some plastic class to the particles of biological origin. To reduce the 
-error of False Positives, we thus also include some of the samples of biological origin.
+Because we are interested in assigning the right class to potential plastic particles, 
+the most important classes found in the data base 
+to us are the ones of artificial origin. However, sometimes also particles of 
+biological origins are subject to spectral analysis, because they resemble the 
+appearance of micro plastics. Any machine learning algorithm trained only with
+reference samples from plastics would eventually assign a plastic class also 
+to the particles of biological origin. To reduce the error of false positives, 
+we include some of the samples of biological origin based on broad classes.
 
 ```{r retrieve-target-classes}
 # furs and wools
@@ -101,7 +102,7 @@ syntPolymer$class[grep("HDPE",syntPolymer$class)] = "PE"
 syntPolymer$class[grep("LDPE",syntPolymer$class)] = "PE"
 ```
 
-We can now bind these reference sample together and take a look at the distribution
+We can now bind the reference samples together and take a look at the distribution
 of classes in the resulting data frame.
 
 ```{r binding-data}
@@ -113,11 +114,11 @@ summary(data$class)
 We see that we have in total 99 reference samples of plastic polymers and 44 of
 biological origin. Within the plastic samples, we find that the data is slightly 
 unbalanced towards PE which dominates the distribution of plastic samples. This
-could proove as an disadvantage if machine learning algorithms pick up this unbalance
+could prove as an disadvantage if machine learning algorithms pick up this unbalance
 by minimizing their error rate simply with more frequently predicting PE. However,
-at this point we will leave the resulting data base as it is and save it it disk.
-We save the data both, in individual file and a comprehensive data base. This way
-later extensions to the data base will be easier.
+at this point, we will leave the resulting data base as it is and save it to disk.
+We save the data in individual files as well as in a comprehensive data base.
+This way later extensions to the data base will be easier.
 
 ```{r write-data}
 write.csv(data, file = paste0(ref, "reference_database.csv"), row.names=FALSE)

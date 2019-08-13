@@ -11,3 +11,4 @@ packrat/src_ext
 polymeRID.Rproj
 packrat/lib/
 packrat/lib*/
+analysis/*.bib

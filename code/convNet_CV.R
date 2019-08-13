@@ -15,8 +15,9 @@ data = do.call("rbind",data)
 
 results = read.csv(paste0(output,"nnet/large/large_kernels.csv"))
 # get kernel numbers for accuracies higher than 90
-kernelInd = results$kernel[which(results$val_acc>0.9)]
-kernelInd = 89
+maxInd = sort(results$val_acc, decreasing = TRUE)[1:3]
+kernelInd = results$kernel[results$val_acc %in% maxInd]
+
 cvResults = lapply(kernelInd, nnetCV,
                    nOutcome = length(levels(data$class)),
                    data=data,

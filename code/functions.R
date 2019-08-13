@@ -193,7 +193,7 @@ meanplot = function(data,wavenumbers,class){
     geom_line(aes(y=mean),alpha=0.4)+
     geom_line(aes(y=max),linetype="dotted")+
     geom_line(aes(y=min),linetype="dotted")+
-    annotate(geom="text",label=paste0("class: ",class,"\nsamples: ",cldata$N[1]),x=0,y=max(cldata$mean))+
+    annotate(geom="text",label=paste0("class: ",class,"\nsamples: ",cldata$N[1]),x=500,y=max(cldata$mean))+
     ylab(label="reflectance")+
     theme_minimal()
   return(tmp)}
