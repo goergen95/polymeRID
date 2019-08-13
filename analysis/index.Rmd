@@ -30,7 +30,7 @@ University of Marburg concerned with microplastic in the environment.
 ![Probe Seperators](assets/images/seperators.jpg)<br>
 *Photo of two sediment separators taken by Sarah Brüning*
 
-Microplastic particles polluting the envrionment have been in the public focuse
+Microplastic particles polluting the environment have been in the public focuse
 for some time now. The scientific efforts of analysing the occurences
 of particles in the envrionment and their effects on ecosystems and human health
 is manifold, yet there is a lack of consensus on methods for sampling, sample handling,
@@ -48,22 +48,22 @@ their research findings.
 
 Evidently, there also exist a broad spectrum of different polymer identification
 strategies [@Loder2015;@Rocha-Santos2015a;@Shim2017], ranging from traditional microscopy 
-to spectroscopy as well as destructive methods of thermal analysis. A destinction
-has to be made concerning towards the extent of automatisation in identification
+to spectroscopy as well as destructive methods of thermal analysis. A distinction
+has to be made concerning towards the extent of automation in identification
 processes. Lately, different approaches to automate in the identification process,
 either by individual elements or for whole samples on a focal plane, have reported 
-to the scientifc community [@Masoumi2012;@Primpke2017;@Lorenzo-Navarro2018;@Zhang2018;@Primpke2019]
+to the scientific community [@Masoumi2012;@Primpke2017;@Lorenzo-Navarro2018;@Zhang2018;@Primpke2019]
 
 This project sets out to contribute to the ease of the cumbersome process of 
-classfiying indivdual particles based on their spectral reflectance by hand.
+classifying individual particles based on their spectral reflectance by hand.
 The idea is that up-to-date machine learning models applied to the 
-high-dimensional spectral data of particles found in envrionmental samples can 
+high-dimensional spectral data of particles found in environmental samples can 
 minimize the need for human intervention in the classification process and 
 thus significantly speed up the process of categorizing found particles.
 Other studies have reported substantial accuracies by applying different sorts
-of machine learning algorithms such as hirarchial clustering [@Primpke2017], 
+of machine learning algorithms such as hierarchical clustering [@Primpke2017], 
 support-vector-machines [@bianco2019], random forest [@Hufnagl2019], as well as
-convolutional neural networks [@Liu2017] to classify microplastics and other materials spectra.
+convolutional neural networks [@Liu2017] to classify micro plastics and other materials spectra.
 
 This project was grouped into different working steps, which also were designed
 to allow reproducibility as well individual alteration of the code and data base. 
@@ -78,7 +78,7 @@ These working steps are:
 * **Classification**: This last stage is the core part of the project in the sense that at this stage real environmental samples are to be classified in a user-friendly way to ease the categorization process. That means that some accuracy values of the classification need to be easily accessible as well as some possibilities for a human agent to assess the accuracy 
 
 
-```{r fig.cap = "Averaged spectrum of all PE spectra within the data base.", echo = FALSE, fig.width = 10}
+```{r fig.cap = "Averaged spectrum of all PE spectra within the data base.", echo = FALSE}
 p = meanplot(data,wavenumbers = wvn, class = "PE")
 p = plotly::ggplotly(p)
 p
