@@ -363,7 +363,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -644,6 +644,7 @@ Ignored files:
 
 Untracked files:
     Untracked:  analysis/exploration.Rmd
+    Untracked:  analysis/rf_exploration.Rmd
 
 Unstaged changes:
     Modified:   analysis/preparation.Rmd
@@ -662,229 +663,101 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
-
 <p>
-These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
 </p>
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-File
-</th>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-<th>
-Message
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/c52182b28852210d205c6ae8ec5c5715077fbc69/docs/preparation.html" target="_blank">c52182b</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-rebuid website
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/6e92d0170f21f1e8f4ea9cd55612535cfccbfc67/docs/preparation.html" target="_blank">6e92d01</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/9ca3d89edaf662e7c67354cfeb3000eef08b4f4b/analysis/preparation.Rmd" target="_blank">9ca3d89</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-added website directory mirror
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/9ca3d89edaf662e7c67354cfeb3000eef08b4f4b/docs/preparation.html" target="_blank">9ca3d89</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-added website directory mirror
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/6cfd689b56021aeca0aa8d104fafff293d0aa77e/docs/preparation.html" target="_blank">6cfd689</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/5774923d62f16e752c2bd694b6a3dab2f33b7554/analysis/preparation.Rmd" target="_blank">5774923</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-included preparation
-</td>
-</tr>
-</tbody>
-</table>
-</div>
 <hr>
 </div>
 </div>
 </div>
-<p>For the current project we used a data base published by <span class="citation">Primpke et al. (<a href="#ref-Primpke2018">2018</a>)</span> online. The data base can be downloaded <a href="https://static-content.springer.com/esm/art%3A10.1007%2Fs00216-018-1156-x/MediaObjects/216_2018_1156_MOESM2_ESM.xlsx">here</a>. The authors state the samples were collected based on the FTIR-spectrometer Bruker Tensor 27 System for the spectral range 4000 to 40 1/cm. Additionally, some data of polymer-based fibers and spectra of biological origins were received from the <a href="https://www.faserinstitut.de/">Bremer Faserinstitut</a>. During preprocessing, they applied a concave rubberband correction based on 10 iterations and 64 baseline points. They also excluded the C02 band between 2420 to 2200 1/cm by setting the data points to 0. This should be kept in mind, since the inclusion of additional reference samples requires the same procedure for the data base to stay in a consistent state. The data provided by <span class="citation">Primpke et al. (<a href="#ref-Primpke2018">2018</a>)</span> shows a spectral resolution of 2.1 1/cm. Additional reference samples need be resampled to the same spectral resolution.</p>
-<p>To ensure this, the data base was read into R and the wave number index was saved in a separate file for future use.</p>
-<pre class="r"><code>library(openxlsx)
-url = &quot;https://static-content.springer.com/esm/art%3A10.1007%2Fs00216-018-1156-x/MediaObjects/216_2018_1156_MOESM2_ESM.xlsx&quot;
-
-data = openxlsx::read.xlsx(url)
-# extract wavenumbers from first row
-wavenumbers = as.numeric(names(data)[2:1864])
-# saving wavenumbers to reference sample directory
-saveRDS(wavenumbers, paste0(ref, &quot;wavenumbers.rds&quot;))</code></pre>
-<p>We can take a look at the distribution of the different classes found in the data base. Here, I only print the 20 most common classes since there are a lot of reference samples only found once.</p>
-<pre class="r"><code>data$Abbreviation = as.factor(data$Abbreviation)
-summary(data$Abbreviation)[1:20]</code></pre>
-<pre><code>                   PES                     PP                   LDPE 
-                    15                     12                     11 
-                  HDPE                    PET                     PE 
-                    10                      9                      8 
-                 Nylon                     PA                     PS 
-                     7                      7                      7 
-                   PUR                      C                     PC 
-                     7                      6                      6 
-         alkyd_varnish                    PVC ethylene_vinyl_acetate 
-                     4                      4                      3 
-ethylene_vinyl_alcohol                 PESTUR                    ABS 
-                     3                      3                      2 
-                Aramid              cellulose 
-                     2                      2 </code></pre>
-<p>Because we are interested in assigning the right class to potential plastic particles, the most important classes found in the data base to us are the ones of artificial origin. However, sometimes also particles of biological origins are subject to spectral analysis, because they resemble the appearance of micro plastics. Any machine learning algorithm trained only with reference samples from plastics would eventually assign a plastic class also to the particles of biological origin. To reduce the error of false positives, we include some of the samples of biological origin based on broad classes.</p>
-<pre class="r"><code># furs and wools
-indexFur = grep(&quot;fur&quot;, data$Abbreviation)
-indexWool = grep(&quot;wool&quot;, data)
-furs = data[c(indexFur, indexWool), ]
-furs = furs[ , c(2:1864)] # leave out index column
-names(furs) = paste(&quot;wvn&quot;, wavenumbers, sep=&quot;&quot;)
-furs$class = &quot;FUR&quot;
-
-# fibres
-indexFibre = grep(&quot;fibre&quot;, data$Abbreviation)
-fibre = data[indexFibre, ]
-fibre = fibre[ , c(2:1864)] # leave out index column
-names(fibre) = paste(&quot;wvn&quot;, wavenumbers, sep=&quot;&quot;)
-fibre$class = &quot;FIBRE&quot;
-
-# wood
-indexWood = grep(&quot;wood&quot;, data$Abbreviation)
-wood = data[indexWood, ]
-wood = wood[ , c(2:1864)] # leave out index colums
-names(wood) = paste(&quot;wvn&quot;, wavenumbers, sep=&quot;&quot;)
-wood$class = &quot;WOOD&quot;
-
-# synthetic polymers
-polyIndex = which(data$`Natural./Synthetic` ==&quot;synthetic polymer&quot;)
-syntPolymer = data[polyIndex,]
-counts = summary(syntPolymer$Abbreviation)
-polyNames = names(counts)[1:11] # only major polymers
-syntPolymer = syntPolymer[which(syntPolymer$Abbreviation %in%  polyNames) , ]
-classes = droplevels(syntPolymer$Abbreviation)
-syntPolymer = syntPolymer[ , c(2:1864)] # leave out index column
-names(syntPolymer) = paste(&quot;wvn&quot;,wavenumbers,sep=&quot;&quot;)
-syntPolymer$class = as.character(classes)
-
-# lets group together some synthetic polymer classes
-syntPolymer$class[grep(&quot;Nylon&quot;,syntPolymer$class)] = &quot;PA&quot;
-syntPolymer$class[grep(&quot;HDPE&quot;,syntPolymer$class)] = &quot;PE&quot;
-syntPolymer$class[grep(&quot;LDPE&quot;,syntPolymer$class)] = &quot;PE&quot;</code></pre>
-<p>We can now bind the reference samples together and take a look at the distribution of classes in the resulting data frame.</p>
-<pre class="r"><code>data = rbind(furs,wood,fibre,syntPolymer) 
-data$class = as.factor(data$class)
-summary(data$class)</code></pre>
-<pre><code>FIBRE   FUR    PA    PC    PE   PES   PET    PP    PS   PUR  WOOD 
-   27    13    14     6    29    15     9    12     7     7     4 </code></pre>
-<p>We see that we have in total 99 reference samples of plastic polymers and 44 of biological origin. Within the plastic samples, we find that the data is slightly unbalanced towards PE which dominates the distribution of plastic samples. This could prove as an disadvantage if machine learning algorithms pick up this unbalance by minimizing their error rate simply with more frequently predicting PE. However, at this point, we will leave the resulting data base as it is and save it to disk. We save the data in individual files as well as in a comprehensive data base. This way later extensions to the data base will be easier.</p>
-<pre class="r"><code>write.csv(data, file = paste0(ref, &quot;reference_database.csv&quot;), row.names=FALSE)
-
-# writing class control file
-classIndex = as.character(unique(data$class))
-
-for (class in classIndex){
-  tmp = data[data$class==class , ]
-  write.csv(tmp, file = paste0(ref, &quot;reference_&quot;, class, &quot;.csv&quot;), row.names=FALSE)
+<p>Random Forest (RF) is a machine learning algorithm which is based on the traditional concept of decision trees. It’s populat implementation was developed by <span class="citation">Breiman (<a href="#ref-Breiman2001">2001</a>)</span>. It represents an ensemble classifier which has been reported to be the primary choice between different ensemble classifiers due to its easy handling and high classification accuracies <span class="citation">(Sagi and Rokach <a href="#ref-Sagi2018">2018</a>)</span>. <strong>More elaborations on scientific background</strong></p>
+<p>Different levels of data preprocessing might emphasize different features of the patterns to be learned by an algorithm. To grasp this, different transformations of the data were presented to the RF algorithm. Additionally, the raw data signal was jittered to test which transformation might proove beneficial in delivering high classification accuracies even in the presence of noise. To test this, we define a function which adds noise to the raw data and returns a list with the number of elements equal to the levels of noise applied.</p>
+<pre class="r"><code>addNoise = function(data, levels = c(0), category=&quot;class&quot;){
+  data.return = list()
+  index = which(names(data) == category)
+  for (n in levels){
+    tmp = as.matrix(data[ , -index])
+    if (n == 0){
+      tmp = data
+    }else{
+      tmp = as.data.frame(jitter(tmp, n))
+      tmp[category] = data[category]
+    }
+    data.return[[paste(&quot;noise&quot;, n, sep=&quot;&quot;)]] = tmp
+  }
+  return(data.return)
 }
 
-write(classIndex, paste0(ref, &quot;classes.txt&quot;))</code></pre>
-<div id="literature-used-on-this-page" class="section level2">
-<h2>Literature used on this page</h2>
+data = read.csv(file = paste0(ref, &quot;reference_database.csv&quot;), header = TRUE)
+noisy_data = addNoise(data, levels = c(0,10,100,250,500), category = &quot;class&quot;)
+
+# indivitual elements can be selected by using [[ and refering to the index or the name
+head(noisy_data[[&quot;noise100&quot;]])[1:3,1:3]</code></pre>
+<pre><code>  wvn3992.63003826141 wvn3990.70123147964 wvn3988.77242469788
+1        -0.008375491        -0.004206264        -0.009099619
+2        -0.002893054         0.013343731        -0.019467560
+3        -0.013028379        -0.019465346        -0.003497161</code></pre>
+<p>Then, in another user defined function which uses the <code>noisy_data</code> objected as input specified data transormations are applied. These are normalization which centers and scales the input data, as well as different forms of the Savitkiy-Golay filter <span class="citation">(Savitzky and Golay <a href="#ref-Savitzky1964">1964</a>)</span> and first and second derivative of a raw spectrum. The functions iterates through the noise level elements in the <code>noisy_data</code> object and returns each specified transformation in a list element below the noise level. The exemplary function below applies the pre-processing for normalisation, standard filtering and first derivative only. The implementation of the function used in the project can be found <a href="https://github.com/goergen95/polymeRID/blob/master/code/functions.R#12">here</a>.</p>
+<pre class="r"><code>createTrainingSet = function(data, category = &quot;class&quot;,
+                             SGpara = list(p=3,w=11), lag = 15){
+  
+  data.return = list()
+  for (noise in names(data)){
+    
+    tmp = as.data.frame(data[[noise]])
+    classes = tmp[,category]
+    tmp = tmp[!names(tmp) %in% category]
+    
+    # original data
+    data.return[[noise]][[&quot;raw&quot;]] = as.data.frame(data[[noise]])
+    
+    # normalised data
+    data_norm = preprocess(tmp, type=&quot;norm&quot;)
+    data_norm[category] = classes
+    data.return[[noise]][[&quot;norm&quot;]] = data_norm
+    
+    # SG-filtered data
+    data_sg = preprocess(tmp, type=&quot;sg&quot;, SGpara = SGpara)
+    data_sg[category] = classes
+    data.return[[noise]][[&quot;sg&quot;]] = data_sg
+    
+    # first derivative of original data
+    data_rawd1 = preprocess(tmp, type=&quot;raw.d1&quot;, lag = lag)
+    data_rawd1[category] = classes
+    data.return[[noise]][[&quot;raw.d1&quot;]] = data_rawd1
+    
+  }
+  return(data.return)
+}
+
+# applying the function
+test_dataset = createTrainingSet(noisy_data, category = &quot;class&quot;)
+
+# individual transformations at a certain noise level can be accessed with [[
+head(test_dataset[[&quot;noise500&quot;]][[&quot;raw.d1&quot;]])[1:3,1:3]</code></pre>
+<pre><code>  wvn3963.69793653488 wvn3961.76912975311 wvn3959.84032297134
+1         -0.10154790         -0.03910838          0.19501465
+2          0.05917357         -0.12878964          0.03169424
+3         -0.01021904         -0.12964288          0.08907100</code></pre>
+<p>The data base of <span class="citation">(Primpke et al. <a href="#ref-Primpke2018">2018</a>)</span> currently shows 1863 variables for each observations. Most of these data points do not bear relevant information to distinguish between differenty types of particles. To shorten the computation time, one can use dimensionality reduction techniques such as principal component analysis (PCA). PCA also has been used to transform spectral data of microplastics in marine ecosystems before <span class="citation">(Jung et al. <a href="#ref-Jung2018">2018</a>; Lorenzo-Navarro et al. <a href="#ref-Lorenzo-Navarro2018">2018</a>)</span>. PCA basically takes the input data for a given number of observation, rotates the axis</p>
 <div id="refs">
+<div id="ref-Breiman2001">
+<p>Breiman, L. 2001. “Random forests.” <em>Machine Learning</em> 45 (1): 5–32. <a href="https://doi.org/10.1023/A:1010933404324">https://doi.org/10.1023/A:1010933404324</a>.</p>
+</div>
+<div id="ref-Jung2018">
+<p>Jung, Melissa R., F. David Horgen, Sara V. Orski, Viviana Rodriguez C., Kathryn L. Beers, George H. Balazs, T. Todd Jones, et al. 2018. “Validation of ATR FT-IR to identify polymers of plastic marine debris, including those ingested by marine organisms.” <em>Marine Pollution Bulletin</em> 127 (December 2017). Elsevier: 704–16. <a href="https://doi.org/10.1016/j.marpolbul.2017.12.061">https://doi.org/10.1016/j.marpolbul.2017.12.061</a>.</p>
+</div>
+<div id="ref-Lorenzo-Navarro2018">
+<p>Lorenzo-Navarro, Javier, Modesto Castrillón-Santana, May Gómez, Alicia Herrera, and Pedro A Marín-Reyes. 2018. “Automatic Counting and Classification of Microplastic Particles.” <a href="https://doi.org/10.5220/0006725006460652">https://doi.org/10.5220/0006725006460652</a>.</p>
+</div>
 <div id="ref-Primpke2018">
 <p>Primpke, Sebastian, Marisa Wirth, Claudia Lorenz, and Gunnar Gerdts. 2018. “Reference database design for the automated analysis of microplastic samples based on Fourier transform infrared (FTIR) spectroscopy.” <em>Analytical and Bioanalytical Chemistry</em> 410 (21). Analytical; Bioanalytical Chemistry: 5131–41. <a href="https://doi.org/10.1007/s00216-018-1156-x">https://doi.org/10.1007/s00216-018-1156-x</a>.</p>
+</div>
+<div id="ref-Sagi2018">
+<p>Sagi, Omer, and Lior Rokach. 2018. “Ensemble learning: A survey.” <em>Wiley Interdisciplinary Reviews: Data Mining and Knowledge Discovery</em> 8 (4): 1–18. <a href="https://doi.org/10.1002/widm.1249">https://doi.org/10.1002/widm.1249</a>.</p>
+</div>
+<div id="ref-Savitzky1964">
+<p>Savitzky, Abraham, and Marcel J.E. Golay. 1964. “Smoothing and Differentiation of Data by Simplified Least Squares Procedures.” <em>Analytical Chemistry</em> 36 (8): 1627–39. <a href="https://doi.org/10.1021/ac60214a047">https://doi.org/10.1021/ac60214a047</a>.</p>
 </div>
 </div>
 <br>
@@ -937,7 +810,6 @@ loaded via a namespace (and not attached):
 [37] tibble_2.1.3     crayon_1.3.4     whisker_0.3-2    pkgconfig_2.0.2 
 [41] zeallot_0.1.0    Matrix_1.2-17    assertthat_0.2.1 rmarkdown_1.14  
 [45] iterators_1.0.12 R6_2.4.0         git2r_0.26.1     compiler_3.6.1  </code></pre>
-</div>
 </div>
 
 

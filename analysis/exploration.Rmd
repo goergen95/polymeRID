@@ -1,0 +1,45 @@
+---
+title: "Exploration"
+author: Darius Goergen
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: false
+editor_options:
+  chunk_output_type: console
+bibliography: library.bib
+link-citations: yes
+---
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+source("code/setup_website.R")
+source("code/functions.R")
+library(plotly)
+```
+
+The idea of the exploration stage is to find an optimal configuration between the
+hyper-parameters of the machine learning algorithms and different 
+representations of the input data. On the one hand, algorithms such as 
+support-vector-machines (SVM), random forest (RF) and convolutional neural networks
+(CNN), need proper fine-tuning of their parameters to effectively learn the
+patterns we are interested in. On the other hand, it is possible to present the
+data in different forms to the algorithms, each representing different "ways"
+to look at the samples. The main goal of such an exploration is to optimize the
+outcome of the training process, bearing in mind that such a process is 
+basically a function of desired accuracy, computational costs, and data availability.
+
+Here, all three previously mentioned machine learning algorithms, SVM, RF, and, CNN
+were tested for their ability to classify plastic polymers based on their spectral
+reflectance data measured by a FTIR spectrometer. Consequently, the workflow and
+the results are presented individually for the different algorithms.
+
+* [**Random Forest (RF)**](rf_exploration.html)
+
+* [**Support-Vector-Machine (SVM)**](svm_exploration.html)
+
+* [**Convolutional Neural Network (CNN)**](cnn_exploration.html)
+
+
+
+
+
