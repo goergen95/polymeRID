@@ -283,3 +283,5 @@ might be the simple Savitzkiy-Golay filter, as well as the same filter applied
 to the normalised data. Equal robust results are observed for the raw and the 
 normalised data. The other transformations do not show the same level of robustness
 to noise.
+
+# Citations on this page

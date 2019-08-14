@@ -30,18 +30,18 @@ University of Marburg concerned with microplastic in the environment.
 ![Probe Seperators](assets/images/seperators.jpg)<br>
 *Photo of two sediment separators taken by Sarah Brüning*
 
-Microplastic particles polluting the environment have been in the public focuse
-for some time now. The scientific efforts of analysing the occurences
-of particles in the envrionment and their effects on ecosystems and human health
+Micro-plastic particles polluting the environment have been in the public focus
+for some time now. The scientific efforts of analyzing the occurrences
+of particles in the environment and their effects on ecosystems and human health
 is manifold, yet there is a lack of consensus on methods for sampling, sample handling,
 analysis and identification, especially for samples from aquatic ecosystems.
-Some of the most urgent research questions concerned with microplastic in the envrionment
+Some of the most urgent research questions concerned with micro-plastic in the environment
 are the analysis of effects on biological lifeforms [@Zhang2019], their movement and
 distribution in the marine environment [@Auta2017] as well as in freshwater systems [@Li2018b].
 
 Different research questions demand for different methodologies for sampling,
-sample handling and labroratory analysis. However, the link between these 
-knowledge gaps is that any analysis of microplastics in the environment needs a 
+sample handling and laboratory analysis. However, the link between these 
+knowledge gaps is that any analysis of micro-plastics in the environment needs a 
 robust identification method to enable scientist to draw the right conclusions 
 and to bring forward recommendations to the public and decision makers to act upon
 their research findings.
@@ -66,12 +66,12 @@ support-vector-machines [@bianco2019], random forest [@Hufnagl2019], as well as
 convolutional neural networks [@Liu2017] to classify micro plastics and other materials spectra.
 
 This project was grouped into different working steps, which also were designed
-to allow reproducibility as well individual alteration of the code and data base. 
+to allow reproducible workflows as well individual alteration of the code and data base. 
 These working steps are:    
 
 * [**Preparation**](preparation.html): At first the establishment of a comprehensive database of reference spectra was mandatory to allow the application of machine learning models. The preparation steps included spectral re-sampling and labeling of reference polymers and natural particles. Later, this database underwent some steps of baseline corrections as well as different level of pre-processing such as normalization and Savtizkiy-Golay filtering.  
 
-* [**Exploration**](exploration.html): At the different types of pre-processing techniques were assessed by a brute-force method in which all different levels of the data were presented to different machine learning models and their capability to correctly classify the data-set was captured. Additionally, different levels of noise was added to the data so that the models and pre-processing types which most robustly classify the spectra could be identified. 
+* [**Exploration**](exploration.html): At the different types of preprocessing techniques were assessed by a brute-force method in which all different levels of the data were presented to different machine learning models and their capability to correctly classify the data-set was captured. Additionally, different levels of noise was added to the data so that the models and preprocessing types which most robustly classify the spectra could be identified. 
 
 * [**Calibration**](calibration.html): After the exploration stage, a applicable algorithm which can be calibrated to a potentially changing database needed to be established. That was important, so that the code can be used in the future as well e.g. when the reference database should be extended or the wave-numbers of interest might change.  
 
@@ -84,5 +84,5 @@ p = plotly::ggplotly(p)
 p
 ```
 
-## Literature used on this page
+## Citations on this page
 

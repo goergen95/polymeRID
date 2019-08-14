@@ -135,5 +135,5 @@ write(classIndex, paste0(ref, "classes.txt"))
 ```
 
 
-## Literature used on this page
+## Citations on this page
 
