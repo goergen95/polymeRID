@@ -339,7 +339,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-08-13
+<strong>Last updated:</strong> 2019-08-14
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -363,7 +363,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -430,10 +430,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreec52182b28852210d205c6ae8ec5c5715077fbc69targetblankc52182ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/c52182b28852210d205c6ae8ec5c5715077fbc69" target="_blank">c52182b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreeafd89c292b0d15391797833db6eaee3d4ccad473targetblankafd89c2a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/afd89c292b0d15391797833db6eaee3d4ccad473" target="_blank">afd89c2</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreec52182b28852210d205c6ae8ec5c5715077fbc69targetblankc52182ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreeafd89c292b0d15391797833db6eaee3d4ccad473targetblankafd89c2a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -643,14 +643,17 @@ Ignored files:
     Ignored:    website/smp/
 
 Untracked files:
-    Untracked:  analysis/exploration.Rmd
-    Untracked:  analysis/rf_exploration.Rmd
+    Untracked:  website/ref/reference_HDPE.csv
+    Untracked:  website/ref/reference_LDPE.csv
+    Untracked:  website/ref/reference_Nylon.csv
 
 Unstaged changes:
-    Modified:   analysis/preparation.Rmd
-    Modified:   code/setup.R
-    Modified:   code/setup_website.R
-    Modified:   ref/wavenumbers.rds
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/rf_exploration.Rmd
+    Modified:   website/ref/classes.txt
+    Modified:   website/ref/reference_FUR.csv
+    Modified:   website/ref/reference_PE.csv
+    Modified:   website/ref/reference_database.csv
 
 </code></pre>
 <p>
@@ -663,15 +666,75 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/goergen95/polymeRID/blob/c3f088ec4ead79841169796b40a145f2e9892533/analysis/rf_exploration.Rmd" target="_blank">c3f088e</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-08-13
+</td>
+<td>
+started exploration tab
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/goergen95/polymeRID/c3f088ec4ead79841169796b40a145f2e9892533/docs/rf_exploration.html" target="_blank">c3f088e</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-08-13
+</td>
+<td>
+started exploration tab
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
 </div>
-<p>Random Forest (RF) is a machine learning algorithm which is based on the traditional concept of decision trees. It’s populat implementation was developed by <span class="citation">Breiman (<a href="#ref-Breiman2001">2001</a>)</span>. It represents an ensemble classifier which has been reported to be the primary choice between different ensemble classifiers due to its easy handling and high classification accuracies <span class="citation">(Sagi and Rokach <a href="#ref-Sagi2018">2018</a>)</span>. <strong>More elaborations on scientific background</strong></p>
-<p>Different levels of data preprocessing might emphasize different features of the patterns to be learned by an algorithm. To grasp this, different transformations of the data were presented to the RF algorithm. Additionally, the raw data signal was jittered to test which transformation might proove beneficial in delivering high classification accuracies even in the presence of noise. To test this, we define a function which adds noise to the raw data and returns a list with the number of elements equal to the levels of noise applied.</p>
+<p>Random Forest (RF) is a machine learning algorithm which is based on the traditional concept of decision trees. It’s popular implementation was developed by <span class="citation">Breiman (<a href="#ref-Breiman2001">2001</a>)</span>. It represents an ensemble classifier which has been reported to be the primary choice between different ensemble classifiers due to its easy handling and high classification accuracies <span class="citation">(Sagi and Rokach <a href="#ref-Sagi2018">2018</a>)</span>. <strong>More elaborations on scientific background</strong></p>
+<p>Different levels of data reprocessing might emphasize different features of the patterns to be learned by an algorithm. To grasp this, different transformations of the data were presented to the RF algorithm. Additionally, the raw data signal was jittered to test which transformation might prove beneficial in delivering high classification accuracies even in the presence of noise. To test this, we define a function which adds noise to the raw data and returns a list with the number of elements equal to the levels of noise applied.</p>
 <pre class="r"><code>addNoise = function(data, levels = c(0), category=&quot;class&quot;){
   data.return = list()
   index = which(names(data) == category)
@@ -694,10 +757,10 @@ noisy_data = addNoise(data, levels = c(0,10,100,250,500), category = &quot;class
 # indivitual elements can be selected by using [[ and refering to the index or the name
 head(noisy_data[[&quot;noise100&quot;]])[1:3,1:3]</code></pre>
 <pre><code>  wvn3992.63003826141 wvn3990.70123147964 wvn3988.77242469788
-1        -0.008375491        -0.004206264        -0.009099619
-2        -0.002893054         0.013343731        -0.019467560
-3        -0.013028379        -0.019465346        -0.003497161</code></pre>
-<p>Then, in another user defined function which uses the <code>noisy_data</code> objected as input specified data transormations are applied. These are normalization which centers and scales the input data, as well as different forms of the Savitkiy-Golay filter <span class="citation">(Savitzky and Golay <a href="#ref-Savitzky1964">1964</a>)</span> and first and second derivative of a raw spectrum. The functions iterates through the noise level elements in the <code>noisy_data</code> object and returns each specified transformation in a list element below the noise level. The exemplary function below applies the pre-processing for normalisation, standard filtering and first derivative only. The implementation of the function used in the project can be found <a href="https://github.com/goergen95/polymeRID/blob/master/code/functions.R#12">here</a>.</p>
+1        -0.010328834          0.01829306         0.001603137
+2         0.005237827          0.01683373        -0.013921331
+3        -0.011751581          0.01958805         0.002650597</code></pre>
+<p>Then, in another user defined function which uses the <code>noisy_data</code> objected as input specified data transformations are applied. These are normalization which centers and scales the input data, as well as different forms of the Savitkiy-Golay filter <span class="citation">(Savitzky and Golay <a href="#ref-Savitzky1964">1964</a>)</span> and first and second derivative of a raw spectrum. The functions iterates through the noise level elements in the <code>noisy_data</code> object and returns each specified transformation in a list element below the noise level. The exemplary function below applies the preprocessing for normalization, standard filtering and first derivative only. The implementation of the function used in the project can be found <a href="https://github.com/goergen95/polymeRID/blob/master/code/functions.R#12">here</a>.</p>
 <pre class="r"><code>createTrainingSet = function(data, category = &quot;class&quot;,
                              SGpara = list(p=3,w=11), lag = 15){
   
@@ -736,19 +799,237 @@ test_dataset = createTrainingSet(noisy_data, category = &quot;class&quot;)
 # individual transformations at a certain noise level can be accessed with [[
 head(test_dataset[[&quot;noise500&quot;]][[&quot;raw.d1&quot;]])[1:3,1:3]</code></pre>
 <pre><code>  wvn3963.69793653488 wvn3961.76912975311 wvn3959.84032297134
-1         -0.10154790         -0.03910838          0.19501465
-2          0.05917357         -0.12878964          0.03169424
-3         -0.01021904         -0.12964288          0.08907100</code></pre>
-<p>The data base of <span class="citation">(Primpke et al. <a href="#ref-Primpke2018">2018</a>)</span> currently shows 1863 variables for each observations. Most of these data points do not bear relevant information to distinguish between differenty types of particles. To shorten the computation time, one can use dimensionality reduction techniques such as principal component analysis (PCA). PCA also has been used to transform spectral data of microplastics in marine ecosystems before <span class="citation">(Jung et al. <a href="#ref-Jung2018">2018</a>; Lorenzo-Navarro et al. <a href="#ref-Lorenzo-Navarro2018">2018</a>)</span>. PCA basically takes the input data for a given number of observation, rotates the axis</p>
+1          0.08295627          0.02234302          0.17399975
+2          0.04253842          0.07918397          0.03849980
+3         -0.05579848          0.11670539          0.02503375</code></pre>
+<p>The data base of <span class="citation">(Primpke et al. <a href="#ref-Primpke2018">2018</a>)</span> currently shows 1863 variables for each observations. Most of these data points do not bear relevant information to distinguish between different types of particles. To shorten the computation time, one can use dimensionality reduction techniques such as principal component analysis (PCA). PCA also has been used to transform spectral data of micro-plastics in marine ecosystems before <span class="citation">(Jung et al. <a href="#ref-Jung2018">2018</a>; Lorenzo-Navarro et al. <a href="#ref-Lorenzo-Navarro2018">2018</a>)</span>. PCA basically takes the input data for a given number of observation and by performing a orthogonal transformation to the data transforms these possible correlated variables to uncorrelated principal components. This way, both redundancies in the data as well as possible noise can be accounted for. PCA previously has been successfully applied to FTIR-spectrometer data [<span class="citation">Hori and Sugiyama (<a href="#ref-Hori2003">2003</a>)</span>;<span class="citation">Nieuwoudt et al. (<a href="#ref-Nieuwoudt2004">2004</a>)</span>;<span class="citation">Mueller et al. (<a href="#ref-Mueller2013">2013</a>)</span>;<span class="citation">Ami, Mereghetti, and Maria (<a href="#ref-Ami2013">2013</a>)</span>;Fu2014]. Simultaniously, the number of variables can be significantly reduced by applying PCA and thus speeding up the training process. Below we will apply a PCA to the raw data as an example.</p>
+<pre class="r"><code>library(factoextra)
+tmp = test_dataset[[&quot;noise0&quot;]][[&quot;raw&quot;]]
+pca = prcomp(tmp[ ,-1864]) # omitting class variable
+var_info = factoextra::get_eigenvalue(pca)
+# setting a threshold of 99% explained variance
+threshold = 99
+thresInd = which(var_info$cumulative.variance.percent&gt;=threshold)[1]
+pca_data = pca$x[,1:thresInd]</code></pre>
+<p>We can use the index variable <code>thresInd</code> we just defined to take a look upon all the principal components which explain 99% of the variance in the data set.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">eigenvalue</th>
+<th align="right">variance.percent</th>
+<th align="right">cumulative.variance.percent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dim.1</td>
+<td align="right">1.5618496</td>
+<td align="right">57.7479523</td>
+<td align="right">57.74795</td>
+</tr>
+<tr class="even">
+<td>Dim.2</td>
+<td align="right">0.3875503</td>
+<td align="right">14.3293173</td>
+<td align="right">72.07727</td>
+</tr>
+<tr class="odd">
+<td>Dim.3</td>
+<td align="right">0.2226548</td>
+<td align="right">8.2324559</td>
+<td align="right">80.30973</td>
+</tr>
+<tr class="even">
+<td>Dim.4</td>
+<td align="right">0.1823539</td>
+<td align="right">6.7423696</td>
+<td align="right">87.05209</td>
+</tr>
+<tr class="odd">
+<td>Dim.5</td>
+<td align="right">0.0897978</td>
+<td align="right">3.3201919</td>
+<td align="right">90.37229</td>
+</tr>
+<tr class="even">
+<td>Dim.6</td>
+<td align="right">0.0538395</td>
+<td align="right">1.9906665</td>
+<td align="right">92.36295</td>
+</tr>
+<tr class="odd">
+<td>Dim.7</td>
+<td align="right">0.0443676</td>
+<td align="right">1.6404525</td>
+<td align="right">94.00341</td>
+</tr>
+<tr class="even">
+<td>Dim.8</td>
+<td align="right">0.0324243</td>
+<td align="right">1.1988595</td>
+<td align="right">95.20227</td>
+</tr>
+<tr class="odd">
+<td>Dim.9</td>
+<td align="right">0.0297937</td>
+<td align="right">1.1015939</td>
+<td align="right">96.30386</td>
+</tr>
+<tr class="even">
+<td>Dim.10</td>
+<td align="right">0.0215566</td>
+<td align="right">0.7970366</td>
+<td align="right">97.10090</td>
+</tr>
+<tr class="odd">
+<td>Dim.11</td>
+<td align="right">0.0173647</td>
+<td align="right">0.6420450</td>
+<td align="right">97.74294</td>
+</tr>
+<tr class="even">
+<td>Dim.12</td>
+<td align="right">0.0145994</td>
+<td align="right">0.5397977</td>
+<td align="right">98.28274</td>
+</tr>
+<tr class="odd">
+<td>Dim.13</td>
+<td align="right">0.0113917</td>
+<td align="right">0.4211964</td>
+<td align="right">98.70394</td>
+</tr>
+<tr class="even">
+<td>Dim.14</td>
+<td align="right">0.0069264</td>
+<td align="right">0.2560972</td>
+<td align="right">98.96003</td>
+</tr>
+<tr class="odd">
+<td>Dim.15</td>
+<td align="right">0.0042735</td>
+<td align="right">0.1580104</td>
+<td align="right">99.11804</td>
+</tr>
+</tbody>
+</table>
+<p>We effectivly reduced the number of variables from 1683 to 15 which still bear 99% of the variance we can find in the original data set. However, when it comes to machine learning, it is important to realise that this new dataset is not fit to be used in a training process. If we now randomly split the observations into training and test, we effectivly mix up these two sets because information of the test set has already influenced the outcome of the PCA. Therefor, the data set need to be split beforhand of the PCA. The analysis is done on the training data only and then the same orthogonal transformations will be applied to the test data. This way it can be ensured that the test set is truely independent from the training process. Here, we apply a 10-fold cross-validation which is repeated 5 times. The following code takes a complete data set as input, applies a splitting function from the <code>caret</code> package and then builds the PCA upon the the test set and finally applies the same transformation to the test set. We apply it for the raw data only. Also, we randomly split the data to 50% training and 50% test.</p>
+<pre class="r"><code>folds = 10
+repeats = 5
+split_percentage = 0.5
+threshold = 99
+tmp = test_dataset[[&quot;noise0&quot;]][[&quot;raw&quot;]]
+
+set.seed(42) # ensure reproducibility
+fold_index = lapply(1:repeats, caret::createDataPartition, y=tmp$class,
+                   times = folds, p = split_percentage)
+fold_index = do.call(c, fold_index)
+
+pcaData = list()
+for (rep in 1:repeats){
+  rep_index = fold_index[(rep*folds-folds+1):(rep*folds)] # jumps to the correct number of folds forward in each repeat
+  
+  pcadata_fold = lapply(1:folds,function(x){
+    
+    # splitting for current fold
+    training = tmp[unlist(rep_index[x]),]
+    validation = tmp[-unlist(rep_index[x]),]
+    
+    # keep response
+    responseTrain = training$class
+    responseVal = validation$class
+    
+    # apply PCA
+    pca = prcomp(training[,1:1863])
+    varInfo = factoextra::get_eigenvalue(pca)
+    thresInd = which(varInfo$cumulative.variance.percent &gt;= threshold)[1]
+    pca_training = pca$x[ ,1:thresInd]
+    pca_validation = predict(pca, validation)[ ,1:thresInd]
+    
+    training = as.data.frame(pca_training)
+    training$response = responseTrain
+    validation = as.data.frame(pca_validation)
+    validation$response = responseVal
+    foldtmp = list(training, validation)
+    names(foldtmp) = c(&quot;training&quot;,&quot;validation&quot;)
+    return(foldtmp)
+  })
+  names(pcadata_fold) = paste(&quot;fold&quot;, 1:folds, sep =&quot;&quot;)
+  pcaData[[paste0(&quot;repeat&quot;,rep)]] = pcadata_fold
+}</code></pre>
+<p>We now have a list object with the number of elements equivalent to the repeats. Below each repeat element we can access the individual folds. There we find two elements which we can access by refering to <code>&quot;training&quot;</code> and <code>&quot;testing&quot;</code>.</p>
+<pre class="r"><code>head(pcaData[[&quot;repeat5&quot;]][[&quot;fold10&quot;]][[&quot;training&quot;]])</code></pre>
+<pre><code>          PC1        PC2         PC3         PC4        PC5        PC6
+1  -0.4779164 -0.7786770 -0.02761266 -0.06607284 -0.1414115 -0.1534971
+2  -0.4869471 -0.7181236 -0.02492981 -0.05903759 -0.1850104 -0.1409379
+4  -0.4661699 -0.7463479 -0.11424932 -0.03956596 -0.1056265 -0.1399688
+6  -0.5257137 -0.5042399  0.10500327 -0.05850722 -0.2114660 -0.1380447
+8  -0.5117566 -0.5967677  0.04001548 -0.04896668 -0.2129714 -0.1515174
+11 -0.5237685 -0.5894120  0.05200442 -0.05865827 -0.2263991 -0.1561229
+         PC7         PC8       PC9        PC10       PC11         PC12
+1  0.2060466 -0.04470884 0.1514982 -0.04843538 0.21485350 -0.011536533
+2  0.1918080 -0.04751573 0.1395856 -0.03745341 0.17256791 -0.002443176
+4  0.1775101 -0.05680964 0.1531349 -0.04319456 0.21718253 -0.003368534
+6  0.1901325 -0.03195793 0.1066313 -0.02132166 0.09589942 -0.006065318
+8  0.2032426 -0.03895545 0.1157844 -0.03040473 0.13270558 -0.002097848
+11 0.2032640 -0.04166006 0.1209914 -0.02936654 0.12332775 -0.002840695
+         PC13 response
+1  0.04706193      FUR
+2  0.01465483      FUR
+4  0.02593991      FUR
+6  0.03218995      FUR
+8  0.02925628      FUR
+11 0.03068548      FUR</code></pre>
+<pre class="r"><code>tail(pcaData[[&quot;repeat5&quot;]][[&quot;fold10&quot;]][[&quot;validation&quot;]])</code></pre>
+<pre><code>           PC1        PC2         PC3         PC4         PC5          PC6
+138 -0.6244338 -0.2251354 -0.04125220 -0.07484999 -0.27266002 -0.026217908
+139 -0.5832934 -0.5663093 -0.39824689 -0.09269745 -0.06750005  0.007607282
+142  1.3643143 -0.4874876 -0.04759479  1.69655907  0.26013483  0.009538671
+143  0.9617909 -0.4624777 -0.07106849  1.24167453  0.20000959  0.002779168
+144 -0.8842106  1.0703276 -0.77433375 -0.02590177  0.34894910  0.001737278
+147 -0.6888015  0.1002989  0.40046959 -0.12243199 -0.48345619  0.076636770
+            PC7          PC8          PC9         PC10        PC11
+138  0.06659313  0.002040475 -0.017318487  0.025721276 -0.16978522
+139  0.03009946 -0.013417290 -0.056429051  0.006177153 -0.11445905
+142 -0.20273071  0.178143838  0.486645669  0.618606076  0.13437431
+143 -0.17007004  0.168194290  0.401200526  0.556734081  0.07242852
+144  0.01314587 -0.029058498  0.223687515 -0.056605387  0.01770163
+147 -0.14184110 -0.032212557  0.002410302 -0.007140975 -0.16104385
+             PC12         PC13 response
+138 -0.0006882923 -0.050474176       PA
+139  0.0199881958 -0.003416057       PA
+142 -0.2862799869 -0.260510805      PUR
+143 -0.2309708768 -0.247415734      PUR
+144  0.0369931976  0.014124356     HDPE
+147  0.0171552493 -0.050210341       PS</code></pre>
+<pre class="r"><code>summary(pcaData[[&quot;repeat5&quot;]][[&quot;fold10&quot;]][[&quot;training&quot;]]$response)</code></pre>
+<pre><code>FIBRE   FUR  HDPE  LDPE    PA    PE   PES   PET    PP    PS   PUR  WOOD 
+   14    12     5     6     7     4     8     5     6     4     4     2 </code></pre>
+<pre class="r"><code>summary(pcaData[[&quot;repeat5&quot;]][[&quot;fold10&quot;]][[&quot;validation&quot;]]$response)</code></pre>
+<pre><code>FIBRE   FUR  HDPE  LDPE    PA    PE   PES   PET    PP    PS   PUR  WOOD 
+   13    11     5     5     7     4     7     4     6     3     3     2 </code></pre>
 <div id="refs">
+<div id="ref-Ami2013">
+<p>Ami, Diletta, Paolo Mereghetti, and Silvia Maria. 2013. “Multivariate Analysis for Fourier Transform Infrared Spectra of Complex Biological Systems and Processes.” <em>Multivariate Analysis in Management, Engineering and the Sciences</em>. <a href="https://doi.org/10.5772/53850">https://doi.org/10.5772/53850</a>.</p>
+</div>
 <div id="ref-Breiman2001">
 <p>Breiman, L. 2001. “Random forests.” <em>Machine Learning</em> 45 (1): 5–32. <a href="https://doi.org/10.1023/A:1010933404324">https://doi.org/10.1023/A:1010933404324</a>.</p>
+</div>
+<div id="ref-Hori2003">
+<p>Hori, Ritsuko, and Junji Sugiyama. 2003. “A combined FT-IR microscopy and principal component analysis on softwood cell walls.” <em>Carbohydrate Polymers</em> 52 (4): 449–53. <a href="https://doi.org/10.1016/S0144-8617(03)00013-4">https://doi.org/10.1016/S0144-8617(03)00013-4</a>.</p>
 </div>
 <div id="ref-Jung2018">
 <p>Jung, Melissa R., F. David Horgen, Sara V. Orski, Viviana Rodriguez C., Kathryn L. Beers, George H. Balazs, T. Todd Jones, et al. 2018. “Validation of ATR FT-IR to identify polymers of plastic marine debris, including those ingested by marine organisms.” <em>Marine Pollution Bulletin</em> 127 (December 2017). Elsevier: 704–16. <a href="https://doi.org/10.1016/j.marpolbul.2017.12.061">https://doi.org/10.1016/j.marpolbul.2017.12.061</a>.</p>
 </div>
 <div id="ref-Lorenzo-Navarro2018">
 <p>Lorenzo-Navarro, Javier, Modesto Castrillón-Santana, May Gómez, Alicia Herrera, and Pedro A Marín-Reyes. 2018. “Automatic Counting and Classification of Microplastic Particles.” <a href="https://doi.org/10.5220/0006725006460652">https://doi.org/10.5220/0006725006460652</a>.</p>
+</div>
+<div id="ref-Mueller2013">
+<p>Mueller, Daniela, Marco Flôres Ferrão, Luciano Marder, Adilson Ben da Costa, and Rosana de Cássia de Souza Schneider. 2013. “Fourier transform infrared spectroscopy (FTIR) and multivariate analysis for identification of different vegetable oils used in biodiesel production.” <em>Sensors (Switzerland)</em> 13 (4): 4258–71. <a href="https://doi.org/10.3390/s130404258">https://doi.org/10.3390/s130404258</a>.</p>
+</div>
+<div id="ref-Nieuwoudt2004">
+<p>Nieuwoudt, Helene H., Bernard A. Prior, Isak S. Pretorius, Marena Manley, and Florian F. Bauer. 2004. “Principal component analysis applied to Fourier transform infrared spectroscopy for the design of calibration sets for glycerol prediction models in wine and for the detection and classification of outlier samples.” <em>Journal of Agricultural and Food Chemistry</em> 52 (12): 3726–35. <a href="https://doi.org/10.1021/jf035431q">https://doi.org/10.1021/jf035431q</a>.</p>
 </div>
 <div id="ref-Primpke2018">
 <p>Primpke, Sebastian, Marisa Wirth, Claudia Lorenz, and Gunnar Gerdts. 2018. “Reference database design for the automated analysis of microplastic samples based on Fourier transform infrared (FTIR) spectroscopy.” <em>Analytical and Bioanalytical Chemistry</em> 410 (21). Analytical; Bioanalytical Chemistry: 5131–41. <a href="https://doi.org/10.1007/s00216-018-1156-x">https://doi.org/10.1007/s00216-018-1156-x</a>.</p>
@@ -788,28 +1069,39 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] tensorflow_1.14.0         abind_1.4-5              
- [3] e1071_1.7-2               keras_2.2.4.1            
- [5] workflowr_1.4.0.9001      baseline_1.2-1           
- [7] gridExtra_2.3             stringr_1.4.0            
- [9] prospectr_0.1.3           RcppArmadillo_0.9.600.4.0
-[11] openxlsx_4.1.0.1          magrittr_1.5             
-[13] ggplot2_3.2.0             reshape2_1.4.3           
-[15] dplyr_0.8.3              
+ [1] knitr_1.24                factoextra_1.0.5         
+ [3] tensorflow_1.14.0         abind_1.4-5              
+ [5] e1071_1.7-2               keras_2.2.4.1            
+ [7] workflowr_1.4.0.9001      baseline_1.2-1           
+ [9] gridExtra_2.3             stringr_1.4.0            
+[11] prospectr_0.1.3           RcppArmadillo_0.9.600.4.0
+[13] openxlsx_4.1.0.1          magrittr_1.5             
+[15] ggplot2_3.2.0             reshape2_1.4.3           
+[17] dplyr_0.8.3              
 
 loaded via a namespace (and not attached):
- [1] reticulate_1.13  tidyselect_0.2.5 xfun_0.8         purrr_0.3.2     
- [5] lattice_0.20-38  colorspace_1.4-1 generics_0.0.2   htmltools_0.3.6 
- [9] yaml_2.2.0       base64enc_0.1-3  rlang_0.4.0      pillar_1.4.2    
-[13] glue_1.3.1       withr_2.1.2      foreach_1.4.7    plyr_1.8.4      
-[17] munsell_0.5.0    gtable_0.3.0     zip_2.0.3        codetools_0.2-16
-[21] evaluate_0.14    knitr_1.24       SparseM_1.77     tfruns_1.4      
-[25] class_7.3-15     Rcpp_1.0.2       scales_1.0.0     backports_1.1.4 
-[29] jsonlite_1.6     fs_1.3.1         digest_0.6.20    stringi_1.4.3   
-[33] grid_3.6.1       rprojroot_1.3-2  tools_3.6.1      lazyeval_0.2.2  
-[37] tibble_2.1.3     crayon_1.3.4     whisker_0.3-2    pkgconfig_2.0.2 
-[41] zeallot_0.1.0    Matrix_1.2-17    assertthat_0.2.1 rmarkdown_1.14  
-[45] iterators_1.0.12 R6_2.4.0         git2r_0.26.1     compiler_3.6.1  </code></pre>
+ [1] jsonlite_1.6       splines_3.6.1      foreach_1.4.7     
+ [4] prodlim_2018.04.18 assertthat_0.2.1   stats4_3.6.1      
+ [7] highr_0.8          yaml_2.2.0         ggrepel_0.8.1     
+[10] ipred_0.9-9        pillar_1.4.2       backports_1.1.4   
+[13] lattice_0.20-38    glue_1.3.1         reticulate_1.13   
+[16] digest_0.6.20      colorspace_1.4-1   recipes_0.1.6     
+[19] htmltools_0.3.6    Matrix_1.2-17      plyr_1.8.4        
+[22] timeDate_3043.102  pkgconfig_2.0.2    SparseM_1.77      
+[25] caret_6.0-84       purrr_0.3.2        scales_1.0.0      
+[28] whisker_0.3-2      gower_0.2.1        lava_1.6.5        
+[31] git2r_0.26.1       tibble_2.1.3       generics_0.0.2    
+[34] withr_2.1.2        nnet_7.3-12        lazyeval_0.2.2    
+[37] survival_2.44-1.1  crayon_1.3.4       evaluate_0.14     
+[40] fs_1.3.1           nlme_3.1-140       MASS_7.3-51.4     
+[43] class_7.3-15       tools_3.6.1        data.table_1.12.2 
+[46] munsell_0.5.0      zip_2.0.3          compiler_3.6.1    
+[49] rlang_0.4.0        grid_3.6.1         iterators_1.0.12  
+[52] base64enc_0.1-3    rmarkdown_1.14     gtable_0.3.0      
+[55] ModelMetrics_1.2.2 codetools_0.2-16   R6_2.4.0          
+[58] tfruns_1.4         lubridate_1.7.4    zeallot_0.1.0     
+[61] rprojroot_1.3-2    stringi_1.4.3      Rcpp_1.0.2        
+[64] rpart_4.1-15       tidyselect_0.2.5   xfun_0.8          </code></pre>
 </div>
 
 
