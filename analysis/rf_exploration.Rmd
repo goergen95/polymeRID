@@ -212,3 +212,74 @@ summary(pcaData[["repeat5"]][["fold10"]][["training"]]$response)
 summary(pcaData[["repeat5"]][["fold10"]][["validation"]]$response)
 ```
 
+This process of splitting the dataset into training and test was automised by
+putting the above code in a function which can be found [here](https://github.com/goergen95/polymeRID/blob/master/code/functions.R#239).
+Finally, we can apply this function to the different levels of preprocssing which
+were discussed before.
+
+```{r CV-apply, eval = FALSE}
+source("code/functions.R")
+wavenumbers = readRDS(paste0(ref,"wavenumbers.rds"))
+# add noise to data
+noisyData = addNoise(data,levels = c(0,10,100,250,500), category = "class")
+
+# preprocessing
+testDataset = createTrainingSet(noisyData, category = "class",
+                                SGpara = list(p=3, w=11), lag=15,
+                                type = c("raw", "norm", "sg", "sg.d1", "sg.d2",
+                                  "sg.norm", "sg.norm.d1", "sg.norm.d2",
+                                  "raw.d1", "raw.d2", "norm.d1", "norm.d2"))
+
+
+types = names(testDataset[[1]])
+
+levels = lapply(names(testDataset), function(x){
+  rep(x, length(types))
+})
+levels = unlist(levels)
+
+results = data.frame(level=levels,type = types, kappa = rep(0,length(levels)))
+
+for (level in unique(levels)){
+  for (type in types){
+
+    print(paste0("Level: ",level," Type: ",type))
+    tmpData = testDataset[[level]][[type]]
+    tmpData[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0 # setting C02 window to 0
+    tmpModel = pcaCV(tmpData, folds = 10, repeats = 5, threshold = 99, metric = "Kappa", p=0.5, method="rf")
+    saveRDS(tmpModel,file = paste0(output,"rf/model_",level,"_",type,"_",round(tmpModel[[1]],2),".rds"))
+    results[which(results$level==level & results$type==type),"kappa"] = as.numeric(tmpModel[[1]])
+    print(results)
+
+  }
+}
+
+```
+
+```{r read-exploration, include = FALSE}
+results = readRDS(paste0(output,"rf/exploration.rds"))
+```
+
+We can now take a look at the kappa scores for the algorithm achived during training
+with different representations of the data and noise levels.
+```{r plot-results, echo = FALSE}
+library(plotly)
+results$level = as.character(results$level)
+# let's visualize the accuracy results with noise levels on x-axis and kappa score on y-axis
+test = ggplot(data=results)+
+  geom_line(aes(y=kappa,group=type,x=level,color=type),size=1.5)+
+  ylab("Kappa score")+
+  xlab("Noise level")+
+  scale_color_discrete(name="Type of\nPre-Processing")+
+  theme_minimal()
+
+t = ggplotly(test)
+t
+```
+We can observe that with the more noise the kappa score is reduced significantly.
+However, there are some data transformations which are able to maintain a 
+relativly high level of accuracy even in the presence of noise. One of the best
+might be the simple Savitzkiy-Golay filter, as well as the same filter applied
+to the normalised data. Equal robust results are observed for the raw and the 
+normalised data. The other transformations do not show the same level of robustness
+to noise.
