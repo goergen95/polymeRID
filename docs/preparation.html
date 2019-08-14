@@ -339,7 +339,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-08-13
+<strong>Last updated:</strong> 2019-08-14
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -430,10 +430,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreec52182b28852210d205c6ae8ec5c5715077fbc69targetblankc52182ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/c52182b28852210d205c6ae8ec5c5715077fbc69" target="_blank">c52182b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreec3f088ec4ead79841169796b40a145f2e9892533targetblankc3f088ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/c3f088ec4ead79841169796b40a145f2e9892533" target="_blank">c3f088e</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreec52182b28852210d205c6ae8ec5c5715077fbc69targetblankc52182ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreec3f088ec4ead79841169796b40a145f2e9892533targetblankc3f088ea" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -643,13 +643,17 @@ Ignored files:
     Ignored:    website/smp/
 
 Untracked files:
-    Untracked:  analysis/exploration.Rmd
+    Untracked:  website/ref/reference_HDPE.csv
+    Untracked:  website/ref/reference_LDPE.csv
+    Untracked:  website/ref/reference_Nylon.csv
 
 Unstaged changes:
+    Modified:   analysis/index.Rmd
     Modified:   analysis/preparation.Rmd
-    Modified:   code/setup.R
-    Modified:   code/setup_website.R
-    Modified:   ref/wavenumbers.rds
+    Modified:   website/ref/classes.txt
+    Modified:   website/ref/reference_FUR.csv
+    Modified:   website/ref/reference_PE.csv
+    Modified:   website/ref/reference_database.csv
 
 </code></pre>
 <p>
@@ -688,6 +692,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/goergen95/polymeRID/blob/c3f088ec4ead79841169796b40a145f2e9892533/analysis/preparation.Rmd" target="_blank">c3f088e</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-08-13
+</td>
+<td>
+started exploration tab
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/goergen95/polymeRID/c3f088ec4ead79841169796b40a145f2e9892533/docs/preparation.html" target="_blank">c3f088e</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-08-13
+</td>
+<td>
+started exploration tab
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -809,25 +847,13 @@ wavenumbers = as.numeric(names(data)[2:1864])
 saveRDS(wavenumbers, paste0(ref, &quot;wavenumbers.rds&quot;))</code></pre>
 <p>We can take a look at the distribution of the different classes found in the data base. Here, I only print the 20 most common classes since there are a lot of reference samples only found once.</p>
 <pre class="r"><code>data$Abbreviation = as.factor(data$Abbreviation)
-summary(data$Abbreviation)[1:20]</code></pre>
-<pre><code>                   PES                     PP                   LDPE 
-                    15                     12                     11 
-                  HDPE                    PET                     PE 
-                    10                      9                      8 
-                 Nylon                     PA                     PS 
-                     7                      7                      7 
-                   PUR                      C                     PC 
-                     7                      6                      6 
-         alkyd_varnish                    PVC ethylene_vinyl_acetate 
-                     4                      4                      3 
-ethylene_vinyl_alcohol                 PESTUR                    ABS 
-                     3                      3                      2 
-                Aramid              cellulose 
-                     2                      2 </code></pre>
+summary(data$Abbreviation)[1:10]</code></pre>
+<pre><code>  PES    PP  LDPE  HDPE   PET    PE Nylon    PA    PS   PUR 
+   15    12    11    10     9     8     7     7     7     7 </code></pre>
 <p>Because we are interested in assigning the right class to potential plastic particles, the most important classes found in the data base to us are the ones of artificial origin. However, sometimes also particles of biological origins are subject to spectral analysis, because they resemble the appearance of micro plastics. Any machine learning algorithm trained only with reference samples from plastics would eventually assign a plastic class also to the particles of biological origin. To reduce the error of false positives, we include some of the samples of biological origin based on broad classes.</p>
 <pre class="r"><code># furs and wools
 indexFur = grep(&quot;fur&quot;, data$Abbreviation)
-indexWool = grep(&quot;wool&quot;, data)
+indexWool = grep(&quot;wool&quot;, data$Abbreviation)
 furs = data[c(indexFur, indexWool), ]
 furs = furs[ , c(2:1864)] # leave out index column
 names(furs) = paste(&quot;wvn&quot;, wavenumbers, sep=&quot;&quot;)
@@ -851,7 +877,7 @@ wood$class = &quot;WOOD&quot;
 polyIndex = which(data$`Natural./Synthetic` ==&quot;synthetic polymer&quot;)
 syntPolymer = data[polyIndex,]
 counts = summary(syntPolymer$Abbreviation)
-polyNames = names(counts)[1:11] # only major polymers
+polyNames = names(counts)[1:10] # only major polymers
 syntPolymer = syntPolymer[which(syntPolymer$Abbreviation %in%  polyNames) , ]
 classes = droplevels(syntPolymer$Abbreviation)
 syntPolymer = syntPolymer[ , c(2:1864)] # leave out index column
@@ -859,16 +885,14 @@ names(syntPolymer) = paste(&quot;wvn&quot;,wavenumbers,sep=&quot;&quot;)
 syntPolymer$class = as.character(classes)
 
 # lets group together some synthetic polymer classes
-syntPolymer$class[grep(&quot;Nylon&quot;,syntPolymer$class)] = &quot;PA&quot;
-syntPolymer$class[grep(&quot;HDPE&quot;,syntPolymer$class)] = &quot;PE&quot;
-syntPolymer$class[grep(&quot;LDPE&quot;,syntPolymer$class)] = &quot;PE&quot;</code></pre>
+syntPolymer$class[grep(&quot;Nylon&quot;,syntPolymer$class)] = &quot;PA&quot;</code></pre>
 <p>We can now bind the reference samples together and take a look at the distribution of classes in the resulting data frame.</p>
 <pre class="r"><code>data = rbind(furs,wood,fibre,syntPolymer) 
 data$class = as.factor(data$class)
 summary(data$class)</code></pre>
-<pre><code>FIBRE   FUR    PA    PC    PE   PES   PET    PP    PS   PUR  WOOD 
-   27    13    14     6    29    15     9    12     7     7     4 </code></pre>
-<p>We see that we have in total 99 reference samples of plastic polymers and 44 of biological origin. Within the plastic samples, we find that the data is slightly unbalanced towards PE which dominates the distribution of plastic samples. This could prove as an disadvantage if machine learning algorithms pick up this unbalance by minimizing their error rate simply with more frequently predicting PE. However, at this point, we will leave the resulting data base as it is and save it to disk. We save the data in individual files as well as in a comprehensive data base. This way later extensions to the data base will be easier.</p>
+<pre><code>FIBRE   FUR  HDPE  LDPE    PA    PE   PES   PET    PP    PS   PUR  WOOD 
+   27    23    10    11    14     8    15     9    12     7     7     4 </code></pre>
+<p>We see that we have in total 93 (53%) reference samples of plastic polymers and 44 (47%) of biological origin. Within the plastic samples, we find that the data is very balanced with no single class showing less than 7 samples. For the samples of biological origin, however, the class fiber dominates the class distribution. This could prove as an disadvantage if a machine learning algorithm picks up this unbalance by minimizing its error rate simply by more frequently predicting the fiber class. At this point, we will leave the resulting data base as it is and save it to disk. We save the data in individual files as well as in a comprehensive data base in csv format. This way we ensure that later extensions to the data base easily to manage.</p>
 <pre class="r"><code>write.csv(data, file = paste0(ref, &quot;reference_database.csv&quot;), row.names=FALSE)
 
 # writing class control file

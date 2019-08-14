@@ -48,7 +48,7 @@ Here, I only print the 20 most common classes since there are a lot of reference
 only found once.
 ```{r analyse-classes}
 data$Abbreviation = as.factor(data$Abbreviation)
-summary(data$Abbreviation)[1:20]
+summary(data$Abbreviation)[1:10]
 
 ```
 
@@ -64,7 +64,7 @@ we include some of the samples of biological origin based on broad classes.
 ```{r retrieve-target-classes}
 # furs and wools
 indexFur = grep("fur", data$Abbreviation)
-indexWool = grep("wool", data)
+indexWool = grep("wool", data$Abbreviation)
 furs = data[c(indexFur, indexWool), ]
 furs = furs[ , c(2:1864)] # leave out index column
 names(furs) = paste("wvn", wavenumbers, sep="")
@@ -88,7 +88,7 @@ wood$class = "WOOD"
 polyIndex = which(data$`Natural./Synthetic` =="synthetic polymer")
 syntPolymer = data[polyIndex,]
 counts = summary(syntPolymer$Abbreviation)
-polyNames = names(counts)[1:11] # only major polymers
+polyNames = names(counts)[1:10] # only major polymers
 syntPolymer = syntPolymer[which(syntPolymer$Abbreviation %in%  polyNames) , ]
 classes = droplevels(syntPolymer$Abbreviation)
 syntPolymer = syntPolymer[ , c(2:1864)] # leave out index column
@@ -97,8 +97,6 @@ syntPolymer$class = as.character(classes)
 
 # lets group together some synthetic polymer classes
 syntPolymer$class[grep("Nylon",syntPolymer$class)] = "PA"
-syntPolymer$class[grep("HDPE",syntPolymer$class)] = "PE"
-syntPolymer$class[grep("LDPE",syntPolymer$class)] = "PE"
 ```
 
 We can now bind the reference samples together and take a look at the distribution
@@ -110,14 +108,17 @@ data$class = as.factor(data$class)
 summary(data$class)
 
 ```
-We see that we have in total 99 reference samples of plastic polymers and 44 of
-biological origin. Within the plastic samples, we find that the data is slightly 
-unbalanced towards PE which dominates the distribution of plastic samples. This
-could prove as an disadvantage if machine learning algorithms pick up this unbalance
-by minimizing their error rate simply with more frequently predicting PE. However,
-at this point, we will leave the resulting data base as it is and save it to disk.
-We save the data in individual files as well as in a comprehensive data base.
-This way later extensions to the data base will be easier.
+We see that we have in total 93 (53%) reference samples of plastic polymers and 
+44 (47%) of biological origin. Within the plastic samples, we find that the data 
+is very balanced with no single class showing less than 7 samples. For the samples
+of biological origin, however, the class fiber dominates the class distribution.
+This could prove as an disadvantage if a machine learning algorithm picks up 
+this unbalance by minimizing its error rate simply by more frequently predicting
+the fiber class. At this point, we will leave the resulting data base as it is 
+and save it to disk.
+We save the data in individual files as well as in a comprehensive data base in 
+csv format. This way we ensure that later extensions to the data base  easily to
+manage.
 
 ```{r write-data}
 write.csv(data, file = paste0(ref, "reference_database.csv"), row.names=FALSE)
