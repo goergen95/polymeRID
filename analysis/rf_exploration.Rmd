@@ -262,7 +262,7 @@ results = readRDS(paste0(output,"rf/exploration.rds"))
 
 We can now take a look at the kappa scores for the algorithm achived during training
 with different representations of the data and noise levels.
-```{r plot-results, echo = FALSE}
+```{r plot-results, echo = FALSE, warning=FALSE, message=FALSE}
 library(plotly)
 results$level = as.character(results$level)
 # let's visualize the accuracy results with noise levels on x-axis and kappa score on y-axis
