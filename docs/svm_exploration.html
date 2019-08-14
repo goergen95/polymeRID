@@ -287,9 +287,6 @@ $(document).ready(function () {
   <a href="preparation.html">Preparation</a>
 </li>
 <li>
-  <a href="about.html">About</a>
-</li>
-<li>
   <a href="exploration.html">Exploration</a>
 </li>
 <li>
@@ -297,6 +294,9 @@ $(document).ready(function () {
 </li>
 <li>
   <a href="classification.html">Classification</a>
+</li>
+<li>
+  <a href="about.html">About</a>
 </li>
 <li>
   <a href="license.html">License</a>
@@ -328,7 +328,7 @@ div.section {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -337,7 +337,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -349,7 +349,7 @@ div.section {
 <strong>Last updated:</strong> 2019-08-14
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>polymeRID/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -365,12 +365,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -437,10 +437,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree8b6e72acf0fa9b7002d86f3437f4f9adfffa07d1targetblank8b6e72aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/8b6e72acf0fa9b7002d86f3437f4f9adfffa07d1" target="_blank">8b6e72a</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree41aa60c19962141e2dff9a0311f0d5d3d5e79b87targetblank41aa60ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/41aa60c19962141e2dff9a0311f0d5d3d5e79b87" target="_blank">41aa60c</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree8b6e72acf0fa9b7002d86f3437f4f9adfffa07d1targetblank8b6e72aa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree41aa60c19962141e2dff9a0311f0d5d3d5e79b87targetblank41aa60ca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -649,13 +649,6 @@ Ignored files:
     Ignored:    website/run/
     Ignored:    website/smp/
 
-Untracked files:
-    Untracked:  analysis/svm_exploration.Rmd
-
-Unstaged changes:
-    Modified:   analysis/rf_exploration.Rmd
-    Modified:   code/functions.R
-
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -667,9 +660,69 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/goergen95/polymeRID/blob/293fd73b6f194574384917de64a3a16f695a6507/analysis/svm_exploration.Rmd" target="_blank">293fd73</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-08-14
+</td>
+<td>
+first step on svm_exploration
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/goergen95/polymeRID/293fd73b6f194574384917de64a3a16f695a6507/docs/svm_exploration.html" target="_blank">293fd73</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-08-14
+</td>
+<td>
+first step on svm_exploration
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -1073,7 +1126,7 @@ for (level in unique(levels)){
 saveRDS(results, paste0(output,&quot;svm/exploration.rds&quot;))</code></pre>
 <p>We can now take a look at the kappa scores the algorithm achived during training for different representations of the data and at increasing noise levels.</p>
 <p><div id="htmlwidget-851b824557736d249baa" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-851b824557736d249baa">{"x":{"data":[{"x":[1,2,3,4,5],"y":[0.585334232290825,0,0,0,0],"text":["level: noise0<br />kappa: 0.585334232<br />type: norm<br />type: norm","level: noise10<br />kappa: 0.000000000<br />type: norm<br />type: norm","level: noise100<br />kappa: 0.000000000<br />type: norm<br />type: norm","level: noise250<br />kappa: 0.000000000<br />type: norm<br />type: norm","level: noise500<br />kappa: 0.000000000<br />type: norm<br />type: norm"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"norm","legendgroup":"norm","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.75539707068481,0.754283124026675,0,0,0],"text":["level: noise0<br />kappa: 0.755397071<br />type: raw<br />type: raw","level: noise10<br />kappa: 0.754283124<br />type: raw<br />type: raw","level: noise100<br />kappa: 0.000000000<br />type: raw<br />type: raw","level: noise250<br />kappa: 0.000000000<br />type: raw<br />type: raw","level: noise500<br />kappa: 0.000000000<br />type: raw<br />type: raw"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(216,144,0,1)","dash":"solid"},"hoveron":"points","name":"raw","legendgroup":"raw","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.720276152878721,0.703512371623671,0,0,0],"text":["level: noise0<br />kappa: 0.720276153<br />type: raw.d1<br />type: raw.d1","level: noise10<br />kappa: 0.703512372<br />type: raw.d1<br />type: raw.d1","level: noise100<br />kappa: 0.000000000<br />type: raw.d1<br />type: raw.d1","level: noise250<br />kappa: 0.000000000<br />type: raw.d1<br />type: raw.d1","level: noise500<br />kappa: 0.000000000<br />type: raw.d1<br />type: raw.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(163,165,0,1)","dash":"solid"},"hoveron":"points","name":"raw.d1","legendgroup":"raw.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.71717842736148,0.700979516042116,0,0,0],"text":["level: noise0<br />kappa: 0.717178427<br />type: raw.d2<br />type: raw.d2","level: noise10<br />kappa: 0.700979516<br />type: raw.d2<br />type: raw.d2","level: noise100<br />kappa: 0.000000000<br />type: raw.d2<br />type: raw.d2","level: noise250<br />kappa: 0.000000000<br />type: raw.d2<br />type: raw.d2","level: noise500<br />kappa: 0.000000000<br />type: raw.d2<br />type: raw.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(57,182,0,1)","dash":"solid"},"hoveron":"points","name":"raw.d2","legendgroup":"raw.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.760137446451031,0.759410260860537,0.554081220659393,0,0],"text":["level: noise0<br />kappa: 0.760137446<br />type: sg<br />type: sg","level: noise10<br />kappa: 0.759410261<br />type: sg<br />type: sg","level: noise100<br />kappa: 0.554081221<br />type: sg<br />type: sg","level: noise250<br />kappa: 0.000000000<br />type: sg<br />type: sg","level: noise500<br />kappa: 0.000000000<br />type: sg<br />type: sg"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,191,125,1)","dash":"solid"},"hoveron":"points","name":"sg","legendgroup":"sg","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.649352987220646,0.634460951213851,0,0,0],"text":["level: noise0<br />kappa: 0.649352987<br />type: sg.d1<br />type: sg.d1","level: noise10<br />kappa: 0.634460951<br />type: sg.d1<br />type: sg.d1","level: noise100<br />kappa: 0.000000000<br />type: sg.d1<br />type: sg.d1","level: noise250<br />kappa: 0.000000000<br />type: sg.d1<br />type: sg.d1","level: noise500<br />kappa: 0.000000000<br />type: sg.d1<br />type: sg.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,191,196,1)","dash":"solid"},"hoveron":"points","name":"sg.d1","legendgroup":"sg.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.649049452484012,0.584830312210792,0,0,0],"text":["level: noise0<br />kappa: 0.649049452<br />type: sg.d2<br />type: sg.d2","level: noise10<br />kappa: 0.584830312<br />type: sg.d2<br />type: sg.d2","level: noise100<br />kappa: 0.000000000<br />type: sg.d2<br />type: sg.d2","level: noise250<br />kappa: 0.000000000<br />type: sg.d2<br />type: sg.d2","level: noise500<br />kappa: 0.000000000<br />type: sg.d2<br />type: sg.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,176,246,1)","dash":"solid"},"hoveron":"points","name":"sg.d2","legendgroup":"sg.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.604578639734858,0.00396649136082936,0,0,0],"text":["level: noise0<br />kappa: 0.604578640<br />type: sg.norm<br />type: sg.norm","level: noise10<br />kappa: 0.003966491<br />type: sg.norm<br />type: sg.norm","level: noise100<br />kappa: 0.000000000<br />type: sg.norm<br />type: sg.norm","level: noise250<br />kappa: 0.000000000<br />type: sg.norm<br />type: sg.norm","level: noise500<br />kappa: 0.000000000<br />type: sg.norm<br />type: sg.norm"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(149,144,255,1)","dash":"solid"},"hoveron":"points","name":"sg.norm","legendgroup":"sg.norm","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.230005728445566,0,0,0,0],"text":["level: noise0<br />kappa: 0.230005728<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise10<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise100<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise250<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise500<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(231,107,243,1)","dash":"solid"},"hoveron":"points","name":"sg.norm.d1","legendgroup":"sg.norm.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.23240906511033,0,0,0,0],"text":["level: noise0<br />kappa: 0.232409065<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise10<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise100<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise250<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise500<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(255,98,188,1)","dash":"solid"},"hoveron":"points","name":"sg.norm.d2","legendgroup":"sg.norm.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":43.1050228310502},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,5.6],"tickmode":"array","ticktext":["noise0","noise10","noise100","noise250","noise500"],"tickvals":[1,2,3,4,5],"categoryorder":"array","categoryarray":["noise0","noise10","noise100","noise250","noise500"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Noise level","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.0380068723225516,0.798144318773583],"tickmode":"array","ticktext":["0.0","0.2","0.4","0.6"],"tickvals":[0,0.2,0.4,0.6],"categoryorder":"array","categoryarray":["0.0","0.2","0.4","0.6"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Kappa score","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.96751968503937},"annotations":[{"text":"Type of<br />Pre-Processing","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"2e3d3ce68053":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"2e3d3ce68053","visdat":{"2e3d3ce68053":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script> We can observe that with higher noise ratios the kappa score is reduced significantly. All data transformations yield to very low accuracies when the noise is increases. In the absence of significant noise, however, the simple Savitzkiy-Golay filter, the raw data as well as the first and second order derivatives yield to a kappa score of about 0.75. We can look at this more mathmatically by calculating the average slopes of the data tranformations methods and order the data frame from low to high slopes. Note that we only take the kappa score at noise level 0 and 10 to calculate the average slope.</p>
+<script type="application/json" data-for="htmlwidget-851b824557736d249baa">{"x":{"data":[{"x":[1,2,3,4,5],"y":[0.585334232290825,0,0,0,0],"text":["level: noise0<br />kappa: 0.585334232<br />type: norm<br />type: norm","level: noise10<br />kappa: 0.000000000<br />type: norm<br />type: norm","level: noise100<br />kappa: 0.000000000<br />type: norm<br />type: norm","level: noise250<br />kappa: 0.000000000<br />type: norm<br />type: norm","level: noise500<br />kappa: 0.000000000<br />type: norm<br />type: norm"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"norm","legendgroup":"norm","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.75539707068481,0.754283124026675,0,0,0],"text":["level: noise0<br />kappa: 0.755397071<br />type: raw<br />type: raw","level: noise10<br />kappa: 0.754283124<br />type: raw<br />type: raw","level: noise100<br />kappa: 0.000000000<br />type: raw<br />type: raw","level: noise250<br />kappa: 0.000000000<br />type: raw<br />type: raw","level: noise500<br />kappa: 0.000000000<br />type: raw<br />type: raw"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(216,144,0,1)","dash":"solid"},"hoveron":"points","name":"raw","legendgroup":"raw","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.720276152878721,0.703512371623671,0,0,0],"text":["level: noise0<br />kappa: 0.720276153<br />type: raw.d1<br />type: raw.d1","level: noise10<br />kappa: 0.703512372<br />type: raw.d1<br />type: raw.d1","level: noise100<br />kappa: 0.000000000<br />type: raw.d1<br />type: raw.d1","level: noise250<br />kappa: 0.000000000<br />type: raw.d1<br />type: raw.d1","level: noise500<br />kappa: 0.000000000<br />type: raw.d1<br />type: raw.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(163,165,0,1)","dash":"solid"},"hoveron":"points","name":"raw.d1","legendgroup":"raw.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.71717842736148,0.700979516042116,0,0,0],"text":["level: noise0<br />kappa: 0.717178427<br />type: raw.d2<br />type: raw.d2","level: noise10<br />kappa: 0.700979516<br />type: raw.d2<br />type: raw.d2","level: noise100<br />kappa: 0.000000000<br />type: raw.d2<br />type: raw.d2","level: noise250<br />kappa: 0.000000000<br />type: raw.d2<br />type: raw.d2","level: noise500<br />kappa: 0.000000000<br />type: raw.d2<br />type: raw.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(57,182,0,1)","dash":"solid"},"hoveron":"points","name":"raw.d2","legendgroup":"raw.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.760137446451031,0.759410260860537,0.554081220659393,0,0],"text":["level: noise0<br />kappa: 0.760137446<br />type: sg<br />type: sg","level: noise10<br />kappa: 0.759410261<br />type: sg<br />type: sg","level: noise100<br />kappa: 0.554081221<br />type: sg<br />type: sg","level: noise250<br />kappa: 0.000000000<br />type: sg<br />type: sg","level: noise500<br />kappa: 0.000000000<br />type: sg<br />type: sg"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,191,125,1)","dash":"solid"},"hoveron":"points","name":"sg","legendgroup":"sg","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.649352987220646,0.634460951213851,0,0,0],"text":["level: noise0<br />kappa: 0.649352987<br />type: sg.d1<br />type: sg.d1","level: noise10<br />kappa: 0.634460951<br />type: sg.d1<br />type: sg.d1","level: noise100<br />kappa: 0.000000000<br />type: sg.d1<br />type: sg.d1","level: noise250<br />kappa: 0.000000000<br />type: sg.d1<br />type: sg.d1","level: noise500<br />kappa: 0.000000000<br />type: sg.d1<br />type: sg.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,191,196,1)","dash":"solid"},"hoveron":"points","name":"sg.d1","legendgroup":"sg.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.649049452484012,0.584830312210792,0,0,0],"text":["level: noise0<br />kappa: 0.649049452<br />type: sg.d2<br />type: sg.d2","level: noise10<br />kappa: 0.584830312<br />type: sg.d2<br />type: sg.d2","level: noise100<br />kappa: 0.000000000<br />type: sg.d2<br />type: sg.d2","level: noise250<br />kappa: 0.000000000<br />type: sg.d2<br />type: sg.d2","level: noise500<br />kappa: 0.000000000<br />type: sg.d2<br />type: sg.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,176,246,1)","dash":"solid"},"hoveron":"points","name":"sg.d2","legendgroup":"sg.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.604578639734858,0.00396649136082936,0,0,0],"text":["level: noise0<br />kappa: 0.604578640<br />type: sg.norm<br />type: sg.norm","level: noise10<br />kappa: 0.003966491<br />type: sg.norm<br />type: sg.norm","level: noise100<br />kappa: 0.000000000<br />type: sg.norm<br />type: sg.norm","level: noise250<br />kappa: 0.000000000<br />type: sg.norm<br />type: sg.norm","level: noise500<br />kappa: 0.000000000<br />type: sg.norm<br />type: sg.norm"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(149,144,255,1)","dash":"solid"},"hoveron":"points","name":"sg.norm","legendgroup":"sg.norm","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.230005728445566,0,0,0,0],"text":["level: noise0<br />kappa: 0.230005728<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise10<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise100<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise250<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise500<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(231,107,243,1)","dash":"solid"},"hoveron":"points","name":"sg.norm.d1","legendgroup":"sg.norm.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.23240906511033,0,0,0,0],"text":["level: noise0<br />kappa: 0.232409065<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise10<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise100<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise250<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise500<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(255,98,188,1)","dash":"solid"},"hoveron":"points","name":"sg.norm.d2","legendgroup":"sg.norm.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":43.1050228310502},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,5.6],"tickmode":"array","ticktext":["noise0","noise10","noise100","noise250","noise500"],"tickvals":[1,2,3,4,5],"categoryorder":"array","categoryarray":["noise0","noise10","noise100","noise250","noise500"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Noise level","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.0380068723225516,0.798144318773583],"tickmode":"array","ticktext":["0.0","0.2","0.4","0.6"],"tickvals":[0,0.2,0.4,0.6],"categoryorder":"array","categoryarray":["0.0","0.2","0.4","0.6"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Kappa score","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.96751968503937},"annotations":[{"text":"Type of<br />Pre-Processing","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"31d416690847":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"31d416690847","visdat":{"31d416690847":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script> We can observe that with higher noise ratios the kappa score is reduced significantly. All data transformations yield to very low accuracies when the noise is increases. In the absence of significant noise, however, the simple Savitzkiy-Golay filter, the raw data as well as the first and second order derivatives yield to a kappa score of about 0.75. We can look at this more mathmatically by calculating the average slopes of the data tranformations methods and order the data frame from low to high slopes. Note that we only take the kappa score at noise level 0 and 10 to calculate the average slope.</p>
 <pre class="r"><code>noise0 = results[results$level == &quot;noise0&quot;, ]
 noise10 = results[results$level == &quot;noise10&quot;, ]
 slopes = noise10$kappa - noise0$kappa 
@@ -1232,7 +1285,7 @@ loaded via a namespace (and not attached):
 [43] nnet_7.3-12        lazyeval_0.2.2     mime_0.7          
 [46] survival_2.44-1.1  crayon_1.3.4       evaluate_0.14     
 [49] fs_1.3.1           nlme_3.1-140       MASS_7.3-51.4     
-[52] class_7.3-15       data.table_1.12.2  tools_3.6.1       
+[52] class_7.3-15       tools_3.6.1        data.table_1.12.2 
 [55] munsell_0.5.0      zip_2.0.3          compiler_3.6.1    
 [58] rlang_0.4.0        grid_3.6.1         iterators_1.0.12  
 [61] htmlwidgets_1.3    crosstalk_1.0.0    labeling_0.3      
