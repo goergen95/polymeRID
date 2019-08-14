@@ -13,7 +13,7 @@
 <meta name="author" content="Darius Goergen" />
 
 
-<title>Random Forest</title>
+<title>Support Vector Machine</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -320,7 +320,7 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Random Forest</h1>
+<h1 class="title toc-ignore">Support Vector Machine</h1>
 <h4 class="author">Darius Goergen</h4>
 
 </div>
@@ -370,7 +370,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -667,211 +667,15 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
-
 <p>
-These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
 </p>
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-File
-</th>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-<th>
-Message
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/8b6e72acf0fa9b7002d86f3437f4f9adfffa07d1/analysis/rf_exploration.Rmd" target="_blank">8b6e72a</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-14
-</td>
-<td>
-update rf_exploration
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/8b6e72acf0fa9b7002d86f3437f4f9adfffa07d1/docs/rf_exploration.html" target="_blank">8b6e72a</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-14
-</td>
-<td>
-update rf_exploration
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/5d28ce086cbe619d0fc42106ff15a04275c2d56d/analysis/rf_exploration.Rmd" target="_blank">5d28ce0</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-14
-</td>
-<td>
-changed citation note
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/5d28ce086cbe619d0fc42106ff15a04275c2d56d/docs/rf_exploration.html" target="_blank">5d28ce0</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-14
-</td>
-<td>
-changed citation note
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/c0c64ae5ed730ce23eeac7595efb3d47b174def7/analysis/rf_exploration.Rmd" target="_blank">c0c64ae</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-14
-</td>
-<td>
-proceed of rf_exploration
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/c0c64ae5ed730ce23eeac7595efb3d47b174def7/docs/rf_exploration.html" target="_blank">c0c64ae</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-14
-</td>
-<td>
-proceed of rf_exploration
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/90bd2447bce2fb10f54ad8dfc8f8672b1b62ce54/analysis/rf_exploration.Rmd" target="_blank">90bd244</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-14
-</td>
-<td>
-forward on rf_exploration
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/90bd2447bce2fb10f54ad8dfc8f8672b1b62ce54/docs/rf_exploration.html" target="_blank">90bd244</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-14
-</td>
-<td>
-forward on rf_exploration
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/c3f088ec4ead79841169796b40a145f2e9892533/analysis/rf_exploration.Rmd" target="_blank">c3f088e</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-started exploration tab
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/c3f088ec4ead79841169796b40a145f2e9892533/docs/rf_exploration.html" target="_blank">c3f088e</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-started exploration tab
-</td>
-</tr>
-</tbody>
-</table>
-</div>
 <hr>
 </div>
 </div>
 </div>
-<p>Random Forest (RF) is a machine learning algorithm which is based on the traditional concept of decision trees. It’s popular implementation was developed by <span class="citation">Breiman (<a href="#ref-Breiman2001">2001</a>)</span>. It represents an ensemble classifier which has been reported to be the primary choice between different ensemble classifiers due to its easy handling and high classification accuracies <span class="citation">(Sagi and Rokach <a href="#ref-Sagi2018">2018</a>)</span>. It represents a non-parametric classification method. At each split of a given tree a random number variables are used for the decision of how to split the input data. In the case of RF, a user specified number of trees is grown. The final class decision for an observation is made by a simple majority vote from all trees in the forest. Internal accuracy assessment of the RF classifier traditionally is obtained through an out-of-bag (OOB) error estimation. Here, we kept the number of trees fixed at 500 since above that threshold no substantial gain in accuracy was observed.</p>
-<p>The modality of the data presented to RF is of higher importance here. Different levels of data reprocessing might emphasize different features of the patterns to be learned by an algorithm. To grasp this, different transformations of the data were presented to the RF algorithm. Additionally, the raw data signal was jittered to test which transformation might prove beneficial in delivering high classification accuracies even in the presence of noise. To test this, we define a function which adds noise to the raw data and returns a list with the number of elements equal to the levels of noise applied.</p>
+<p>Support Vector Machine (SVM) is a non-parametric classification method which is initially designed for binary classification problems and which was developed in its current form by <span class="citation">Boser, Guyon, and Vapnik (<a href="#ref-Boser:1992:TAO:130385.130401">2004</a>)</span>. A detailed overview of the SVM algorithm is found in <span class="citation">Burges (<a href="#ref-Burges1998">1998</a>)</span>. The principal idea behind SVM is to find an optimal hyperplane which separates two classes from another by the largest possible margin. The alogrithm is optimised by iterativly maximizing this margin but while only considering the closest observations of both classes to the margin. These specific observations are also called support-vectors. Multidimensional data can be processed by mapping the data into a higher dimensional feature space through a specified mapping function. This function is called kernel function, and mainly four different groups are used: linear, polynomial, radial and sigmoid functions <span class="citation">(Burges <a href="#ref-Burges1998">1998</a>)</span>. In this project only the radial basis function was used. Multi-class problems are addressed by calculating an optimal margin following the one class-against-all pattern and conducting a majority vote and the end of the calculations. SVM need some tuning parameters. These are the regularization parameter <code>C</code> and the kernel width <code>γ</code>. The regularization parameter is also called penalty value, as it is a constant giving penalty to misclassified observations. There optimal values might change if different representations of the data are presented to the algorithm.</p>
+<p>Different levels of data reprocessing might emphasize different features of the patterns to be learned by an algorithm. To grasp this, different transformations of the data were presented to the SVM algorithm. Additionally, the raw data signal was jittered to test which transformation might prove beneficial in delivering high classification accuracies even in the presence of noise. To test this, we define a function which adds noise to the raw data and returns a list with the number of elements equal to the levels of noise applied.</p>
 <pre class="r"><code>addNoise = function(data, levels = c(0), category=&quot;class&quot;){
   data.return = list()
   index = which(names(data) == category)
@@ -1146,7 +950,91 @@ for (rep in 1:repeats){
 <pre class="r"><code>summary(pcaData[[&quot;repeat5&quot;]][[&quot;fold10&quot;]][[&quot;validation&quot;]]$response)</code></pre>
 <pre><code>FIBRE   FUR  HDPE  LDPE    PA    PE   PES   PET    PP    PS   PUR  WOOD 
    13    11     5     5     7     4     7     4     6     3     3     2 </code></pre>
-<p>This process of splitting the dataset into training and test was automised by putting the above code in a function which can be found <a href="https://github.com/goergen95/polymeRID/blob/master/code/functions.R#239">here</a>. Finally, we can apply this function to the different levels of preprocssing which were discussed before.</p>
+<p>For the SVM algorithm we also implementd a simple search pattern for optimal paramters for the regularization parameter <code>C</code> and the kernel width <code>γ</code>. We did this by applying a search grid for the paramters and calculating each possible combination. Note that due to limits in computation capacities we restriced the search to 25 combinations only. The code below calculates a model for each possible combinations, evaluating it capacity to correctly classify the training data and then chooses the optimal model to evaluate the validation data.</p>
+<pre class="r"><code>training = pcaData[[&quot;repeat1&quot;]][[&quot;fold1&quot;]][[&quot;training&quot;]]
+validation =pcaData[[&quot;repeat1&quot;]][[&quot;fold1&quot;]][[&quot;validation&quot;]]
+x_train = training[ ,1:ncol(training)-1]
+y_train = training$response
+x_test = validation[ ,1:ncol(validation)-1]
+y_test = validation$response
+
+
+tuneGrid = expand.grid(gamma =seq(0.1,1,0.2),cost = seq(1,5,1) )
+accuracy = c()
+models = list()
+for ( i in 1:nrow(tuneGrid)){
+  model = e1071::svm(x = x_train, y = y_train,
+                    kernel = &quot;radial&quot;,
+                    gamma = tuneGrid$gamma[i],
+                    cost = tuneGrid$cost[i])
+  pred = predict(model, x_train)
+  conf = caret::confusionMatrix(pred, y_train)
+  accuracy = c(accuracy, conf$overall[&quot;Kappa&quot;])
+  models[[i]] = model
+}
+
+bestMod = models[[which(accuracy == max(accuracy))[1]]]
+prediction = predict(bestMod,x_test)
+confMat = caret::confusionMatrix(prediction,y_test)
+print(confMat)</code></pre>
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction FIBRE FUR HDPE LDPE PA PE PES PET PP PS PUR WOOD
+     FIBRE    12   0    0    0  0  0   5   2  0  0   0    2
+     FUR       1  11    0    0  0  0   0   0  0  0   0    0
+     HDPE      0   0    3    0  0  0   0   0  0  0   0    0
+     LDPE      0   0    0    5  0  2   0   0  0  0   0    0
+     PA        0   0    0    0  7  0   0   0  0  0   0    0
+     PE        0   0    1    0  0  2   0   0  0  0   0    0
+     PES       0   0    0    0  0  0   2   1  0  0   0    0
+     PET       0   0    1    0  0  0   0   1  0  2   0    0
+     PP        0   0    0    0  0  0   0   0  6  0   0    0
+     PS        0   0    0    0  0  0   0   0  0  1   0    0
+     PUR       0   0    0    0  0  0   0   0  0  0   3    0
+     WOOD      0   0    0    0  0  0   0   0  0  0   0    0
+
+Overall Statistics
+                                          
+               Accuracy : 0.7571          
+                 95% CI : (0.6399, 0.8517)
+    No Information Rate : 0.1857          
+    P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
+                                          
+                  Kappa : 0.7232          
+                                          
+ Mcnemar&#39;s Test P-Value : NA              
+
+Statistics by Class:
+
+                     Class: FIBRE Class: FUR Class: HDPE Class: LDPE
+Sensitivity                0.9231     1.0000     0.60000     1.00000
+Specificity                0.8421     0.9831     1.00000     0.96923
+Pos Pred Value             0.5714     0.9167     1.00000     0.71429
+Neg Pred Value             0.9796     1.0000     0.97015     1.00000
+Prevalence                 0.1857     0.1571     0.07143     0.07143
+Detection Rate             0.1714     0.1571     0.04286     0.07143
+Detection Prevalence       0.3000     0.1714     0.04286     0.10000
+Balanced Accuracy          0.8826     0.9915     0.80000     0.98462
+                     Class: PA Class: PE Class: PES Class: PET Class: PP
+Sensitivity                1.0   0.50000    0.28571    0.25000   1.00000
+Specificity                1.0   0.98485    0.98413    0.95455   1.00000
+Pos Pred Value             1.0   0.66667    0.66667    0.25000   1.00000
+Neg Pred Value             1.0   0.97015    0.92537    0.95455   1.00000
+Prevalence                 0.1   0.05714    0.10000    0.05714   0.08571
+Detection Rate             0.1   0.02857    0.02857    0.01429   0.08571
+Detection Prevalence       0.1   0.04286    0.04286    0.05714   0.08571
+Balanced Accuracy          1.0   0.74242    0.63492    0.60227   1.00000
+                     Class: PS Class: PUR Class: WOOD
+Sensitivity            0.33333    1.00000     0.00000
+Specificity            1.00000    1.00000     1.00000
+Pos Pred Value         1.00000    1.00000         NaN
+Neg Pred Value         0.97101    1.00000     0.97143
+Prevalence             0.04286    0.04286     0.02857
+Detection Rate         0.01429    0.04286     0.00000
+Detection Prevalence   0.01429    0.04286     0.00000
+Balanced Accuracy      0.66667    1.00000     0.50000</code></pre>
+<p>This code is integrated into a function which applies this search pattern to all folds for all repeats and can be found <a href="https://github.com/goergen95/polymeRID/blob/master/code/functions.R#321">here</a>. Finally, we can apply this function to the different levels of preprocssing which were discussed before and obtaining the accuracies in the <code>results</code> object.</p>
 <pre class="r"><code>source(&quot;code/functions.R&quot;)
 wavenumbers = readRDS(paste0(ref,&quot;wavenumbers.rds&quot;))
 # add noise to data
@@ -1167,7 +1055,7 @@ levels = lapply(names(testDataset), function(x){
 })
 levels = unlist(levels)
 
-results = data.frame(level=levels,type = types, kappa = rep(0,length(levels)))
+results = data.frame(level=levels, type = types, kappa = rep(0,length(levels)))
 
 for (level in unique(levels)){
   for (type in types){
@@ -1175,20 +1063,20 @@ for (level in unique(levels)){
     print(paste0(&quot;Level: &quot;,level,&quot; Type: &quot;,type))
     tmpData = testDataset[[level]][[type]]
     tmpData[which(wavenumbers&lt;=2420 &amp; wavenumbers&gt;=2200)] = 0 # setting C02 window to 0
-    tmpModel = pcaCV(tmpData, folds = 10, repeats = 5, threshold = 99, metric = &quot;Kappa&quot;, p=0.5, method=&quot;rf&quot;)
-    saveRDS(tmpModel,file = paste0(output,&quot;rf/model_&quot;,level,&quot;_&quot;,type,&quot;_&quot;,round(tmpModel[[1]],2),&quot;.rds&quot;))
+    tmpModel = pcaCV(tmpData, folds = 10, repeats = 5, threshold = 99, metric = &quot;Kappa&quot;, p=0.5, method=&quot;svm&quot;)
+    saveRDS(tmpModel,file = paste0(output,&quot;svm/model_&quot;,level,&quot;_&quot;,type,&quot;_&quot;,round(tmpModel[[1]],2),&quot;.rds&quot;))
     results[which(results$level==level &amp; results$type==type),&quot;kappa&quot;] = as.numeric(tmpModel[[1]])
     print(results)
 
   }
 }
-saveRDS(paste0(output,&quot;rf/exploration.rds&quot;))</code></pre>
+saveRDS(results, paste0(output,&quot;svm/exploration.rds&quot;))</code></pre>
 <p>We can now take a look at the kappa scores the algorithm achived during training for different representations of the data and at increasing noise levels.</p>
 <p><div id="htmlwidget-851b824557736d249baa" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-851b824557736d249baa">{"x":{"data":[{"x":[1,2,3,4,5],"y":[0.846929633422571,0.791317847312255,0.716867085796644,0.646340765938763,0.551435144814297],"text":["level: noise0<br />kappa: 0.84692963<br />type: norm<br />type: norm","level: noise10<br />kappa: 0.79131785<br />type: norm<br />type: norm","level: noise100<br />kappa: 0.71686709<br />type: norm<br />type: norm","level: noise250<br />kappa: 0.64634077<br />type: norm<br />type: norm","level: noise500<br />kappa: 0.55143514<br />type: norm<br />type: norm"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"norm","legendgroup":"norm","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.863806605061953,0.863811790765112,0.834004547762255,0.762379880696706,0.630443118072242],"text":["level: noise0<br />kappa: 0.86380661<br />type: raw<br />type: raw","level: noise10<br />kappa: 0.86381179<br />type: raw<br />type: raw","level: noise100<br />kappa: 0.83400455<br />type: raw<br />type: raw","level: noise250<br />kappa: 0.76237988<br />type: raw<br />type: raw","level: noise500<br />kappa: 0.63044312<br />type: raw<br />type: raw"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(216,144,0,1)","dash":"solid"},"hoveron":"points","name":"raw","legendgroup":"raw","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.858603923013168,0.85965361672823,0.815211866570504,0.675738722647986,0.445002132973997],"text":["level: noise0<br />kappa: 0.85860392<br />type: raw.d1<br />type: raw.d1","level: noise10<br />kappa: 0.85965362<br />type: raw.d1<br />type: raw.d1","level: noise100<br />kappa: 0.81521187<br />type: raw.d1<br />type: raw.d1","level: noise250<br />kappa: 0.67573872<br />type: raw.d1<br />type: raw.d1","level: noise500<br />kappa: 0.44500213<br />type: raw.d1<br />type: raw.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(163,165,0,1)","dash":"solid"},"hoveron":"points","name":"raw.d1","legendgroup":"raw.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.854285260597706,0.862074103548614,0.804304358461323,0.616662238141984,0.351499942235767],"text":["level: noise0<br />kappa: 0.85428526<br />type: raw.d2<br />type: raw.d2","level: noise10<br />kappa: 0.86207410<br />type: raw.d2<br />type: raw.d2","level: noise100<br />kappa: 0.80430436<br />type: raw.d2<br />type: raw.d2","level: noise250<br />kappa: 0.61666224<br />type: raw.d2<br />type: raw.d2","level: noise500<br />kappa: 0.35149994<br />type: raw.d2<br />type: raw.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(57,182,0,1)","dash":"solid"},"hoveron":"points","name":"raw.d2","legendgroup":"raw.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.868008903517395,0.866451109457466,0.868840552244221,0.792038944190907,0.743066398577217],"text":["level: noise0<br />kappa: 0.86800890<br />type: sg<br />type: sg","level: noise10<br />kappa: 0.86645111<br />type: sg<br />type: sg","level: noise100<br />kappa: 0.86884055<br />type: sg<br />type: sg","level: noise250<br />kappa: 0.79203894<br />type: sg<br />type: sg","level: noise500<br />kappa: 0.74306640<br />type: sg<br />type: sg"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,191,125,1)","dash":"solid"},"hoveron":"points","name":"sg","legendgroup":"sg","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.853305071749594,0.857490088317986,0.778857840491597,0.445155780035587,0.221978242759119],"text":["level: noise0<br />kappa: 0.85330507<br />type: sg.d1<br />type: sg.d1","level: noise10<br />kappa: 0.85749009<br />type: sg.d1<br />type: sg.d1","level: noise100<br />kappa: 0.77885784<br />type: sg.d1<br />type: sg.d1","level: noise250<br />kappa: 0.44515578<br />type: sg.d1<br />type: sg.d1","level: noise500<br />kappa: 0.22197824<br />type: sg.d1<br />type: sg.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,191,196,1)","dash":"solid"},"hoveron":"points","name":"sg.d1","legendgroup":"sg.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.847125340215798,0.845506102004119,0.641768888387927,0.324010341215064,0.18860451564508],"text":["level: noise0<br />kappa: 0.84712534<br />type: sg.d2<br />type: sg.d2","level: noise10<br />kappa: 0.84550610<br />type: sg.d2<br />type: sg.d2","level: noise100<br />kappa: 0.64176889<br />type: sg.d2<br />type: sg.d2","level: noise250<br />kappa: 0.32401034<br />type: sg.d2<br />type: sg.d2","level: noise500<br />kappa: 0.18860452<br />type: sg.d2<br />type: sg.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,176,246,1)","dash":"solid"},"hoveron":"points","name":"sg.d2","legendgroup":"sg.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.849824527549013,0.834071572620845,0.77970110865166,0.761554123042138,0.690897113036185],"text":["level: noise0<br />kappa: 0.84982453<br />type: sg.norm<br />type: sg.norm","level: noise10<br />kappa: 0.83407157<br />type: sg.norm<br />type: sg.norm","level: noise100<br />kappa: 0.77970111<br />type: sg.norm<br />type: sg.norm","level: noise250<br />kappa: 0.76155412<br />type: sg.norm<br />type: sg.norm","level: noise500<br />kappa: 0.69089711<br />type: sg.norm<br />type: sg.norm"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(149,144,255,1)","dash":"solid"},"hoveron":"points","name":"sg.norm","legendgroup":"sg.norm","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.849263133023286,0.542434372435789,0.250740295076356,0.0947846508084098,0.0301883652234799],"text":["level: noise0<br />kappa: 0.84926313<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise10<br />kappa: 0.54243437<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise100<br />kappa: 0.25074030<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise250<br />kappa: 0.09478465<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise500<br />kappa: 0.03018837<br />type: sg.norm.d1<br />type: sg.norm.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(231,107,243,1)","dash":"solid"},"hoveron":"points","name":"sg.norm.d1","legendgroup":"sg.norm.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.834806115112492,0.385202686645408,0.148952191102392,0.0283167427627133,0.0244103081521096],"text":["level: noise0<br />kappa: 0.83480612<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise10<br />kappa: 0.38520269<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise100<br />kappa: 0.14895219<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise250<br />kappa: 0.02831674<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise500<br />kappa: 0.02441031<br />type: sg.norm.d2<br />type: sg.norm.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(255,98,188,1)","dash":"solid"},"hoveron":"points","name":"sg.norm.d2","legendgroup":"sg.norm.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":48.9497716894977},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,5.6],"tickmode":"array","ticktext":["noise0","noise10","noise100","noise250","noise500"],"tickvals":[1,2,3,4,5],"categoryorder":"array","categoryarray":["noise0","noise10","noise100","noise250","noise500"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Noise level","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.0178112040524959,0.911062064448827],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75"],"tickvals":[0,0.25,0.5,0.75],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Kappa score","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.96751968503937},"annotations":[{"text":"Type of<br />Pre-Processing","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"219861cdb899":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"219861cdb899","visdat":{"219861cdb899":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script> We can observe that with higher noise ratios the kappa score is reduced significantly. However, there are some data transformations which are able to maintain a relativly high level of accuracy even in the presence of noise. One of the best might be the simple Savitzkiy-Golay filter, as well as the same filter applied to the normalised data. Equal robust results are observed for the raw and the normalised data. The other transformations do not show the same level of robustness to noise. We can look at this more mathmatically by calculating the average slopes of the data tranformations methods and order the data frame from low to high slopes. Note that we only take the kappa score at noise level 0 and 500 to calculate the average slope.</p>
+<script type="application/json" data-for="htmlwidget-851b824557736d249baa">{"x":{"data":[{"x":[1,2,3,4,5],"y":[0.585334232290825,0,0,0,0],"text":["level: noise0<br />kappa: 0.585334232<br />type: norm<br />type: norm","level: noise10<br />kappa: 0.000000000<br />type: norm<br />type: norm","level: noise100<br />kappa: 0.000000000<br />type: norm<br />type: norm","level: noise250<br />kappa: 0.000000000<br />type: norm<br />type: norm","level: noise500<br />kappa: 0.000000000<br />type: norm<br />type: norm"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"norm","legendgroup":"norm","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.75539707068481,0.754283124026675,0,0,0],"text":["level: noise0<br />kappa: 0.755397071<br />type: raw<br />type: raw","level: noise10<br />kappa: 0.754283124<br />type: raw<br />type: raw","level: noise100<br />kappa: 0.000000000<br />type: raw<br />type: raw","level: noise250<br />kappa: 0.000000000<br />type: raw<br />type: raw","level: noise500<br />kappa: 0.000000000<br />type: raw<br />type: raw"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(216,144,0,1)","dash":"solid"},"hoveron":"points","name":"raw","legendgroup":"raw","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.720276152878721,0.703512371623671,0,0,0],"text":["level: noise0<br />kappa: 0.720276153<br />type: raw.d1<br />type: raw.d1","level: noise10<br />kappa: 0.703512372<br />type: raw.d1<br />type: raw.d1","level: noise100<br />kappa: 0.000000000<br />type: raw.d1<br />type: raw.d1","level: noise250<br />kappa: 0.000000000<br />type: raw.d1<br />type: raw.d1","level: noise500<br />kappa: 0.000000000<br />type: raw.d1<br />type: raw.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(163,165,0,1)","dash":"solid"},"hoveron":"points","name":"raw.d1","legendgroup":"raw.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.71717842736148,0.700979516042116,0,0,0],"text":["level: noise0<br />kappa: 0.717178427<br />type: raw.d2<br />type: raw.d2","level: noise10<br />kappa: 0.700979516<br />type: raw.d2<br />type: raw.d2","level: noise100<br />kappa: 0.000000000<br />type: raw.d2<br />type: raw.d2","level: noise250<br />kappa: 0.000000000<br />type: raw.d2<br />type: raw.d2","level: noise500<br />kappa: 0.000000000<br />type: raw.d2<br />type: raw.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(57,182,0,1)","dash":"solid"},"hoveron":"points","name":"raw.d2","legendgroup":"raw.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.760137446451031,0.759410260860537,0.554081220659393,0,0],"text":["level: noise0<br />kappa: 0.760137446<br />type: sg<br />type: sg","level: noise10<br />kappa: 0.759410261<br />type: sg<br />type: sg","level: noise100<br />kappa: 0.554081221<br />type: sg<br />type: sg","level: noise250<br />kappa: 0.000000000<br />type: sg<br />type: sg","level: noise500<br />kappa: 0.000000000<br />type: sg<br />type: sg"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,191,125,1)","dash":"solid"},"hoveron":"points","name":"sg","legendgroup":"sg","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.649352987220646,0.634460951213851,0,0,0],"text":["level: noise0<br />kappa: 0.649352987<br />type: sg.d1<br />type: sg.d1","level: noise10<br />kappa: 0.634460951<br />type: sg.d1<br />type: sg.d1","level: noise100<br />kappa: 0.000000000<br />type: sg.d1<br />type: sg.d1","level: noise250<br />kappa: 0.000000000<br />type: sg.d1<br />type: sg.d1","level: noise500<br />kappa: 0.000000000<br />type: sg.d1<br />type: sg.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,191,196,1)","dash":"solid"},"hoveron":"points","name":"sg.d1","legendgroup":"sg.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.649049452484012,0.584830312210792,0,0,0],"text":["level: noise0<br />kappa: 0.649049452<br />type: sg.d2<br />type: sg.d2","level: noise10<br />kappa: 0.584830312<br />type: sg.d2<br />type: sg.d2","level: noise100<br />kappa: 0.000000000<br />type: sg.d2<br />type: sg.d2","level: noise250<br />kappa: 0.000000000<br />type: sg.d2<br />type: sg.d2","level: noise500<br />kappa: 0.000000000<br />type: sg.d2<br />type: sg.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,176,246,1)","dash":"solid"},"hoveron":"points","name":"sg.d2","legendgroup":"sg.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.604578639734858,0.00396649136082936,0,0,0],"text":["level: noise0<br />kappa: 0.604578640<br />type: sg.norm<br />type: sg.norm","level: noise10<br />kappa: 0.003966491<br />type: sg.norm<br />type: sg.norm","level: noise100<br />kappa: 0.000000000<br />type: sg.norm<br />type: sg.norm","level: noise250<br />kappa: 0.000000000<br />type: sg.norm<br />type: sg.norm","level: noise500<br />kappa: 0.000000000<br />type: sg.norm<br />type: sg.norm"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(149,144,255,1)","dash":"solid"},"hoveron":"points","name":"sg.norm","legendgroup":"sg.norm","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.230005728445566,0,0,0,0],"text":["level: noise0<br />kappa: 0.230005728<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise10<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise100<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise250<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise500<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(231,107,243,1)","dash":"solid"},"hoveron":"points","name":"sg.norm.d1","legendgroup":"sg.norm.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.23240906511033,0,0,0,0],"text":["level: noise0<br />kappa: 0.232409065<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise10<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise100<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise250<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise500<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(255,98,188,1)","dash":"solid"},"hoveron":"points","name":"sg.norm.d2","legendgroup":"sg.norm.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":43.1050228310502},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,5.6],"tickmode":"array","ticktext":["noise0","noise10","noise100","noise250","noise500"],"tickvals":[1,2,3,4,5],"categoryorder":"array","categoryarray":["noise0","noise10","noise100","noise250","noise500"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Noise level","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.0380068723225516,0.798144318773583],"tickmode":"array","ticktext":["0.0","0.2","0.4","0.6"],"tickvals":[0,0.2,0.4,0.6],"categoryorder":"array","categoryarray":["0.0","0.2","0.4","0.6"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Kappa score","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.96751968503937},"annotations":[{"text":"Type of<br />Pre-Processing","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"2e3d3ce68053":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"2e3d3ce68053","visdat":{"2e3d3ce68053":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script> We can observe that with higher noise ratios the kappa score is reduced significantly. All data transformations yield to very low accuracies when the noise is increases. In the absence of significant noise, however, the simple Savitzkiy-Golay filter, the raw data as well as the first and second order derivatives yield to a kappa score of about 0.75. We can look at this more mathmatically by calculating the average slopes of the data tranformations methods and order the data frame from low to high slopes. Note that we only take the kappa score at noise level 0 and 10 to calculate the average slope.</p>
 <pre class="r"><code>noise0 = results[results$level == &quot;noise0&quot;, ]
-noise500 = results[results$level == &quot;noise500&quot;, ]
-slopes = noise500$kappa - noise0$kappa 
+noise10 = results[results$level == &quot;noise10&quot;, ]
+slopes = noise10$kappa - noise0$kappa 
 types = unique(results$type)
 df = data.frame(type = types, slope = slopes, row.names = NULL)
 df = df[order(-slopes),]</code></pre>
@@ -1204,64 +1092,67 @@ df = df[order(-slopes),]</code></pre>
 <tr class="odd">
 <td>3</td>
 <td align="left">sg</td>
-<td align="right">-0.1249425</td>
+<td align="right">-0.0007272</td>
 </tr>
 <tr class="even">
-<td>6</td>
-<td align="left">sg.norm</td>
-<td align="right">-0.1589274</td>
-</tr>
-<tr class="odd">
 <td>1</td>
 <td align="left">raw</td>
-<td align="right">-0.2333635</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td align="left">norm</td>
-<td align="right">-0.2954945</td>
-</tr>
-<tr class="odd">
-<td>9</td>
-<td align="left">raw.d1</td>
-<td align="right">-0.4136018</td>
-</tr>
-<tr class="even">
-<td>10</td>
-<td align="left">raw.d2</td>
-<td align="right">-0.5027853</td>
+<td align="right">-0.0011139</td>
 </tr>
 <tr class="odd">
 <td>4</td>
 <td align="left">sg.d1</td>
-<td align="right">-0.6313268</td>
+<td align="right">-0.0148920</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td align="left">raw.d2</td>
+<td align="right">-0.0161989</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td align="left">raw.d1</td>
+<td align="right">-0.0167638</td>
 </tr>
 <tr class="even">
 <td>5</td>
 <td align="left">sg.d2</td>
-<td align="right">-0.6585208</td>
+<td align="right">-0.0642191</td>
 </tr>
 <tr class="odd">
-<td>8</td>
-<td align="left">sg.norm.d2</td>
-<td align="right">-0.8103958</td>
-</tr>
-<tr class="even">
 <td>7</td>
 <td align="left">sg.norm.d1</td>
-<td align="right">-0.8190748</td>
+<td align="right">-0.2300057</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td align="left">sg.norm.d2</td>
+<td align="right">-0.2324091</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td align="left">norm</td>
+<td align="right">-0.5853342</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td align="left">sg.norm</td>
+<td align="right">-0.6006121</td>
 </tr>
 </tbody>
 </table>
-<p>We can now confirm, that the average decrease in kappa score is the lowest for the Savitzkiy-Golay filter applied to the raw and the normalised data followed by the raw and the normalised data. The numbers can be interpreted as the loss in Kappa score when the noise level increases from 0 to 500.</p>
+<p>We can now confirm, that the average decrease in kappa score is the lowest for the Savitzkiy-Golay filtered data followed by the raw data. Then, the first derivative of the filtered data achieves the next lowest slope, but it has to be noted that the overall kappa score level of this data transformation is lower than for the derivatives of the unfiltered data.</p>
 <div id="citations-on-this-page" class="section level2">
 <h2>Citations on this page</h2>
 <div id="refs">
 <div id="ref-Ami2013">
 <p>Ami, Diletta, Paolo Mereghetti, and Silvia Maria. 2013. “Multivariate Analysis for Fourier Transform Infrared Spectra of Complex Biological Systems and Processes.” <em>Multivariate Analysis in Management, Engineering and the Sciences</em>. <a href="https://doi.org/10.5772/53850">https://doi.org/10.5772/53850</a>.</p>
 </div>
-<div id="ref-Breiman2001">
-<p>Breiman, L. 2001. “Random forests.” <em>Machine Learning</em> 45 (1): 5–32. <a href="https://doi.org/10.1023/A:1010933404324">https://doi.org/10.1023/A:1010933404324</a>.</p>
+<div id="ref-Boser:1992:TAO:130385.130401">
+<p>Boser, Bernhard E., Isabelle M. Guyon, and Vladimir N. Vapnik. 2004. “A training algorithm for optimal margin classifiers.” In <em>Proceedings of the Fifth Annual Workshop on Computational Learning Theory</em>, 144–52. COLT ’92. New York, NY, USA: ACM. <a href="https://doi.org/10.1145/130385.130401">https://doi.org/10.1145/130385.130401</a>.</p>
+</div>
+<div id="ref-Burges1998">
+<p>Burges, Christopher J.C. 1998. “A tutorial on support vector machines for pattern recognition.” <em>Data Mining and Knowledge Discovery</em> 2 (2): 121–67. <a href="https://doi.org/10.1023/A:1009715923555">https://doi.org/10.1023/A:1009715923555</a>.</p>
 </div>
 <div id="ref-Hori2003">
 <p>Hori, Ritsuko, and Junji Sugiyama. 2003. “A combined FT-IR microscopy and principal component analysis on softwood cell walls.” <em>Carbohydrate Polymers</em> 52 (4): 449–53. <a href="https://doi.org/10.1016/S0144-8617(03)00013-4">https://doi.org/10.1016/S0144-8617(03)00013-4</a>.</p>
@@ -1280,9 +1171,6 @@ df = df[order(-slopes),]</code></pre>
 </div>
 <div id="ref-Primpke2018">
 <p>Primpke, Sebastian, Marisa Wirth, Claudia Lorenz, and Gunnar Gerdts. 2018. “Reference database design for the automated analysis of microplastic samples based on Fourier transform infrared (FTIR) spectroscopy.” <em>Analytical and Bioanalytical Chemistry</em> 410 (21). Analytical; Bioanalytical Chemistry: 5131–41. <a href="https://doi.org/10.1007/s00216-018-1156-x">https://doi.org/10.1007/s00216-018-1156-x</a>.</p>
-</div>
-<div id="ref-Sagi2018">
-<p>Sagi, Omer, and Lior Rokach. 2018. “Ensemble learning: A survey.” <em>Wiley Interdisciplinary Reviews: Data Mining and Knowledge Discovery</em> 8 (4): 1–18. <a href="https://doi.org/10.1002/widm.1249">https://doi.org/10.1002/widm.1249</a>.</p>
 </div>
 <div id="ref-Savitzky1964">
 <p>Savitzky, Abraham, and Marcel J.E. Golay. 1964. “Smoothing and Differentiation of Data by Simplified Least Squares Procedures.” <em>Analytical Chemistry</em> 36 (8): 1627–39. <a href="https://doi.org/10.1021/ac60214a047">https://doi.org/10.1021/ac60214a047</a>.</p>
@@ -1344,7 +1232,7 @@ loaded via a namespace (and not attached):
 [43] nnet_7.3-12        lazyeval_0.2.2     mime_0.7          
 [46] survival_2.44-1.1  crayon_1.3.4       evaluate_0.14     
 [49] fs_1.3.1           nlme_3.1-140       MASS_7.3-51.4     
-[52] class_7.3-15       tools_3.6.1        data.table_1.12.2 
+[52] class_7.3-15       data.table_1.12.2  tools_3.6.1       
 [55] munsell_0.5.0      zip_2.0.3          compiler_3.6.1    
 [58] rlang_0.4.0        grid_3.6.1         iterators_1.0.12  
 [61] htmlwidgets_1.3    crosstalk_1.0.0    labeling_0.3      

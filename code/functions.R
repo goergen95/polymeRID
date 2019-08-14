@@ -327,11 +327,13 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
                             kernel = "radial",
                             gamma = tuneGrid$gamma[i],
                             cost = tuneGrid$cost[i])
-          acc = c(acc,Mods$fitted.accuracy)
+          pred = predict(Mods, x_train)
+          conf = caret::confusionMatrix(pred, y_train)
+          acc = c(acc, conf$overall[metric])
           models[[i]] = Mods
         }
 
-        bestMod = models[[which(acc == max(acc))[1]]]
+        bestMod =  models[[which(acc == max(acc))[1]]]
         pred = predict(bestMod,x_test)
         confMat = caret::confusionMatrix(pred,y_test)
         foldMetric = confMat$overall[metric]

@@ -1,5 +1,5 @@
 ---
-title: "Random Forest"
+title: "Support Vector Machine"
 author: Darius Goergen
 site: workflowr::wflow_site
 output:
@@ -16,30 +16,36 @@ source("code/setup_website.R")
 source("code/functions.R")
 ```
 
-Random Forest (RF) is a machine learning algorithm which is based on the 
-traditional concept of decision trees. It's popular implementation was
-developed by @Breiman2001. It represents an ensemble classifier which has been 
-reported to be the primary choice between different ensemble classifiers due to 
-its easy handling and high classification accuracies [@Sagi2018]. It represents
-a non-parametric classification method. At each split of a given tree a random 
-number variables are used for the decision of how to split the input data. 
-In the case of RF, a user specified number of trees is grown. The final class 
-decision for an observation is made by a simple majority vote from all trees
-in the forest. Internal accuracy assessment of the RF classifier traditionally
-is obtained through an out-of-bag (OOB) error estimation. Here, we kept the 
-number of trees fixed at 500 since above that threshold no substantial gain
-in accuracy was observed.
+Support Vector Machine (SVM) is a non-parametric classification method which is
+initially designed for binary classification problems and which was developed in 
+its current form by @Boser:1992:TAO:130385.130401. A detailed overview of the 
+SVM algorithm is found in @Burges1998. The principal idea behind SVM is to find 
+an optimal hyperplane which separates two classes from another by the largest
+possible margin. The alogrithm is optimised by iterativly maximizing this margin 
+but while only considering the closest observations of both classes to the margin. 
+These specific observations are also called support-vectors. Multidimensional 
+data can be processed by mapping the data into a higher dimensional feature 
+space through a specified mapping function. This function is called kernel 
+function, and mainly four different groups are used: linear, polynomial, radial 
+and sigmoid functions [@Burges1998]. In this project only the radial basis 
+function was used. Multi-class problems are addressed by calculating an optimal 
+margin following the one class-against-all pattern and conducting a majority vote 
+and the end of the calculations. SVM need some tuning parameters. These are the 
+regularization parameter `C` and the kernel width `γ`. The regularization 
+parameter is also called penalty value, as it is a constant giving penalty to 
+misclassified observations. There optimal values might change if different 
+representations of the data are presented to the algorithm.
 
-The modality of the data presented to RF is of higher importance here.
 Different levels of data reprocessing might emphasize different features of 
 the patterns to be learned by an algorithm. To grasp this, different transformations
-of the data were presented to the RF algorithm. Additionally, the raw data signal
+of the data were presented to the SVM algorithm. Additionally, the raw data signal
 was jittered to test which transformation might prove beneficial in delivering 
 high classification accuracies even in the presence of noise. To test this, 
 we define a function which adds noise to the raw data and returns a list with
 the number of elements equal to the levels of noise applied.
 
-```{r rf-addNoise}
+
+```{r svm-addNoise}
 addNoise = function(data, levels = c(0), category="class"){
   data.return = list()
   index = which(names(data) == category)
@@ -73,7 +79,7 @@ applies the preprocessing for normalization, standard filtering and first
 derivative only. The implementation of the function used in the project
 can be found [here](https://github.com/goergen95/polymeRID/blob/master/code/functions.R#12).
 
-```{r rf-TrainingSet}
+```{r svm-TrainigSet}
 createTrainingSet = function(data, category = "class",
                              SGpara = list(p=3,w=11), lag = 15){
   
@@ -218,11 +224,47 @@ tail(pcaData[["repeat5"]][["fold10"]][["validation"]])
 summary(pcaData[["repeat5"]][["fold10"]][["training"]]$response)
 summary(pcaData[["repeat5"]][["fold10"]][["validation"]]$response)
 ```
+For the SVM algorithm we also implementd a simple search pattern for optimal 
+paramters for the regularization parameter `C` and the kernel width `γ`. We did
+this by applying a search grid for the paramters and calculating each possible
+combination. Note that due to limits in computation capacities we restriced
+the search to 25 combinations only. The code below calculates a model for each
+possible combinations, evaluating it capacity to correctly classify the training
+data and then chooses the optimal model to evaluate the validation data. 
 
-This process of splitting the dataset into training and test was automised by
-putting the above code in a function which can be found [here](https://github.com/goergen95/polymeRID/blob/master/code/functions.R#239).
+```{r svm-paramter-tuning, eval = TRUE}
+training = pcaData[["repeat1"]][["fold1"]][["training"]]
+validation =pcaData[["repeat1"]][["fold1"]][["validation"]]
+x_train = training[ ,1:ncol(training)-1]
+y_train = training$response
+x_test = validation[ ,1:ncol(validation)-1]
+y_test = validation$response
+
+
+tuneGrid = expand.grid(gamma =seq(0.1,1,0.2),cost = seq(1,5,1) )
+accuracy = c()
+models = list()
+for ( i in 1:nrow(tuneGrid)){
+  model = e1071::svm(x = x_train, y = y_train,
+                    kernel = "radial",
+                    gamma = tuneGrid$gamma[i],
+                    cost = tuneGrid$cost[i])
+  pred = predict(model, x_train)
+  conf = caret::confusionMatrix(pred, y_train)
+  accuracy = c(accuracy, conf$overall["Kappa"])
+  models[[i]] = model
+}
+
+bestMod = models[[which(accuracy == max(accuracy))[1]]]
+prediction = predict(bestMod,x_test)
+confMat = caret::confusionMatrix(prediction,y_test)
+print(confMat)
+```
+
+This code is integrated into a function which applies this search pattern to all 
+folds for all repeats and can be found [here](https://github.com/goergen95/polymeRID/blob/master/code/functions.R#321).
 Finally, we can apply this function to the different levels of preprocssing which
-were discussed before.
+were discussed before and obtaining the accuracies in the `results` object.
 
 ```{r CV-apply, eval = FALSE}
 source("code/functions.R")
@@ -245,7 +287,7 @@ levels = lapply(names(testDataset), function(x){
 })
 levels = unlist(levels)
 
-results = data.frame(level=levels,type = types, kappa = rep(0,length(levels)))
+results = data.frame(level=levels, type = types, kappa = rep(0,length(levels)))
 
 for (level in unique(levels)){
   for (type in types){
@@ -253,19 +295,18 @@ for (level in unique(levels)){
     print(paste0("Level: ",level," Type: ",type))
     tmpData = testDataset[[level]][[type]]
     tmpData[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0 # setting C02 window to 0
-    tmpModel = pcaCV(tmpData, folds = 10, repeats = 5, threshold = 99, metric = "Kappa", p=0.5, method="rf")
-    saveRDS(tmpModel,file = paste0(output,"rf/model_",level,"_",type,"_",round(tmpModel[[1]],2),".rds"))
+    tmpModel = pcaCV(tmpData, folds = 10, repeats = 5, threshold = 99, metric = "Kappa", p=0.5, method="svm")
+    saveRDS(tmpModel,file = paste0(output,"svm/model_",level,"_",type,"_",round(tmpModel[[1]],2),".rds"))
     results[which(results$level==level & results$type==type),"kappa"] = as.numeric(tmpModel[[1]])
     print(results)
 
   }
 }
-saveRDS(paste0(output,"rf/exploration.rds"))
+saveRDS(results, paste0(output,"svm/exploration.rds"))
 
 ```
-
 ```{r read-exploration, include = FALSE}
-results = readRDS(paste0(output,"rf/exploration.rds"))
+results = readRDS(paste0(output,"svm/exploration.rds"))
 ```
 
 We can now take a look at the kappa scores the algorithm achived during training
@@ -286,20 +327,18 @@ t = ggplotly(test)
 t
 ```
 We can observe that with higher noise ratios the kappa score is reduced significantly.
-However, there are some data transformations which are able to maintain a 
-relativly high level of accuracy even in the presence of noise. One of the best
-might be the simple Savitzkiy-Golay filter, as well as the same filter applied
-to the normalised data. Equal robust results are observed for the raw and the 
-normalised data. The other transformations do not show the same level of robustness
-to noise. We can look at this more mathmatically by calculating the average 
+All data transformations yield to very low accuracies when the noise is increases.
+In the absence of significant noise, however, the simple Savitzkiy-Golay filter,
+the raw data as well as the first and second order derivatives yield to a kappa
+score of about 0.75. We can look at this more mathmatically by calculating the average 
 slopes of the data tranformations methods and order the data frame from low to
-high slopes. Note that we only take the kappa score at noise level 0 and 500
+high slopes. Note that we only take the kappa score at noise level 0 and 10
 to calculate the average slope.
 
 ```{r slope-calculation}
 noise0 = results[results$level == "noise0", ]
-noise500 = results[results$level == "noise500", ]
-slopes = noise500$kappa - noise0$kappa 
+noise10 = results[results$level == "noise10", ]
+slopes = noise10$kappa - noise0$kappa 
 types = unique(results$type)
 df = data.frame(type = types, slope = slopes, row.names = NULL)
 df = df[order(-slopes),]
@@ -309,9 +348,10 @@ knitr::kable(df)
 ```
 
 We can now confirm, that the average decrease in kappa score is the lowest for
-the Savitzkiy-Golay filter applied to the raw and the normalised data followed
-by the raw and the normalised data. The numbers can be interpreted as the loss in
-Kappa score when the noise level increases from 0 to 500. 
+the Savitzkiy-Golay filtered data followed by the raw data. Then, the first derivative
+of the filtered data achieves the next lowest slope, but it has to be noted that the
+overall kappa score level of this data transformation is lower than for the derivatives
+of the unfiltered data.
 
 
 
