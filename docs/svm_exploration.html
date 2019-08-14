@@ -328,7 +328,7 @@ div.section {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -337,7 +337,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -349,7 +349,7 @@ div.section {
 <strong>Last updated:</strong> 2019-08-14
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>polymeRID/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -365,12 +365,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -437,10 +437,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree41aa60c19962141e2dff9a0311f0d5d3d5e79b87targetblank41aa60ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/41aa60c19962141e2dff9a0311f0d5d3d5e79b87" target="_blank">41aa60c</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree2385fbc4a358ad383e48ee613c51de466f49f1a2targetblank2385fbca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/2385fbc4a358ad383e48ee613c51de466f49f1a2" target="_blank">2385fbc</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree41aa60c19962141e2dff9a0311f0d5d3d5e79b87targetblank41aa60ca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree2385fbc4a358ad383e48ee613c51de466f49f1a2targetblank2385fbca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -649,6 +649,10 @@ Ignored files:
     Ignored:    website/run/
     Ignored:    website/smp/
 
+Unstaged changes:
+    Modified:   analysis/rf_exploration.Rmd
+    Modified:   analysis/svm_exploration.Rmd
+
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -686,6 +690,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/goergen95/polymeRID/2385fbc4a358ad383e48ee613c51de466f49f1a2/docs/svm_exploration.html" target="_blank">2385fbc</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-08-14
+</td>
+<td>
+republish for layout change
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -953,50 +974,16 @@ for (rep in 1:repeats){
   pcaData[[paste0(&quot;repeat&quot;,rep)]] = pcadata_fold
 }</code></pre>
 <p>We now have a list object with the number of elements equivalent to the repeats. Below each repeat element we can access the individual folds. There we find two elements which we can access by refering to <code>&quot;training&quot;</code> and <code>&quot;testing&quot;</code>.</p>
-<pre class="r"><code>head(pcaData[[&quot;repeat5&quot;]][[&quot;fold10&quot;]][[&quot;training&quot;]])</code></pre>
-<pre><code>          PC1        PC2         PC3         PC4        PC5        PC6
-1  -0.4779164 -0.7786770 -0.02761266 -0.06607284 -0.1414115 -0.1534971
-2  -0.4869471 -0.7181236 -0.02492981 -0.05903759 -0.1850104 -0.1409379
-4  -0.4661699 -0.7463479 -0.11424932 -0.03956596 -0.1056265 -0.1399688
-6  -0.5257137 -0.5042399  0.10500327 -0.05850722 -0.2114660 -0.1380447
-8  -0.5117566 -0.5967677  0.04001548 -0.04896668 -0.2129714 -0.1515174
-11 -0.5237685 -0.5894120  0.05200442 -0.05865827 -0.2263991 -0.1561229
-         PC7         PC8       PC9        PC10       PC11         PC12
-1  0.2060466 -0.04470884 0.1514982 -0.04843538 0.21485350 -0.011536533
-2  0.1918080 -0.04751573 0.1395856 -0.03745341 0.17256791 -0.002443176
-4  0.1775101 -0.05680964 0.1531349 -0.04319456 0.21718253 -0.003368534
-6  0.1901325 -0.03195793 0.1066313 -0.02132166 0.09589942 -0.006065318
-8  0.2032426 -0.03895545 0.1157844 -0.03040473 0.13270558 -0.002097848
-11 0.2032640 -0.04166006 0.1209914 -0.02936654 0.12332775 -0.002840695
-         PC13 response
-1  0.04706193      FUR
-2  0.01465483      FUR
-4  0.02593991      FUR
-6  0.03218995      FUR
-8  0.02925628      FUR
-11 0.03068548      FUR</code></pre>
-<pre class="r"><code>tail(pcaData[[&quot;repeat5&quot;]][[&quot;fold10&quot;]][[&quot;validation&quot;]])</code></pre>
-<pre><code>           PC1        PC2         PC3         PC4         PC5          PC6
-138 -0.6244338 -0.2251354 -0.04125220 -0.07484999 -0.27266002 -0.026217908
-139 -0.5832934 -0.5663093 -0.39824689 -0.09269745 -0.06750005  0.007607282
-142  1.3643143 -0.4874876 -0.04759479  1.69655907  0.26013483  0.009538671
-143  0.9617909 -0.4624777 -0.07106849  1.24167453  0.20000959  0.002779168
-144 -0.8842106  1.0703276 -0.77433375 -0.02590177  0.34894910  0.001737278
-147 -0.6888015  0.1002989  0.40046959 -0.12243199 -0.48345619  0.076636770
-            PC7          PC8          PC9         PC10        PC11
-138  0.06659313  0.002040475 -0.017318487  0.025721276 -0.16978522
-139  0.03009946 -0.013417290 -0.056429051  0.006177153 -0.11445905
-142 -0.20273071  0.178143838  0.486645669  0.618606076  0.13437431
-143 -0.17007004  0.168194290  0.401200526  0.556734081  0.07242852
-144  0.01314587 -0.029058498  0.223687515 -0.056605387  0.01770163
-147 -0.14184110 -0.032212557  0.002410302 -0.007140975 -0.16104385
-             PC12         PC13 response
-138 -0.0006882923 -0.050474176       PA
-139  0.0199881958 -0.003416057       PA
-142 -0.2862799869 -0.260510805      PUR
-143 -0.2309708768 -0.247415734      PUR
-144  0.0369931976  0.014124356     HDPE
-147  0.0171552493 -0.050210341       PS</code></pre>
+<pre class="r"><code>pcaData[[&quot;repeat5&quot;]][[&quot;fold10&quot;]][[&quot;training&quot;]][1:3,1:3]</code></pre>
+<pre><code>         PC1        PC2         PC3
+1 -0.4779164 -0.7786770 -0.02761266
+2 -0.4869471 -0.7181236 -0.02492981
+4 -0.4661699 -0.7463479 -0.11424932</code></pre>
+<pre class="r"><code>pcaData[[&quot;repeat5&quot;]][[&quot;fold10&quot;]][[&quot;validation&quot;]][1:3,1:3]</code></pre>
+<pre><code>         PC1        PC2         PC3
+3 -0.5240744 -0.5931111  0.05961383
+5 -0.4718366 -0.6995376 -0.09273887
+7 -0.5255215 -0.5928214  0.05184969</code></pre>
 <pre class="r"><code>summary(pcaData[[&quot;repeat5&quot;]][[&quot;fold10&quot;]][[&quot;training&quot;]]$response)</code></pre>
 <pre><code>FIBRE   FUR  HDPE  LDPE    PA    PE   PES   PET    PP    PS   PUR  WOOD 
    14    12     5     6     7     4     8     5     6     4     4     2 </code></pre>
@@ -1026,13 +1013,11 @@ for ( i in 1:nrow(tuneGrid)){
   models[[i]] = model
 }
 
-bestMod = models[[which(accuracy == max(accuracy))[1]]]
-prediction = predict(bestMod,x_test)
-confMat = caret::confusionMatrix(prediction,y_test)
-print(confMat)</code></pre>
-<pre><code>Confusion Matrix and Statistics
-
-          Reference
+best_model = models[[which(accuracy == max(accuracy))[1]]]
+prediction = predict(best_model, x_test)
+confMat = caret::confusionMatrix(prediction, y_test)
+print(confMat$table)</code></pre>
+<pre><code>          Reference
 Prediction FIBRE FUR HDPE LDPE PA PE PES PET PP PS PUR WOOD
      FIBRE    12   0    0    0  0  0   5   2  0  0   0    2
      FUR       1  11    0    0  0  0   0   0  0  0   0    0
@@ -1045,48 +1030,7 @@ Prediction FIBRE FUR HDPE LDPE PA PE PES PET PP PS PUR WOOD
      PP        0   0    0    0  0  0   0   0  6  0   0    0
      PS        0   0    0    0  0  0   0   0  0  1   0    0
      PUR       0   0    0    0  0  0   0   0  0  0   3    0
-     WOOD      0   0    0    0  0  0   0   0  0  0   0    0
-
-Overall Statistics
-                                          
-               Accuracy : 0.7571          
-                 95% CI : (0.6399, 0.8517)
-    No Information Rate : 0.1857          
-    P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
-                                          
-                  Kappa : 0.7232          
-                                          
- Mcnemar&#39;s Test P-Value : NA              
-
-Statistics by Class:
-
-                     Class: FIBRE Class: FUR Class: HDPE Class: LDPE
-Sensitivity                0.9231     1.0000     0.60000     1.00000
-Specificity                0.8421     0.9831     1.00000     0.96923
-Pos Pred Value             0.5714     0.9167     1.00000     0.71429
-Neg Pred Value             0.9796     1.0000     0.97015     1.00000
-Prevalence                 0.1857     0.1571     0.07143     0.07143
-Detection Rate             0.1714     0.1571     0.04286     0.07143
-Detection Prevalence       0.3000     0.1714     0.04286     0.10000
-Balanced Accuracy          0.8826     0.9915     0.80000     0.98462
-                     Class: PA Class: PE Class: PES Class: PET Class: PP
-Sensitivity                1.0   0.50000    0.28571    0.25000   1.00000
-Specificity                1.0   0.98485    0.98413    0.95455   1.00000
-Pos Pred Value             1.0   0.66667    0.66667    0.25000   1.00000
-Neg Pred Value             1.0   0.97015    0.92537    0.95455   1.00000
-Prevalence                 0.1   0.05714    0.10000    0.05714   0.08571
-Detection Rate             0.1   0.02857    0.02857    0.01429   0.08571
-Detection Prevalence       0.1   0.04286    0.04286    0.05714   0.08571
-Balanced Accuracy          1.0   0.74242    0.63492    0.60227   1.00000
-                     Class: PS Class: PUR Class: WOOD
-Sensitivity            0.33333    1.00000     0.00000
-Specificity            1.00000    1.00000     1.00000
-Pos Pred Value         1.00000    1.00000         NaN
-Neg Pred Value         0.97101    1.00000     0.97143
-Prevalence             0.04286    0.04286     0.02857
-Detection Rate         0.01429    0.04286     0.00000
-Detection Prevalence   0.01429    0.04286     0.00000
-Balanced Accuracy      0.66667    1.00000     0.50000</code></pre>
+     WOOD      0   0    0    0  0  0   0   0  0  0   0    0</code></pre>
 <p>This code is integrated into a function which applies this search pattern to all folds for all repeats and can be found <a href="https://github.com/goergen95/polymeRID/blob/master/code/functions.R#321">here</a>. Finally, we can apply this function to the different levels of preprocssing which were discussed before and obtaining the accuracies in the <code>results</code> object.</p>
 <pre class="r"><code>source(&quot;code/functions.R&quot;)
 wavenumbers = readRDS(paste0(ref,&quot;wavenumbers.rds&quot;))
@@ -1126,7 +1070,7 @@ for (level in unique(levels)){
 saveRDS(results, paste0(output,&quot;svm/exploration.rds&quot;))</code></pre>
 <p>We can now take a look at the kappa scores the algorithm achived during training for different representations of the data and at increasing noise levels.</p>
 <p><div id="htmlwidget-851b824557736d249baa" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-851b824557736d249baa">{"x":{"data":[{"x":[1,2,3,4,5],"y":[0.585334232290825,0,0,0,0],"text":["level: noise0<br />kappa: 0.585334232<br />type: norm<br />type: norm","level: noise10<br />kappa: 0.000000000<br />type: norm<br />type: norm","level: noise100<br />kappa: 0.000000000<br />type: norm<br />type: norm","level: noise250<br />kappa: 0.000000000<br />type: norm<br />type: norm","level: noise500<br />kappa: 0.000000000<br />type: norm<br />type: norm"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"norm","legendgroup":"norm","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.75539707068481,0.754283124026675,0,0,0],"text":["level: noise0<br />kappa: 0.755397071<br />type: raw<br />type: raw","level: noise10<br />kappa: 0.754283124<br />type: raw<br />type: raw","level: noise100<br />kappa: 0.000000000<br />type: raw<br />type: raw","level: noise250<br />kappa: 0.000000000<br />type: raw<br />type: raw","level: noise500<br />kappa: 0.000000000<br />type: raw<br />type: raw"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(216,144,0,1)","dash":"solid"},"hoveron":"points","name":"raw","legendgroup":"raw","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.720276152878721,0.703512371623671,0,0,0],"text":["level: noise0<br />kappa: 0.720276153<br />type: raw.d1<br />type: raw.d1","level: noise10<br />kappa: 0.703512372<br />type: raw.d1<br />type: raw.d1","level: noise100<br />kappa: 0.000000000<br />type: raw.d1<br />type: raw.d1","level: noise250<br />kappa: 0.000000000<br />type: raw.d1<br />type: raw.d1","level: noise500<br />kappa: 0.000000000<br />type: raw.d1<br />type: raw.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(163,165,0,1)","dash":"solid"},"hoveron":"points","name":"raw.d1","legendgroup":"raw.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.71717842736148,0.700979516042116,0,0,0],"text":["level: noise0<br />kappa: 0.717178427<br />type: raw.d2<br />type: raw.d2","level: noise10<br />kappa: 0.700979516<br />type: raw.d2<br />type: raw.d2","level: noise100<br />kappa: 0.000000000<br />type: raw.d2<br />type: raw.d2","level: noise250<br />kappa: 0.000000000<br />type: raw.d2<br />type: raw.d2","level: noise500<br />kappa: 0.000000000<br />type: raw.d2<br />type: raw.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(57,182,0,1)","dash":"solid"},"hoveron":"points","name":"raw.d2","legendgroup":"raw.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.760137446451031,0.759410260860537,0.554081220659393,0,0],"text":["level: noise0<br />kappa: 0.760137446<br />type: sg<br />type: sg","level: noise10<br />kappa: 0.759410261<br />type: sg<br />type: sg","level: noise100<br />kappa: 0.554081221<br />type: sg<br />type: sg","level: noise250<br />kappa: 0.000000000<br />type: sg<br />type: sg","level: noise500<br />kappa: 0.000000000<br />type: sg<br />type: sg"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,191,125,1)","dash":"solid"},"hoveron":"points","name":"sg","legendgroup":"sg","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.649352987220646,0.634460951213851,0,0,0],"text":["level: noise0<br />kappa: 0.649352987<br />type: sg.d1<br />type: sg.d1","level: noise10<br />kappa: 0.634460951<br />type: sg.d1<br />type: sg.d1","level: noise100<br />kappa: 0.000000000<br />type: sg.d1<br />type: sg.d1","level: noise250<br />kappa: 0.000000000<br />type: sg.d1<br />type: sg.d1","level: noise500<br />kappa: 0.000000000<br />type: sg.d1<br />type: sg.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,191,196,1)","dash":"solid"},"hoveron":"points","name":"sg.d1","legendgroup":"sg.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.649049452484012,0.584830312210792,0,0,0],"text":["level: noise0<br />kappa: 0.649049452<br />type: sg.d2<br />type: sg.d2","level: noise10<br />kappa: 0.584830312<br />type: sg.d2<br />type: sg.d2","level: noise100<br />kappa: 0.000000000<br />type: sg.d2<br />type: sg.d2","level: noise250<br />kappa: 0.000000000<br />type: sg.d2<br />type: sg.d2","level: noise500<br />kappa: 0.000000000<br />type: sg.d2<br />type: sg.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,176,246,1)","dash":"solid"},"hoveron":"points","name":"sg.d2","legendgroup":"sg.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.604578639734858,0.00396649136082936,0,0,0],"text":["level: noise0<br />kappa: 0.604578640<br />type: sg.norm<br />type: sg.norm","level: noise10<br />kappa: 0.003966491<br />type: sg.norm<br />type: sg.norm","level: noise100<br />kappa: 0.000000000<br />type: sg.norm<br />type: sg.norm","level: noise250<br />kappa: 0.000000000<br />type: sg.norm<br />type: sg.norm","level: noise500<br />kappa: 0.000000000<br />type: sg.norm<br />type: sg.norm"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(149,144,255,1)","dash":"solid"},"hoveron":"points","name":"sg.norm","legendgroup":"sg.norm","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.230005728445566,0,0,0,0],"text":["level: noise0<br />kappa: 0.230005728<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise10<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise100<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise250<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise500<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(231,107,243,1)","dash":"solid"},"hoveron":"points","name":"sg.norm.d1","legendgroup":"sg.norm.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.23240906511033,0,0,0,0],"text":["level: noise0<br />kappa: 0.232409065<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise10<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise100<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise250<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise500<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(255,98,188,1)","dash":"solid"},"hoveron":"points","name":"sg.norm.d2","legendgroup":"sg.norm.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":43.1050228310502},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,5.6],"tickmode":"array","ticktext":["noise0","noise10","noise100","noise250","noise500"],"tickvals":[1,2,3,4,5],"categoryorder":"array","categoryarray":["noise0","noise10","noise100","noise250","noise500"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Noise level","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.0380068723225516,0.798144318773583],"tickmode":"array","ticktext":["0.0","0.2","0.4","0.6"],"tickvals":[0,0.2,0.4,0.6],"categoryorder":"array","categoryarray":["0.0","0.2","0.4","0.6"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Kappa score","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.96751968503937},"annotations":[{"text":"Type of<br />Pre-Processing","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"31d416690847":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"31d416690847","visdat":{"31d416690847":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script> We can observe that with higher noise ratios the kappa score is reduced significantly. All data transformations yield to very low accuracies when the noise is increases. In the absence of significant noise, however, the simple Savitzkiy-Golay filter, the raw data as well as the first and second order derivatives yield to a kappa score of about 0.75. We can look at this more mathmatically by calculating the average slopes of the data tranformations methods and order the data frame from low to high slopes. Note that we only take the kappa score at noise level 0 and 10 to calculate the average slope.</p>
+<script type="application/json" data-for="htmlwidget-851b824557736d249baa">{"x":{"data":[{"x":[1,2,3,4,5],"y":[0.585334232290825,0,0,0,0],"text":["level: noise0<br />kappa: 0.585334232<br />type: norm<br />type: norm","level: noise10<br />kappa: 0.000000000<br />type: norm<br />type: norm","level: noise100<br />kappa: 0.000000000<br />type: norm<br />type: norm","level: noise250<br />kappa: 0.000000000<br />type: norm<br />type: norm","level: noise500<br />kappa: 0.000000000<br />type: norm<br />type: norm"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"norm","legendgroup":"norm","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.75539707068481,0.754283124026675,0,0,0],"text":["level: noise0<br />kappa: 0.755397071<br />type: raw<br />type: raw","level: noise10<br />kappa: 0.754283124<br />type: raw<br />type: raw","level: noise100<br />kappa: 0.000000000<br />type: raw<br />type: raw","level: noise250<br />kappa: 0.000000000<br />type: raw<br />type: raw","level: noise500<br />kappa: 0.000000000<br />type: raw<br />type: raw"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(216,144,0,1)","dash":"solid"},"hoveron":"points","name":"raw","legendgroup":"raw","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.720276152878721,0.703512371623671,0,0,0],"text":["level: noise0<br />kappa: 0.720276153<br />type: raw.d1<br />type: raw.d1","level: noise10<br />kappa: 0.703512372<br />type: raw.d1<br />type: raw.d1","level: noise100<br />kappa: 0.000000000<br />type: raw.d1<br />type: raw.d1","level: noise250<br />kappa: 0.000000000<br />type: raw.d1<br />type: raw.d1","level: noise500<br />kappa: 0.000000000<br />type: raw.d1<br />type: raw.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(163,165,0,1)","dash":"solid"},"hoveron":"points","name":"raw.d1","legendgroup":"raw.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.71717842736148,0.700979516042116,0,0,0],"text":["level: noise0<br />kappa: 0.717178427<br />type: raw.d2<br />type: raw.d2","level: noise10<br />kappa: 0.700979516<br />type: raw.d2<br />type: raw.d2","level: noise100<br />kappa: 0.000000000<br />type: raw.d2<br />type: raw.d2","level: noise250<br />kappa: 0.000000000<br />type: raw.d2<br />type: raw.d2","level: noise500<br />kappa: 0.000000000<br />type: raw.d2<br />type: raw.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(57,182,0,1)","dash":"solid"},"hoveron":"points","name":"raw.d2","legendgroup":"raw.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.760137446451031,0.759410260860537,0.554081220659393,0,0],"text":["level: noise0<br />kappa: 0.760137446<br />type: sg<br />type: sg","level: noise10<br />kappa: 0.759410261<br />type: sg<br />type: sg","level: noise100<br />kappa: 0.554081221<br />type: sg<br />type: sg","level: noise250<br />kappa: 0.000000000<br />type: sg<br />type: sg","level: noise500<br />kappa: 0.000000000<br />type: sg<br />type: sg"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,191,125,1)","dash":"solid"},"hoveron":"points","name":"sg","legendgroup":"sg","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.649352987220646,0.634460951213851,0,0,0],"text":["level: noise0<br />kappa: 0.649352987<br />type: sg.d1<br />type: sg.d1","level: noise10<br />kappa: 0.634460951<br />type: sg.d1<br />type: sg.d1","level: noise100<br />kappa: 0.000000000<br />type: sg.d1<br />type: sg.d1","level: noise250<br />kappa: 0.000000000<br />type: sg.d1<br />type: sg.d1","level: noise500<br />kappa: 0.000000000<br />type: sg.d1<br />type: sg.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,191,196,1)","dash":"solid"},"hoveron":"points","name":"sg.d1","legendgroup":"sg.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.649049452484012,0.584830312210792,0,0,0],"text":["level: noise0<br />kappa: 0.649049452<br />type: sg.d2<br />type: sg.d2","level: noise10<br />kappa: 0.584830312<br />type: sg.d2<br />type: sg.d2","level: noise100<br />kappa: 0.000000000<br />type: sg.d2<br />type: sg.d2","level: noise250<br />kappa: 0.000000000<br />type: sg.d2<br />type: sg.d2","level: noise500<br />kappa: 0.000000000<br />type: sg.d2<br />type: sg.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(0,176,246,1)","dash":"solid"},"hoveron":"points","name":"sg.d2","legendgroup":"sg.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.604578639734858,0.00396649136082936,0,0,0],"text":["level: noise0<br />kappa: 0.604578640<br />type: sg.norm<br />type: sg.norm","level: noise10<br />kappa: 0.003966491<br />type: sg.norm<br />type: sg.norm","level: noise100<br />kappa: 0.000000000<br />type: sg.norm<br />type: sg.norm","level: noise250<br />kappa: 0.000000000<br />type: sg.norm<br />type: sg.norm","level: noise500<br />kappa: 0.000000000<br />type: sg.norm<br />type: sg.norm"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(149,144,255,1)","dash":"solid"},"hoveron":"points","name":"sg.norm","legendgroup":"sg.norm","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.230005728445566,0,0,0,0],"text":["level: noise0<br />kappa: 0.230005728<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise10<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise100<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise250<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1","level: noise500<br />kappa: 0.000000000<br />type: sg.norm.d1<br />type: sg.norm.d1"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(231,107,243,1)","dash":"solid"},"hoveron":"points","name":"sg.norm.d1","legendgroup":"sg.norm.d1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5],"y":[0.23240906511033,0,0,0,0],"text":["level: noise0<br />kappa: 0.232409065<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise10<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise100<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise250<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2","level: noise500<br />kappa: 0.000000000<br />type: sg.norm.d2<br />type: sg.norm.d2"],"type":"scatter","mode":"lines","line":{"width":5.66929133858268,"color":"rgba(255,98,188,1)","dash":"solid"},"hoveron":"points","name":"sg.norm.d2","legendgroup":"sg.norm.d2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":43.1050228310502},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,5.6],"tickmode":"array","ticktext":["noise0","noise10","noise100","noise250","noise500"],"tickvals":[1,2,3,4,5],"categoryorder":"array","categoryarray":["noise0","noise10","noise100","noise250","noise500"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Noise level","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.0380068723225516,0.798144318773583],"tickmode":"array","ticktext":["0.0","0.2","0.4","0.6"],"tickvals":[0,0.2,0.4,0.6],"categoryorder":"array","categoryarray":["0.0","0.2","0.4","0.6"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Kappa score","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.96751968503937},"annotations":[{"text":"Type of<br />Pre-Processing","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"33e01d4f27f2":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"33e01d4f27f2","visdat":{"33e01d4f27f2":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script> We can observe that with higher noise ratios the kappa score is reduced significantly. All data transformations yield to very low accuracies when the noise is increases. In the absence of significant noise, however, the simple Savitzkiy-Golay filter, the raw data as well as the first and second order derivatives yield to a kappa score of about 0.75. We can look at this more mathmatically by calculating the average slopes of the data tranformations methods and order the data frame from low to high slopes. Note that we only take the kappa score at noise level 0 and 10 to calculate the average slope.</p>
 <pre class="r"><code>noise0 = results[results$level == &quot;noise0&quot;, ]
 noise10 = results[results$level == &quot;noise10&quot;, ]
 slopes = noise10$kappa - noise0$kappa 

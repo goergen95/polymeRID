@@ -212,12 +212,56 @@ Below each repeat element we can access the individual folds.
 There we find two elements which we can access by refering to `"training"`
 and `"testing"`.
 ```{r PCA_access}
-head(pcaData[["repeat5"]][["fold10"]][["training"]])
-tail(pcaData[["repeat5"]][["fold10"]][["validation"]])
+pcaData[["repeat5"]][["fold10"]][["training"]][1:3,1:3]
+pcaData[["repeat5"]][["fold10"]][["validation"]][1:3,1:3]
 
 summary(pcaData[["repeat5"]][["fold10"]][["training"]]$response)
 summary(pcaData[["repeat5"]][["fold10"]][["validation"]]$response)
 ```
+
+For the RF algorithm only the parameter `mtry` needs a search pattern since we
+hold the number of trees constant at a value of 500. `mtry` effictvley specifies
+the number of variables to look at each split within a tree. We took the square 
+root of the number of variables devided by 3 as the first `mtry` value, the square
+root itself as the second and the maximum number of variables as a third value.
+The optimal parameter is then selected to build the final model and it is 
+evaluated with the test data.
+
+```{r}
+training = pcaData[["repeat1"]][["fold1"]][["training"]]
+validation =pcaData[["repeat1"]][["fold1"]][["validation"]]
+x_train = training[ ,1:ncol(training)-1]
+y_train = training$response
+x_test = validation[ ,1:ncol(validation)-1]
+y_test = validation$response
+
+
+first = floor(sqrt(ncol(x_train)))/3
+if(first <= 1) first <- 1
+second = floor(sqrt(ncol(x_train)))
+last = ncol(x_train)
+mtries = c(first,second,last)
+
+Mods = lapply(1:length(mtries),function(x){return(0)})
+accuracy = c()
+for (mtry in mtries){
+  Mods[which(mtries == mtry)] = list(randomForest::randomForest(x_train, 
+                                                                y_train, 
+                                                                ntree=500,
+                                                                mtry=mtry))
+  
+  pred = predict(Mods[[which(mtries==mtry)]], x_test)
+  conf = caret::confusionMatrix(pred, y_test)
+  accuracy = c(accuracy, conf$overall["Kappa"])
+}
+
+best_model = Mods[[which(accuracy == max(accuracy))[1]]]
+prediction = predict(best_model, x_test)
+confMat = caret::confusionMatrix(prediction, y_test)
+print(confMat$table)
+
+```
+
 
 This process of splitting the dataset into training and test was automised by
 putting the above code in a function which can be found [here](https://github.com/goergen95/polymeRID/blob/master/code/functions.R#239).
