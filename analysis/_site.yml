@@ -7,14 +7,14 @@ navbar:
     href: index.html
   - text: Preparation
     href: preparation.html
-  - text: About
-    href: about.html
   - text: Exploration
     href: exploration.html
   - text: Calibration
     href: calibration.html
   - text: Classification
     href: classification.html
+  - text: About
+    href: about.html
   - text: License
     href: license.html
 output:
