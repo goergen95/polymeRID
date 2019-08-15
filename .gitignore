@@ -12,3 +12,5 @@ polymeRID.Rproj
 packrat/lib/
 packrat/lib*/
 analysis/*.bib
+website/
+
