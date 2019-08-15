@@ -1,0 +1,268 @@
+---
+title: "Convolutional Neural Network"
+author: Darius Goergen
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: false
+editor_options:
+  chunk_output_type: console
+bibliography: library.bib
+link-citations: yes
+---
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+source("code/setup_website.R")
+source("code/functions.R")
+```
+
+Interesting stuff about CNNs.
+
+
+
+Unlike with the random forest and support vector machines, here we did not test
+for noise in the dataset. This is mainly due to limitations in computation time.
+The computation time was significantly reduced by installing the `keras` package
+in GPU mode based on the `CUDA` library of Nvidia. Interested readers in setting
+up a local machine for GPU computations with the R implementation of `keras` are 
+refered to the [About](about.html) section of this website. Still, CNNs remain
+computational intensive, since depending on the architecture severel thousands
+of weights have to be trained. Here, we developed a simple two-block architecture
+of 4 convolutional layers in total. The number of filters, or feature extractors,
+increases with each layer by a factor of 2. We choose a rather 'deep' network
+architechture with 4 layers and only small numbers of filters. The code below
+defines a function to set up and compile a CNN for a given kernel size.
+```{r cnn-function}
+# expects that you have installed keras and tensorflow properly
+library(keras)
+
+buildCNN <- function(kernel, nVariables, nOutcome){
+  model = keras_model_sequential()
+  model %>%
+    # block 1
+    layer_conv_1d(filters = 8,
+                  kernel_size = kernel,
+                  input_shape = c(nVariables,1),
+                  name = "block1_conv1",) %>%
+    layer_activation_relu(name="block1_relu1") %>%
+    layer_conv_1d(filters = 16,
+                  kernel_size = kernel,
+                  name = "block1_conv2") %>%
+    layer_activation_relu(name="block1_relu2") %>%
+    layer_max_pooling_1d(strides=2,
+                         pool_size = 5,
+                         name="block1_max_pool1") %>%
+    
+    # block 2
+    layer_conv_1d(filters = 32,
+                  kernel_size = kernel,
+                  name = "block2_conv1") %>%
+    layer_activation_relu(name="block2_relu1") %>%
+    layer_conv_1d(filters = 64,
+                  kernel_size = kernel,
+                  name = "block2_conv2") %>%
+    layer_activation_relu(name="block2_relu2") %>%
+    layer_max_pooling_1d(strides=2,
+                         pool_size = 5,
+                         name="block2_max_pool1") %>%
+    
+    # exit block
+    layer_global_max_pooling_1d(name="exit_max_pool") %>%
+    layer_dropout(rate=0.5) %>%
+    layer_dense(units = nOutcome, activation = "softmax")
+  
+  # we compile for a classification with the categorcial crossentropy loss function
+  # and use adam as optimizer function
+  compile(model, loss="categorical_crossentropy", optimizer="adam", metrics="accuracy")
+}
+
+```
+The function expects three arguments as input. The first is the kernel size which
+specifies the width of the window which extracts features from the input data
+and subsequent layer outputs. Note that the kernel size is held constant throught
+the network. The second argument expects in integer representing the number of
+variables of the input which relates to the amount of wavenumbers in the present case.
+The third argument also expects an integer only this time it is the number of 
+desired output classes. Each convolutional layer as associated with a RelU-activation
+function. At the end of each block we added a max pooling layer with `stride = 2`
+which takes the maximum values of its respective input and discards unneeded observations
+effectvly reducing the feature space by half. The exit block again consits of a 
+global max pooling layer and is followed by a dropout layer which randomly silences
+half of the neurons to reduce the influence of overfitting. The last layer is a
+fully-connected layer which maps its input to `nOutcome` classes via the softmax
+activation function. The last line of code compiles the model so it is ready for training.
+We use categorical crossentropy as the loss function in our network because currently
+we have 14 different classes which perfectly fit for one-hot-encoding. If the number
+of classes is too high, for example in speech recognition problems, sparse categorical
+crossentropy would be the loss function of choice. As an optimizer function we chose 
+`adam` as it ensures that the learning rate and decay react adaptive during training.
+Finally, we tell the model to optimize the training process based on overall accuracy.
+Let's build a model and take a look at its parameters:
+```{r cnn-build}
+model = buildCNN(kernel = 50, nVariables = 1863, nOutcome = 12)
+model
+```
+In total, the current network consists of 135,830 weights to be trained. 
+In the output shape column we can observe the shape transformation of the input 
+data from a 1D-array of size 1814 after the first convolutional layer with 8 filters
+to an 1D-output of shape 12. We can now take a look how the model performs on our data.
+But first we need to tranform the input data to arrays which can be understand
+by the `keras::fit()` function. We use `keras-backend` functionality for this.
+```{r cnn-testing, eval=FALSE }
+data = read.csv(file = paste0(ref, "reference_database.csv"), header = TRUE)
+
+K <- keras::backend()
+x_train = as.matrix(data[,1:ncol(data)-1])
+x = K$expand_dims(x_train, axis = 2L)
+x_train = K$eval(x)
+y_train = keras::to_categorical(as.numeric(data$class)-1, length(unique(data$class)))
+
+history = keras::fit(model, x = x_train, y = y_train,
+                               epochs=300,
+                               batch_size = 10)
+history
+plot(history)
+```
+
+```{r cnn-testing-background, echo=FALSE}
+history = readRDS(paste0(output,"cnn_exploration_history.rds"))
+history
+p = plot(history)
+p = p + theme_minimal()
+plotly::ggplotly(p)
+
+```
+We achived an accuracy of 0.98 in 300 epochs. Still this single value is hardly 
+an indicator for the generalization potential of the CNN because we did not use
+an independent validation data set on to evaluate the performance of the model on
+unseen data. But before evaluating the generalization performance, we analyse how
+the CNN reacts to different kernel sizes as well as some specific data transformations.
+To save some computation time we only evaluated a handful of data transformations 
+which evaluated positivly during the training process of RF and SVM. These are the
+raw data itself, normalised data, the Savitzkiy-Golay smoothed representations of these
+two and for the reason of comparision we also included the first derivative of 
+the raw spectrum since it did not evalute as robust during the training of SVM and RF.
+We apply a loop to calculate all the different combinations. Note also that we
+apply the `set.seed()` function before splitting the data. This way all different
+combinations of kernels and data transformation actually trains and evaluates on the
+exact same data set. This would not be valid if the generalization potential of
+the model was going to be assesed. But since we are interested in the performance
+of different kernel sizes and data transformation techniques it actually is beneficial
+for comparison if the different models train on the same data. Otherwise, it would
+not be possible to accout variations in performance either to the parameters or
+just because a different training and validation set was used. 
+```{r cnn-kernel-test, eval = FALSE}
+kernels = c(10,20,30,40,50,60,70,80,90,100,125,150,175,200)
+types = c("raw","norm","sg","sg.norm","raw.d1")
+results = data.frame(types = rep(0, length(kernels) * length(types)),
+                     kernel =rep(0, length(kernels) * length(types)),
+                     loss = rep(0, length(kernels) * length(types)),
+                     acc = rep(0, length(kernels) * length(types)),
+                     val_loss=rep(0, length(kernels) * length(types)),
+                     val_acc=rep(0, length(kernels) * length(types)))
+
+variables = ncol(data)-1
+counter = 1
+
+for (type in types){
+    if (type == "raw"){
+      tmp = data
+      variables = ncol(data)-1
+    }else{
+      tmp = preprocess(data[ ,1:ncol(data)-1], type = type)
+      variables = ncol(tmp)
+      tmp$class =data$class
+    }
+  for (kernel in kernels){
+
+    # splitting between training and test
+    set.seed(42)
+    index = caret::createDataPartition(y=tmp$class,p=.5)
+    training = tmp[index$Resample1,]
+    validation = tmp[-index$Resample1,]
+
+
+    # splitting predictors and labels
+    x_train = training[,1:variables]
+    y_train = training[,1+variables]
+    x_test = validation[,1:variables]
+    y_test = validation[,1+variables]
+
+    #number of preditors and unique targets
+    nOutcome = length(levels(y_train))
+
+    # function to get keras array for dataframes
+    K <- keras::backend()
+    df_to_karray <- function(df){
+      d = as.matrix(df)
+      d = K$expand_dims(d, axis = 2L)
+      d = K$eval(d)
+    }
+
+    # coerce data to keras structure
+    x_train = df_to_karray(x_train)
+    x_test = df_to_karray(x_test)
+    y_train = keras::to_categorical(as.numeric(y_train)-1,nOutcome)
+    y_test = keras::to_categorical(as.numeric(y_test)-1,nOutcome)
+    # contstruction of "large" neural network
+    model = prepNNET(kernel, variables, nOutcome)
+    history = keras::fit(model, x = x_train, y = y_train,
+                          epochs=200, validation_data = list(x_test,y_test),
+                          #callbacks =  callback_tensorboard(paste0(output,"nnet/logs")),
+                          batch_size = 10 )
+    results$types[counter] = type
+    results$kernel[counter] = kernel
+    results$loss[counter] = history$metrics$loss[100]
+    results$acc[counter] = history$metrics$acc[100]
+    results$val_loss[counter] = history$metrics$val_loss[100]
+    results$val_acc[counter] = history$metrics$val_acc[100]
+    write.csv(results, file = paste0(output,"nnet/kernels.csv"))
+    counter = counter + 1
+  }
+
+  print(results)
+}
+
+```
+We now can plot the results with increasing kernel sizes on the x-axis, accuracy 
+values for the validation data set on the x-axis and different lines for data 
+transformations.
+```{r cnn-kernel-results, echo = FALSE}
+results = read.csv(paste0(output,"nnet/kernels.csv"))
+```
+
+
+```{r cnn-plot-kernel, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(plotly)
+kernelPlot = ggplot(data = results, aes(x = kernel, y = val_acc))+
+  geom_line(aes(color=types,group=types), size = 1.5)+
+  ylab("validation accuracy")+
+  xlab("kernel size")+
+  theme_minimal()
+ggplotly(kernelPlot)
+
+```
+We can observe that the pattern of accuracy is highly variable dependent of the 
+kernel size as well as within and between different data transformations. To aid 
+the selection of an appropriate kernel size and data transformation we will calculate
+some statistic values to find the optimal configuration.
+```{r cnn-calc-kernelStats}
+kernelAcc = aggregate(val_acc ~ kernel, results, mean)
+kernelAcc = kernelAcc[order(-kernelAcc$val_acc), ]
+
+type = results[which(results$kernel == kernelAcc$kernel[1]),]
+type = type[order(-type$val_acc), ]
+
+```
+```{r cnn-print-tables, echo = FALSE}
+knitr::kable(kernelAcc)
+knitr::kable(type)
+```
+
+On average, a kernel size of 70 delivered the highest accuracy values yielding to
+an accuracy of 0.83. For this kernel size the Savitzkiy-Golay smoothed data set
+yielded to the highest accuracy of 0.90. We will thus proceed to work the smoothed 
+data and a kernel size of 70.
+
+## Citations on this page

@@ -175,8 +175,9 @@ createTrainingSet = function(data, category = "class",
 }
 
 
-meanplot = function(data,wavenumbers,class){
+meanplot = function(data,class){
   #prpare data
+  wvn =  as.numeric(stringr::str_remove(names(data), "wvn")[-ncol(data)])
   cldata = data[data$class == class,]
   MIN = Rfast::colMins(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
   MAX = Rfast::colMaxs(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)

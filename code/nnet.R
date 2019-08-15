@@ -1,4 +1,4 @@
-source("/mnt/SSD/polymer/polymeRID/code/setup.R")
+source("/mnt/SSD/polymer/polymeRID/code/setup_website.R")
 source("/mnt/SSD/polymer/polymeRID/code/functions.R")
 #system("source misc/cuda10.1-env")
 # reading data based on class control file
@@ -6,52 +6,53 @@ classes = readLines(paste0(ref, "classes.txt"))
 data = lapply(classes,function(class){
   print(class)
   files = list.files(ref, full.names=TRUE)
-  file = files[grep(paste(class, ".csv", sep=""), files)]
+  file = files[grep(paste("_", class,".csv", sep=""), files)]
   data = read.csv(file, header = TRUE)
   return(data)
 })
-data2 = do.call("rbind",data)
+data = do.call("rbind",data)
+
+kernels = c(10,20,30,40,50,60,70,80,90,100,125,150,175,200)
+types = c("raw","norm","sg","sg.norm","raw.d1")
 
 
-kernels = c(2:100)
-types = c("raw","norm", "sg", "sg.d1", "sg.d2",
-          "sg.norm", "sg.norm.d1", "sg.norm.d2",
-          "raw.d1", "raw.d2", "norm.d1", "norm.d2")
-types = "raw"
+results = data.frame(types = rep(0, length(kernels) * length(types)),
+                     kernel =rep(0, length(kernels) * length(types)),
+                     loss = rep(0, length(kernels) * length(types)),
+                     acc = rep(0, length(kernels) * length(types)),
+                     val_loss=rep(0, length(kernels) * length(types)),
+                     val_acc=rep(0, length(kernels) * length(types)))
 
+variables = ncol(data)-1
+counter = 1
 
-results = data.frame(kernel =kernels,
-                     loss = rep(0,length(kernels)),
-                     acc = rep(0,length(kernels)),
-                     val_loss=rep(0,length(kernels)),
-                     val_acc=rep(0,length(kernels)))
+  for (type in types){
+    if (type == "raw"){
+      tmp = data
+      variables = ncol(data)-1
+    }else{
+      tmp = preprocess(data[ ,1:ncol(data)-1], type = type)
+      variables = ncol(tmp)
+      tmp$class =data$class
+    }
+
 
 
 for (kernel in kernels){
 
 
-  for (type in types){
-    if (type == "raw"){
-      data = data2
-    }else{
-      data = preprocess(data2[,1:variables], type = type)
-      data$class =data2$class
-    }
-    # we keep kernel size fixed at 50
-    # this is apprx. window for peaks
-    variables = ncol(data)-1
     # splitting between training and test
     set.seed(42)
-    index = caret::createDataPartition(y=data$class,p=.5)
-    train = data[index$Resample1,]
-    test = data[-index$Resample1,]
+    index = caret::createDataPartition(y=tmp$class,p=.5)
+    training = tmp[index$Resample1,]
+    validation = tmp[-index$Resample1,]
 
 
     # splitting predictors and labels
-    x_train = train[,1:variables]
-    y_train = train[,1+variables]
-    x_test = test[,1:variables]
-    y_test = test[,1+variables]
+    x_train = training[,1:variables]
+    y_train = training[,1+variables]
+    x_test = validation[,1:variables]
+    y_test = validation[,1+variables]
 
     #number of preditors and unique targets
     nOutcome = length(levels(y_train))
@@ -59,9 +60,9 @@ for (kernel in kernels){
     # function to get keras array for dataframes
     K <- keras::backend()
     df_to_karray <- function(df){
-      tmp = as.matrix(df)
-      tmp = K$expand_dims(tmp, axis = 2L)
-      tmp = K$eval(tmp)
+      d = as.matrix(df)
+      d = K$expand_dims(d, axis = 2L)
+      d = K$eval(d)
     }
 
     # coerce data to keras structure
@@ -79,22 +80,23 @@ for (kernel in kernels){
 
     print(paste0("Training model with kernel size ",kernel," and preprocessing ",type))
     history = keras::fit(model, x = x_train, y = y_train,
-                          epochs=300, validation_data = list(x_test,y_test),
-                          callbacks =  callback_tensorboard(paste0(output,"nnet/logs")),
+                          epochs=200, validation_data = list(x_test,y_test),
+                          #callbacks =  callback_tensorboard(paste0(output,"nnet/logs")),
                           batch_size = 10 )
-
-    saveRDS(model, file = paste0(output,"nnet/large/large_model_",type,"_kernel_",kernel,".rds"))
-    saveRDS(history, file = paste0(output,"nnet/large/large_history_",type,"_kernel_",kernel,".rds"))
-    results$loss[results$kernel == kernel] = history$metrics$loss[100]
-    results$acc[results$kernel == kernel] = history$metrics$acc[100]
-    results$val_loss[results$kernel == kernel] = history$metrics$val_loss[100]
-    results$val_acc[results$kernel == kernel] = history$metrics$val_acc[100]
-
+    saveRDS(history, file = paste0(output,"nnet/history_",type,"_kernel_",kernel,".rds"))
+    results$types[counter] = type
+    results$kernel[counter] = kernel
+    results$loss[counter] = history$metrics$loss[100]
+    results$acc[counter] = history$metrics$acc[100]
+    results$val_loss[counter] = history$metrics$val_loss[100]
+    results$val_acc[counter] = history$metrics$val_acc[100]
+    write.csv(results, file = paste0(output,"nnet/kernels.csv"))
+    counter = counter + 1
   }
 
   print(results)
 }
 
-write.csv(results, file = paste0(output,"nnet/large/large_kernels.csv"))
+
 
 
