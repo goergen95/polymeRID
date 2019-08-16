@@ -45,9 +45,11 @@ samples = as.data.frame(do.call("rbind",samples))
 names(samples) = names(data)[-ncol(data)]
 
 dummy = as.matrix(samples)
-baslineDummy = baseline(dummy,method="rfbaseline",span=NULL,NoXP=64,maxit=c(10))
-spectra = getCorrected(baslineDummy)
+baselineDummy = baseline(dummy,method="rfbaseline",span=NULL,NoXP=64,maxit=c(10))
+#baselineDummy = baseline(dummy, method="rollingBall", wm = 500, ws = 500 )
+spectra = getCorrected(baselineDummy)
 samples = as.data.frame(spectra)
+
 
 files = list.files(model, full.names = TRUE)
 rfModRaw = readRDS(files[grep("rfModRaw.rds", files)])
@@ -130,20 +132,21 @@ if (TYPE == "FUSION"){
     values = as.numeric(hit)
     sample = read.table(sampleList[id])
     names(sample) = c("wavenumbers", "reflectance")
-    if(values[1] < .5) level = "very low agreement"
-    if(values[1] >= .5 & values[1] < .6) level = "low agreement"
-    if(values[1] >= .6 & values[1] < .7) level = "medium agreement"
-    if(values[1] >= .7 & values[1] < .8) level = "high agreement"
-    if(values[1] >= .9 ) level = "very high agreement"
+    if(values[1] < .5) level = "no agreement"
+    if(values[1] >= .5 & values[1] < .6) level = "very low agreement"
+    if(values[1] >= .6 & values[1] < .7) level = "low agreement"
+    if(values[1] >= .7 & values[1] < .8) level = "medium agreement"
+    if(values[1] >= .8 & values[1] < .9) level = "high agreement"
+    if(values[1] >= .9) level = "very high agreement"
     results$level[id] = level
 
     annotation = paste0(level,"\n",
                         classes[1], ": ", round(values[1], 3), "\n",
                         classes[2], ": ", round(values[2], 3), "\n",
                         classes[3], ": ", round(values[3], 3))
-    class1 = samplePlot(data = data, sample = sample, class = classes[1], prob = annotation, name = ids[id], wavenumbers = wavenumbers)
-    class2 = samplePlot(data = data, sample = sample, class = classes[2], wavenumbers = wavenumbers)
-    class3 = samplePlot(data = data, sample = sample, class = classes[3], wavenumbers = wavenumbers)
+    class1 = samplePlot(data = data, sample = sample, class = classes[1], prob = annotation, name = ids[id])
+    class2 = samplePlot(data = data, sample = sample, class = classes[2])
+    class3 = samplePlot(data = data, sample = sample, class = classes[3])
     multiclass = gridExtra::grid.arrange(class1,class2,class3)
     ggsave(plot=multiclass,file=paste0(plots,"/",ids[id],"_probClasses.png"),dpi=300,device="png",units="cm",width=50,height=30)
   }
