@@ -21,6 +21,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -250,6 +253,63 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#section-TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#section-TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -257,6 +317,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="section-TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -309,7 +379,7 @@ div.section {
 }
 </style>
 
-<div class="fluid-row" id="header">
+<div class="fluid-row" id="section-header">
 
 
 
@@ -321,7 +391,7 @@ div.section {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -330,7 +400,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -339,10 +409,10 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-08-15
+<strong>Last updated:</strong> 2019-08-19
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>polymeRID/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -354,16 +424,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <hr>
 </div>
 <div id="checks" class="tab-pane fade">
-<div id="workflowr-checks" class="panel-group">
+<div id="section-workflowr-checks" class="panel-group">
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="section-strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -373,7 +443,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
 </p>
 </div>
-<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div id="section-strongEnvironmentstrongempty" class="panel-collapse collapse">
 <div class="panel-body">
 <p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
 </div>
@@ -385,7 +455,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190729code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190729)</code> </a>
 </p>
 </div>
-<div id="strongSeedstrongcodesetseed20190729code" class="panel-collapse collapse">
+<div id="section-strongSeedstrongcodesetseed20190729code" class="panel-collapse collapse">
 <div class="panel-body">
 <p>The command <code>set.seed(20190729)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
 </div>
@@ -397,7 +467,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
 </p>
 </div>
-<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div id="section-strongSessioninformationstrongrecorded" class="panel-collapse collapse">
 <div class="panel-body">
 <p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
 </div>
@@ -409,7 +479,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
 </p>
 </div>
-<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div id="section-strongCachestrongnone" class="panel-collapse collapse">
 <div class="panel-body">
 <p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
 </div>
@@ -421,7 +491,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
 </p>
 </div>
-<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div id="section-strongFilepathsstrongrelative" class="panel-collapse collapse">
 <div class="panel-body">
 <p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
 </div>
@@ -430,10 +500,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreef3451a996a93915c8416384808242b42acd3335atargetblankf3451a9a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/f3451a996a93915c8416384808242b42acd3335a" target="_blank">f3451a9</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreec6ba3c03587ae0241ea1ead406b8818a76a0c0d3targetblankc6ba3c0a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/c6ba3c03587ae0241ea1ead406b8818a76a0c0d3" target="_blank">c6ba3c0</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreef3451a996a93915c8416384808242b42acd3335atargetblankf3451a9a" class="panel-collapse collapse">
+<div id="section-strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreec6ba3c03587ae0241ea1ead406b8818a76a0c0d3targetblankc6ba3c0a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -457,6 +527,7 @@ Ignored files:
     Ignored:    output/testRunIII/
     Ignored:    packrat/lib-R/
     Ignored:    packrat/lib-ext/
+    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/00LOCK-curl/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/BH/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/FactoMineR/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/IDPmisc/
@@ -467,6 +538,7 @@ Ignored files:
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/ModelMetrics/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/R6/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/RColorBrewer/
+    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/RCurl/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/Rcpp/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/RcppArmadillo/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/RcppEigen/
@@ -485,6 +557,7 @@ Ignored files:
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/baseline/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/bit/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/bit64/
+    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/bitops/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/boot/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/callr/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/car/
@@ -594,6 +667,7 @@ Ignored files:
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/rmarkdown/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/rpart/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/rprojroot/
+    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/rsconnect/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/rstudioapi/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/scales/
     Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/scatterplot3d/
@@ -633,7 +707,35 @@ Ignored files:
     Ignored:    smp/20190812_1731_NNET/plots/
     Ignored:    smp/20190812_1733_NNET/files/
     Ignored:    smp/20190812_1733_NNET/plots/
+    Ignored:    smp/20190815_1847_FUSION/
     Ignored:    website/
+
+Untracked files:
+    Untracked:  smp/120619_W2_1000_1.txt
+    Untracked:  smp/120619_W2_1000_2.txt
+    Untracked:  smp/120619_W2_300_1.txt
+    Untracked:  smp/120619_W2_300_2.txt
+    Untracked:  smp/120619_W2_300_3.txt
+    Untracked:  smp/120619_W2_300_4.txt
+    Untracked:  smp/120619_W2_300_5.txt
+    Untracked:  smp/120619_W2_500_1.txt
+    Untracked:  smp/120619_W2_500_2.txt
+    Untracked:  smp/120619_W2_500_3.txt
+    Untracked:  smp/120619_W2_500_4.txt
+    Untracked:  smp/120619_W2_500_5.txt
+    Untracked:  smp/120619_W2_500_6.txt
+    Untracked:  smp/120619_W2_500_7.txt
+
+Unstaged changes:
+    Modified:   analysis/cnn_calibration.Rmd
+    Modified:   analysis/cnn_exploration.Rmd
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/preparation.Rmd
+    Modified:   classification.R
+    Modified:   code/cnn_cv_K70.R
+    Modified:   code/functions.R
+    Modified:   code/nnet.R
+    Modified:   code/plot_functions.R
 
 </code></pre>
 <p>
@@ -672,6 +774,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/goergen95/polymeRID/b125bc5d31fa7cf48ba238c5e001fff52c169992/docs/preparation.html" target="_blank">b125bc5</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-08-16
+</td>
+<td>
+fixed error with pca in classification - now based of training data pca
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -900,8 +1019,10 @@ included preparation
 </div>
 </div>
 </div>
-<p>For the current project we used a data base published by <span class="citation">Primpke et al. (<a href="#ref-Primpke2018">2018</a>)</span> online. The data base can be downloaded <a href="https://static-content.springer.com/esm/art%3A10.1007%2Fs00216-018-1156-x/MediaObjects/216_2018_1156_MOESM2_ESM.xlsx">here</a>. The authors state the samples were collected based on the FTIR-spectrometer Bruker Tensor 27 System for the spectral range 4000 to 40 1/cm. Additionally, some data of polymer-based fibers and spectra of biological origins were received from the <a href="https://www.faserinstitut.de/">Bremer Faserinstitut</a>. During preprocessing, they applied a concave rubberband correction based on 10 iterations and 64 baseline points. They also excluded the C02 band between 2420 to 2200 1/cm by setting the data points to 0. This should be kept in mind, since the inclusion of additional reference samples requires the same procedure for the data base to stay in a consistent state. The data provided by <span class="citation">Primpke et al. (<a href="#ref-Primpke2018">2018</a>)</span> shows a spectral resolution of 2.1 1/cm. Additional reference samples need be resampled to the same spectral resolution.</p>
-<p>To ensure this, the data base was read into R and the wave number index was saved in a separate file for future use.</p>
+<div id="section-reference-data" class="section level2">
+<h2>Reference Data</h2>
+<p>For this project we used a data base published by <span class="citation">Primpke et al. (<a href="#section-ref-Primpke2018">2018</a>)</span> online. The data base can be downloaded <a href="https://static-content.springer.com/esm/art%3A10.1007%2Fs00216-018-1156-x/MediaObjects/216_2018_1156_MOESM2_ESM.xlsx">here</a>. The authors state the samples were collected based on the FTIR-spectrometer Bruker Tensor 27 System for the spectral range 4000 to 40 1/cm. Additionally, some data of polymer-based fibers and spectra of biological origins were received from the <a href="https://www.faserinstitut.de/">Bremer Faserinstitut</a>. During preprocessing, they applied a concave rubberband correction based on 10 iterations and 64 baseline points. They also excluded the C02 band between 2420 to 2200 1/cm by setting the data points to 0. This should be kept in mind, since the inclusion of additional reference samples requires the same procedure for the data base to stay in a consistent state. The data provided by <span class="citation">Primpke et al. (<a href="#section-ref-Primpke2018">2018</a>)</span> shows a spectral resolution of 2.1 1/cm. Additional reference samples need to be resampled to the same spectral resolution and the same baseline correction should be applied.</p>
+<p>To ensure consistency, the data base was read into R and the wavenumbers were saved in a separate file for the future use of resampling additional reference spectra.</p>
 <pre class="r"><code>library(openxlsx)
 url = &quot;https://static-content.springer.com/esm/art%3A10.1007%2Fs00216-018-1156-x/MediaObjects/216_2018_1156_MOESM2_ESM.xlsx&quot;
 
@@ -910,12 +1031,15 @@ data = openxlsx::read.xlsx(url)
 wavenumbers = as.numeric(names(data)[2:1864])
 # saving wavenumbers to reference sample directory
 saveRDS(wavenumbers, paste0(ref, &quot;wavenumbers.rds&quot;))</code></pre>
-<p>We can take a look at the distribution of the different classes found in the data base. Here, I only print the 20 most common classes since there are a lot of reference samples only found once.</p>
+<p>An important feature of any data base is the distribution of the different classes. Here, we only print the 20 most common classes, since there are a lot of reference samples only found once or twice within the data base.</p>
 <pre class="r"><code>data$Abbreviation = as.factor(data$Abbreviation)
 summary(data$Abbreviation)[1:10]</code></pre>
 <pre><code>  PES    PP  LDPE  HDPE   PET    PE Nylon    PA    PS   PUR 
    15    12    11    10     9     8     7     7     7     7 </code></pre>
-<p>Because we are interested in assigning the right class to potential plastic particles, the most important classes found in the data base to us are the ones of artificial origin. However, sometimes also particles of biological origins are subject to spectral analysis, because they resemble the appearance of micro plastics. Any machine learning algorithm trained only with reference samples from plastics would eventually assign a plastic class also to the particles of biological origin. To reduce the error of false positives, we include some of the samples of biological origin based on broad classes.</p>
+</div>
+<div id="section-construction-of-the-data-base" class="section level2">
+<h2>Construction of the Data Base</h2>
+<p>We are interested in assigning the correct class to potential plastic particles. The most important classes found in the data base to us are thus the ones of artificial polymer origin. However, sometimes also particles of biological origin will be subject to a spectral analysis, because they resemble the appearance of microplastics in environmental samples. Any machine learning algorithm trained only with reference samples from plastics would eventually assign a plastic-class also to the particles of biological origin. It will just assign the class with the greatest similarity to the classes it learned. This can lead to so-called false positive errors. To reduce the error of false positives, we include some of the samples of biological origin as well. We summaries these samples to broader classes.</p>
 <pre class="r"><code># furs and wools
 indexFur = grep(&quot;fur&quot;, data$Abbreviation)
 indexWool = grep(&quot;wool&quot;, data$Abbreviation)
@@ -951,13 +1075,16 @@ syntPolymer$class = as.character(classes)
 
 # lets group together some synthetic polymer classes
 syntPolymer$class[grep(&quot;Nylon&quot;,syntPolymer$class)] = &quot;PA&quot;</code></pre>
-<p>We can now bind the reference samples together and take a look at the distribution of classes in the resulting data frame.</p>
+</div>
+<div id="section-class-distribution" class="section level2">
+<h2>Class Distribution</h2>
+<p>We now bind the reference samples together and take a look at the distribution of classes in the resulting data frame, which is the concrete data base for the following calculations.</p>
 <pre class="r"><code>data = rbind(furs,wood,fibre,syntPolymer) 
 data$class = as.factor(data$class)
 summary(data$class)</code></pre>
 <pre><code>FIBRE   FUR  HDPE  LDPE    PA    PE   PES   PET    PP    PS   PUR  WOOD 
    27    23    10    11    14     8    15     9    12     7     7     4 </code></pre>
-<p>We see that we have in total 93 (53%) reference samples of plastic polymers and 44 (47%) of biological origin. Within the plastic samples, we find that the data is very balanced with no single class showing less than 7 samples. For the samples of biological origin, however, the class fiber dominates the class distribution. This could prove as an disadvantage if a machine learning algorithm picks up this unbalance by minimizing its error rate simply by more frequently predicting the fiber class. At this point, we will leave the resulting data base as it is and save it to disk. We save the data in individual files as well as in a comprehensive data base in csv format. This way we ensure that later extensions to the data base easily to manage.</p>
+<p>In total, 93 (53%) reference samples of plastic polymers are present in the data base and 44 (47%) of biological origin. Within the plastic samples, we find that the data is very balanced with no single class showing less than 7 samples. For the samples of biological origin, however, the class <code>FIBRE</code> dominates the distribution. This could prove as an disadvantage if a machine learning algorithm picks up this unbalance by minimizing its error rate simply by more frequently predicting the <code>FIBRE</code> class. At this point, we will leave the resulting data base as it is and save it to disk. We save the data in individual files as well as in a comprehensive data base in csv format. This way we ensure that later extensions to the data base are easy to manage.</p>
 <pre class="r"><code>write.csv(data, file = paste0(ref, &quot;reference_database.csv&quot;), row.names=FALSE)
 
 # writing class control file
@@ -969,10 +1096,13 @@ for (class in classIndex){
 }
 
 write(classIndex, paste0(ref, &quot;classes.txt&quot;))</code></pre>
-<div id="citations-on-this-page" class="section level2">
+<iframe src="https://goergen95.shinyapps.io/spectra/?showcase=0" width="672" height="500px">
+</iframe>
+</div>
+<div id="section-citations-on-this-page" class="section level2">
 <h2>Citations on this page</h2>
-<div id="refs">
-<div id="ref-Primpke2018">
+<div id="section-refs">
+<div id="section-ref-Primpke2018">
 <p>Primpke, Sebastian, Marisa Wirth, Claudia Lorenz, and Gunnar Gerdts. 2018. “Reference database design for the automated analysis of microplastic samples based on Fourier transform infrared (FTIR) spectroscopy.” <em>Analytical and Bioanalytical Chemistry</em> 410 (21). Analytical; Bioanalytical Chemistry: 5131–41. <a href="https://doi.org/10.1007/s00216-018-1156-x">https://doi.org/10.1007/s00216-018-1156-x</a>.</p>
 </div>
 </div>
@@ -982,7 +1112,7 @@ write(classIndex, paste0(ref, &quot;classes.txt&quot;))</code></pre>
 <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
 </button>
 </p>
-<div id="workflowr-sessioninfo" class="collapse">
+<div id="section-workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 3.6.1 (2019-07-05)
 Platform: x86_64-pc-linux-gnu (64-bit)
@@ -1016,16 +1146,18 @@ other attached packages:
 loaded via a namespace (and not attached):
  [1] reticulate_1.13  tidyselect_0.2.5 xfun_0.8         purrr_0.3.2     
  [5] lattice_0.20-38  colorspace_1.4-1 generics_0.0.2   htmltools_0.3.6 
- [9] yaml_2.2.0       base64enc_0.1-3  rlang_0.4.0      pillar_1.4.2    
-[13] glue_1.3.1       withr_2.1.2      foreach_1.4.7    plyr_1.8.4      
-[17] munsell_0.5.0    gtable_0.3.0     zip_2.0.3        codetools_0.2-16
-[21] evaluate_0.14    knitr_1.24       SparseM_1.77     tfruns_1.4      
-[25] class_7.3-15     Rcpp_1.0.2       scales_1.0.0     backports_1.1.4 
-[29] jsonlite_1.6     fs_1.3.1         digest_0.6.20    stringi_1.4.3   
-[33] grid_3.6.1       rprojroot_1.3-2  tools_3.6.1      lazyeval_0.2.2  
-[37] tibble_2.1.3     crayon_1.3.4     whisker_0.3-2    pkgconfig_2.0.2 
-[41] zeallot_0.1.0    Matrix_1.2-17    assertthat_0.2.1 rmarkdown_1.14  
-[45] iterators_1.0.12 R6_2.4.0         git2r_0.26.1     compiler_3.6.1  </code></pre>
+ [9] base64enc_0.1-3  yaml_2.2.0       rlang_0.4.0      later_0.8.0     
+[13] pillar_1.4.2     glue_1.3.1       withr_2.1.2      foreach_1.4.7   
+[17] plyr_1.8.4       munsell_0.5.0    gtable_0.3.0     zip_2.0.3       
+[21] codetools_0.2-16 evaluate_0.14    knitr_1.24       SparseM_1.77    
+[25] tfruns_1.4       httpuv_1.5.1     class_7.3-15     highr_0.8       
+[29] Rcpp_1.0.2       xtable_1.8-4     promises_1.0.1   scales_1.0.0    
+[33] backports_1.1.4  jsonlite_1.6     mime_0.7         fs_1.3.1        
+[37] digest_0.6.20    stringi_1.4.3    shiny_1.3.2      grid_3.6.1      
+[41] rprojroot_1.3-2  tools_3.6.1      lazyeval_0.2.2   tibble_2.1.3    
+[45] crayon_1.3.4     whisker_0.3-2    pkgconfig_2.0.2  zeallot_0.1.0   
+[49] Matrix_1.2-17    assertthat_0.2.1 rmarkdown_1.14   iterators_1.0.12
+[53] R6_2.4.0         git2r_0.26.1     compiler_3.6.1  </code></pre>
 </div>
 </div>
 
@@ -1043,6 +1175,8 @@ footer is added to webpages before the MathJax javascript. -->
 </script>
 
 
+</div>
+</div>
 
 </div>
 
@@ -1063,7 +1197,7 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function () {
-  window.buildTabsets("TOC");
+  window.buildTabsets("section-TOC");
 });
 
 $(document).ready(function () {
@@ -1075,6 +1209,32 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#section-TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

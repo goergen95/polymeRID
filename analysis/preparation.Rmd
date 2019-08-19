@@ -4,11 +4,12 @@ author: Darius Goergen
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
-    toc: false
+    toc: true
 editor_options:
   chunk_output_type: console
 bibliography: library.bib
 link-citations: yes
+runtime: shiny
 ---
 
 ```{r setup, include=FALSE, warning=FALSE, message=FALSE}
@@ -16,7 +17,8 @@ source("code/setup_website.R")
 source("code/functions.R")
 ```
 
-For the current project we used a data base published by @Primpke2018 online. 
+## Reference Data
+For this project we used a data base published by @Primpke2018 online. 
 The data base can be downloaded 
 [here](https://static-content.springer.com/esm/art%3A10.1007%2Fs00216-018-1156-x/MediaObjects/216_2018_1156_MOESM2_ESM.xlsx).
 The authors state the samples were collected based on the FTIR-spectrometer Bruker Tensor 27 System
@@ -27,11 +29,13 @@ iterations and 64 baseline points. They also excluded the C02 band between
 2420 to 2200 1/cm by setting the data points to 0. This should be kept in mind,
 since the inclusion of additional reference samples requires the same procedure
 for the data base to stay in a consistent state. The data provided by @Primpke2018 
-shows a spectral resolution of 2.1 1/cm. Additional reference samples need be
-resampled to the same spectral resolution.
+shows a spectral resolution of 2.1 1/cm. Additional reference samples need to be
+resampled to the same spectral resolution and the same baseline correction should 
+be applied.
 
-To ensure this, the data base was read into R and the wave number index was saved 
-in a separate file for future use.
+To ensure consistency, the data base was read into R and the wavenumbers were saved 
+in a separate file for the future use of resampling additional reference spectra.
+
 ```{r read-in-data}
 library(openxlsx)
 url = "https://static-content.springer.com/esm/art%3A10.1007%2Fs00216-018-1156-x/MediaObjects/216_2018_1156_MOESM2_ESM.xlsx"
@@ -43,23 +47,27 @@ wavenumbers = as.numeric(names(data)[2:1864])
 saveRDS(wavenumbers, paste0(ref, "wavenumbers.rds"))
 ```
 
-We can take a look at the distribution of the different classes found in the data base.
-Here, I only print the 20 most common classes since there are a lot of reference samples
-only found once.
+An important feature of any data base is the distribution of the different classes.
+Here, we only print the 20 most common classes, since there are a lot of reference samples
+only found once or twice within the data base. 
+
 ```{r analyse-classes}
 data$Abbreviation = as.factor(data$Abbreviation)
 summary(data$Abbreviation)[1:10]
 
 ```
 
-Because we are interested in assigning the right class to potential plastic particles, 
-the most important classes found in the data base 
-to us are the ones of artificial origin. However, sometimes also particles of 
-biological origins are subject to spectral analysis, because they resemble the 
-appearance of micro plastics. Any machine learning algorithm trained only with
-reference samples from plastics would eventually assign a plastic class also 
-to the particles of biological origin. To reduce the error of false positives, 
-we include some of the samples of biological origin based on broad classes.
+## Construction of the Data Base
+We are interested in assigning the correct class to potential plastic particles. 
+The most important classes found in the data base to us are thus the ones of 
+artificial polymer origin. However, sometimes also particles of biological origin
+will be subject to a spectral analysis, because they resemble the appearance of 
+microplastics in environmental samples. Any machine learning algorithm trained 
+only with reference samples from plastics would eventually assign a plastic-class 
+also to the particles of biological origin. It will just assign the class with the
+greatest similarity to the classes it learned. This can lead to so-called false 
+positive errors. To reduce the error of false positives, we include some of the 
+samples of biological origin as well. We summaries these samples to broader classes.
 
 ```{r retrieve-target-classes}
 # furs and wools
@@ -99,8 +107,11 @@ syntPolymer$class = as.character(classes)
 syntPolymer$class[grep("Nylon",syntPolymer$class)] = "PA"
 ```
 
-We can now bind the reference samples together and take a look at the distribution
-of classes in the resulting data frame.
+## Class Distribution
+
+We now bind the reference samples together and take a look at the distribution
+of classes in the resulting data frame, which is the concrete data base for the 
+following calculations.
 
 ```{r binding-data}
 data = rbind(furs,wood,fibre,syntPolymer) 
@@ -108,16 +119,17 @@ data$class = as.factor(data$class)
 summary(data$class)
 
 ```
-We see that we have in total 93 (53%) reference samples of plastic polymers and 
-44 (47%) of biological origin. Within the plastic samples, we find that the data 
+
+In total, 93 (53%) reference samples of plastic polymers are present in the data base
+and 44 (47%) of biological origin. Within the plastic samples, we find that the data 
 is very balanced with no single class showing less than 7 samples. For the samples
-of biological origin, however, the class fiber dominates the class distribution.
+of biological origin, however, the class `FIBRE` dominates the distribution.
 This could prove as an disadvantage if a machine learning algorithm picks up 
 this unbalance by minimizing its error rate simply by more frequently predicting
-the fiber class. At this point, we will leave the resulting data base as it is 
+the `FIBRE` class. At this point, we will leave the resulting data base as it is 
 and save it to disk.
 We save the data in individual files as well as in a comprehensive data base in 
-csv format. This way we ensure that later extensions to the data base  easily to
+csv format. This way we ensure that later extensions to the data base are easy to
 manage.
 
 ```{r write-data}
@@ -132,6 +144,10 @@ for (class in classIndex){
 }
 
 write(classIndex, paste0(ref, "classes.txt"))
+```
+
+```{r preparation-shiny-app, echo=FALSE}
+knitr::include_app("https://goergen95.shinyapps.io/spectra/", height = "500px")
 ```
 
 
