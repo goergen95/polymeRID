@@ -59,6 +59,12 @@ Source: CRAN
 Version: 1.1-2
 Hash: c0d56cd15034f395874c870141870c25
 
+Package: RCurl
+Source: CRAN
+Version: 1.95-4.12
+Hash: 261163f9c66d2a2c7ef8028765ed2838
+Requires: bitops
+
 Package: Rcpp
 Source: CRAN
 Version: 1.0.2
@@ -152,6 +158,11 @@ Source: CRAN
 Version: 0.9-7
 Hash: 4b195615d19ba49c114eb04e09e30a96
 Requires: bit
+
+Package: bitops
+Source: CRAN
+Version: 1.0-6
+Hash: 67d0775189fd0041d95abca618c5c07e
 
 Package: boot
 Source: CRAN
@@ -479,6 +490,12 @@ Hash: a524057ee44fa497c7a6738342dfaee3
 Requires: R6, generics, magrittr, reticulate, tensorflow, tfruns,
     zeallot
 
+Package: kerasR
+Source: CRAN
+Version: 0.6.1
+Hash: a44bf954349d5ad7097588f016c098d6
+Requires: reticulate
+
 Package: knitr
 Source: CRAN
 Version: 1.24
@@ -772,6 +789,12 @@ Source: CRAN
 Version: 1.3-2
 Hash: a25c3f70c166fb3fbabc410eb32b6366
 Requires: backports
+
+Package: rsconnect
+Source: CRAN
+Version: 0.8.15
+Hash: 719af4e7c0e9e66b54eeed20de52a6a8
+Requires: curl, jsonlite, openssl, packrat, rstudioapi, yaml
 
 Package: rstudioapi
 Source: CRAN

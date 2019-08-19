@@ -1,0 +1,120 @@
+---
+title: "Calibration"
+author: Darius Goergen
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+bibliography: library.bib
+link-citations: yes
+---
+
+```{r calibration-setup, echo=FALSE, warning=FALSE, message=FALSE}
+source("code/setup_website.R")
+source("code/functions.R")
+#data = read.csv(file = paste0(ref, "reference_database.csv"), header = TRUE)
+```
+
+
+## Overview
+
+For the calibration we implemented a decision fusion between the best performing
+models in the exploration stage. Since SVM-based models did not achieve very
+high accuracies we only included two RF models and two CNN. The RF models yielding 
+to the highest accuracies were trained with with the raw data and the Savitzkiy-Golay
+smoothed data. For the CNNs, we observed the highest accuracies with with the 
+second derivative of the raw data and with the second derivative of the normalized data. 
+These models are going to be used during calibration. To get an accuracy value
+for the fusion approach, again we use and cross-validation approach.
+
+## Cross Validation
+
+The cross-validation of the decision fusion was conducted on 10 folds and repeated
+5 times. The complete code can be found [here](https://github.com/goergen95/polymeRID/blob/master/code/FUSION.R).
+For every fold, 4 models are trained and evaluated against a 50% test split.
+The final decision is then achieved by combining the probability output of each model
+and assigning the class with the highest overall probability.
+
+```{r calibration-decision-fusion, eval=FALSE}
+    classRFRaw = as.character(predict(rfModRaw, pcaRaw_testing))
+    propRFRaw =  predict(rfModRaw, pcaRaw_testing, type = "prob")
+    classRFSG = as.character(predict(rfModSG, pcaSG_testing))
+    propRFSG = predict(rfModSG, pcaSG_testing, type = "prob")
+    classCNND2 = as.character(classes[keras::predict_classes(cnnD2, x_testD2)+1])
+    propCNND2 = keras::predict_proba(cnnD2, x_testD2)
+    classCNNND2 = as.character(classes[keras::predict_classes(cnnND2, x_testND2)+1])
+    propCNNND2 = keras::predict_proba(cnnND2, x_testND2)
+
+    # probability
+    probs = (propRFRaw + propRFSG + propCNND2 + propCNNND2) / 4
+    pred = lapply(1:nrow(probs), function(x){
+      which.max(probs[x,])
+    })
+
+    predVals = lapply(1:nrow(probs), function(x){
+      probs[x,unlist(pred)[x]]
+    })
+
+
+    predVals = unlist(predVals)
+    pred= names(unlist(pred))
+    obsv = as.character(testingRaw$class)
+
+    pred[which(pred %in% c("FIBRE","FUR","WOOD"))] = "OTHER"
+    obsv[which(obsv %in% c("FIBRE","FUR","WOOD"))] = "OTHER"
+
+    obsv = as.factor(obsv)
+    pred = as.factor(pred)
+    cfMat = caret::confusionMatrix(pred,obsv)
+```
+
+Note, that we combine the classes which are not synthetic polymers to a class called
+`OTHER` since we are only interested in the correct classification of plastic polymers.
+If a particle is correctly identified as non-plastic the main goal of the analysis
+is achieved, no matter if the different models disagree on exact non-plastic class.
+By using the `caret::confusionMatrix()` function we easily get overall accuracy values
+as well as class specific metrics. 
+
+## Results
+```{r calibration-read-Results, echo=FALSE}
+accuracies = readRDS(paste0(output, "fusion/meanAccuracyResults.rds"))
+classInfo = readRDS(paste0(output, "fusion/meanClassResults.rds"))
+```
+By calculating the average across all folds and all repeats
+we end up with our final accuracy results per class and in general.
+```{r calibration-accuracy, echo=FALSE}
+knitr::kable(round(accuracies[1:5],3), caption = "**Tab. 1**: Overall accuracy values for the decision fusion after cross-validation.",
+             col.names = "value")
+
+```
+
+We achieved an overall accuracy of **91.4%** with a Kappa coefficient of 
+0.89 (**Tab. 1**). This is accuracy is substantially higher than compared to the single model
+accuracies of RF and CNN. By the decision fusion and combining the non-synthetic 
+classes we were able to rise the accuracy about 5%.
+
+```{r calibration-classInfo, echo=FALSE}
+knitr::kable(round(classInfo,3), caption = "**Tab. 2**: Class specific accuracy metrics for the decision fusion after cross-validation.")
+```
+
+When we analyse the class specific accuracy metrics (**Tab. 2**) we observe that 
+the lowest sensitivity is 0.69 for `PES`. That means that `PES` is most likely to
+not be identified correctly. `PET` shows a similar low sensitivity value of 0.76.
+`PP` shows the highest sensitivity value of 1, which means that all samples classified
+as `PP` actually represent that class. Concerning the specificity, across all classes
+we observe similar values of about 0.99. In general, we can state that we achieved
+a very good distinction between non-synthetic polymers and microplastic polymers. 
+However, some microplastic polymers, such as `PES` and `PET` achieve only poor
+accuracies (**0.84** and **0.86** of balanced accuracy respectively). These shortcomings
+might be compensated for with future extensions of the training data base which could
+include more samples, especially for these two classes as well as others. In the end,
+the machine learning algorithms can only learn from the data base which is presented to them.
+Therefore, adding reference samples could prove beneficial when it comes to accuracy.
+
+
+
+
+
+

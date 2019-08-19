@@ -197,7 +197,7 @@ x_train = K$eval(x)
 y_train = keras::to_categorical(as.numeric(normd2.data$class)-1, length(unique(normd2.data$class)))
 
 cnnND2 = prepNNET(kernel = 90, variables = ncol(normd2.data)-1, nOutcome = length(unique(normd2.data$class)))
-history = fit(cnnD1, x_train, y_train, batch_size = 10, epochs = 300)
+history = fit(cnnND2, x_train, y_train, batch_size = 10, epochs = 300)
 keras::save_model_hdf5(cnnND2, filepath = paste0(mod, "BASE/cnnND2.hdf"))
 
 
