@@ -4,7 +4,7 @@ author: Darius Goergen
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
-    toc: false
+    toc: true
 editor_options:
   chunk_output_type: console
 bibliography: library.bib
@@ -16,22 +16,49 @@ source("code/setup_website.R")
 source("code/functions.R")
 ```
 
-Interesting stuff about CNNs.
+## Overview
 
+Convolutional Neural Networks (CNN) are mainly used in image processing 
+tasks [@Rawat2017]. However, they can also be applied to one-dimensional data sets,
+such as time-series or spectral data [@Liu2017@IsmailFawaz2019;@Ghosh2019;@Berisha2019].
+They mainly consist of three different types of layers, which most of the time
+are stacked into a sequential model for learning various patterns from some input data
+to model the desired output. The most relevant layer is the convolutional layer,
+which serve as extractors for features found in the imput [@Rawat2017]. They work
+on a specificed numbers of neurons, or filters, each serving as mapping function 
+for a specific range in the input data, also referred to as the kernel size. 
+They do not only map features from the input data, but also detect features in 
+the output of previous convolutional layers. This isachieved through adjusting 
+the weights associated with each filter based on a non-linear activation function. 
+Additionally, after some convolutional layers, pooling layers are most commonly 
+introduced in CNNs. These layers reduce the feature maps of previous layers and 
+are also associated with a function to choose which parameters are preserved. 
+Nowadays, most commonly max-pooling layers are used, preserving the maximum signal 
+from a feature map. Lastly, most CNNs end with a fully-connected-layer. 
+These layers are used to map the last feature map to the output. 
+This is the reason why its structure depends on the problem at hand. 
+For regression probles, this layer may only contain a single neuron while for 
+classifications problems it may contain `n`-neurons, each modelling the output of 
+a specific class. The network learns through what is called backpropagation. 
+It means that the training data is repeatedly presented to the network and 
+depending on an optimizer function the distance to the desired output is calculated.
+Then, the weights associated with the filters are updated and a new epoch of 
+presenting the training data to the CNN is started.
 
+## Model Architechture
 
 Unlike with the random forest and support vector machines, here we did not test
 for noise in the dataset. This is mainly due to limitations in computation time.
 The computation time was significantly reduced by installing the `keras` package
-in GPU mode based on the `CUDA` library of Nvidia. Interested readers in setting
-up a local machine for GPU computations with the R implementation of `keras` are 
-refered to the [About](about.html) section of this website. Still, CNNs remain
-computational intensive, since depending on the architecture severel thousands
+in GPU mode based on the `CUDA` library from [Nvidia](https://developer.nvidia.com/cuda-zone). 
+However, CNNs remain computational intensive, since depending on the architecture severel thousands
 of weights have to be trained. Here, we developed a simple two-block architecture
 of 4 convolutional layers in total. The number of filters, or feature extractors,
-increases with each layer by a factor of 2. We choose a rather 'deep' network
-architechture with 4 layers and only small numbers of filters. The code below
+increases with each layer by a factor of 2. We choose this network
+architechture with 4 layers and only small numbers of filters because it delivered
+relativly high accuracies in small computation times. The code below
 defines a function to set up and compile a CNN for a given kernel size.
+
 ```{r cnn-function}
 # expects that you have installed keras and tensorflow properly
 library(keras)
@@ -77,6 +104,7 @@ buildCNN <- function(kernel, nVariables, nOutcome){
 }
 
 ```
+
 The function expects three arguments as input. The first is the kernel size which
 specifies the width of the window which extracts features from the input data
 and subsequent layer outputs. Note that the kernel size is held constant throught
@@ -97,17 +125,29 @@ of classes is too high, for example in speech recognition problems, sparse categ
 crossentropy would be the loss function of choice. As an optimizer function we chose 
 `adam` as it ensures that the learning rate and decay react adaptive during training.
 Finally, we tell the model to optimize the training process based on overall accuracy.
-Let's build a model and take a look at its parameters:
+We can now compile a first model and take a look at its structure:
+
 ```{r cnn-build}
 model = buildCNN(kernel = 50, nVariables = 1863, nOutcome = 12)
 model
 ```
+
 In total, the current network consists of 135,830 weights to be trained. 
 In the output shape column we can observe the shape transformation of the input 
 data from a 1D-array of size 1814 after the first convolutional layer with 8 filters
-to an 1D-output of shape 12. We can now take a look how the model performs on our data.
-But first we need to tranform the input data to arrays which can be understand
-by the `keras::fit()` function. We use `keras-backend` functionality for this.
+to an 1D-output of shape 12. 
+
+## Training a CNN
+
+We can use our data base to start a training process with the CNN defined before.
+First, the input data needs to be transforemt to arrays which can be understood
+by the `keras::fit()` function. Here, we uses `keras-backend` functionality 
+to achieve this. Additionally, every training process needs to be initiated with 
+information on the number of epochs the training data is going to be presented. 
+We used a fix value of 300 epochs because beyond that value no substantial gain
+in accuracy was observed. Also, the training data is going to be presented in 
+batches of 10 observations, each.
+
 ```{r cnn-testing, eval=FALSE }
 data = read.csv(file = paste0(ref, "reference_database.csv"), header = TRUE)
 
@@ -124,7 +164,7 @@ history
 plot(history)
 ```
 
-```{r cnn-testing-background, echo=FALSE}
+```{r cnn-testing-background, echo=FALSE, fig.cap= "**Fig. 1**: Accuracy and loss values for exemplary training process."}
 history = readRDS(paste0(output,"cnn_exploration_history.rds"))
 history
 p = plot(history)
@@ -132,7 +172,10 @@ p = p + theme_minimal()
 plotly::ggplotly(p)
 
 ```
-We achived an accuracy of 0.98 in 300 epochs. Still this single value is hardly 
+
+## Kernel Search
+
+We achived an accuracy of 0.98 in 300 epochs (**Fig. 1**). Still this single value is hardly 
 an indicator for the generalization potential of the CNN because we did not use
 an independent validation data set on to evaluate the performance of the model on
 unseen data. But before evaluating the generalization performance, we analyse how
@@ -151,9 +194,11 @@ of different kernel sizes and data transformation techniques it actually is bene
 for comparison if the different models train on the same data. Otherwise, it would
 not be possible to accout variations in performance either to the parameters or
 just because a different training and validation set was used. 
+
 ```{r cnn-kernel-test, eval = FALSE}
 kernels = c(10,20,30,40,50,60,70,80,90,100,125,150,175,200)
-types = c("raw","norm","sg","sg.norm","raw.d1")
+types = c("raw","norm","sg","sg.norm","raw.d1", "sg.norm.d1", "sg.norm.d2",
+          "raw.d1","raw.d2","norm.d1","norm.d2")
 results = data.frame(types = rep(0, length(kernels) * length(types)),
                      kernel =rep(0, length(kernels) * length(types)),
                      loss = rep(0, length(kernels) * length(types)),
@@ -224,15 +269,19 @@ for (type in types){
 }
 
 ```
+
+## Results
+
 We now can plot the results with increasing kernel sizes on the x-axis, accuracy 
-values for the validation data set on the x-axis and different lines for data 
-transformations.
+values for the validation data set on the y-axis and different lines for the data 
+transformations (**Fig. 2**).
+
 ```{r cnn-kernel-results, echo = FALSE}
 results = read.csv(paste0(output,"nnet/kernels.csv"))
 ```
 
 
-```{r cnn-plot-kernel, message=FALSE, warning=FALSE}
+```{r cnn-plot-kernel, message=FALSE, warning=FALSE, echo= FALSE, fig.cap="**Fig. 2**: Accuracy results for different kernel sizes."}
 library(ggplot2)
 library(plotly)
 kernelPlot = ggplot(data = results, aes(x = kernel, y = val_acc))+
@@ -244,9 +293,14 @@ ggplotly(kernelPlot)
 
 ```
 We can observe that the pattern of accuracy is highly variable dependent of the 
-kernel size as well as within and between different data transformations. To aid 
-the selection of an appropriate kernel size and data transformation we will calculate
-some statistic values to find the optimal configuration.
+kernel size as well as between different data transformations. For example, the use
+of the second derivative of the Savitzkiy-Golay filtered data yields to very low
+accuracies across all kernel sizes. To aid the selection of an appropriate kernel 
+size and data transformation we can calculate some descriptive statistic values 
+to find optimal configurations. For example, we can look for the kernel size
+which delivers the highest accuracy in average. Also, we can search for the different
+data transformations and kernel sizes wich yielded to the highest accurcies.
+
 ```{r cnn-calc-kernelStats}
 kernelAcc = aggregate(val_acc ~ kernel, results, mean)
 kernelAcc = kernelAcc[order(-kernelAcc$val_acc), ]
@@ -254,15 +308,38 @@ kernelAcc = kernelAcc[order(-kernelAcc$val_acc), ]
 type = results[which(results$kernel == kernelAcc$kernel[1]),]
 type = type[order(-type$val_acc), ]
 
-```
-```{r cnn-print-tables, echo = FALSE}
-knitr::kable(kernelAcc)
-knitr::kable(type)
+highest = results[order(-results$val_acc),]
+
 ```
 
-On average, a kernel size of 70 delivered the highest accuracy values yielding to
-an accuracy of 0.83. For this kernel size the Savitzkiy-Golay smoothed data set
-yielded to the highest accuracy of 0.90. We will thus proceed to work the smoothed 
-data and a kernel size of 70.
+On average, a kernel size of 50 delivered the highest accuracy of 0.81 (**Tab. 1**). 
+A kernel size of 90 yielded to the second highest accuracy 
+results.
+
+```{r cnn-kernel-table, echo=FALSE}
+knitr::kable(kernelAcc, caption = "**Tab. 1**: Average performance of kernel size across data
+             preprocessing types.")
+```
+
+When we order the results according to the highest accuracy values achieved,
+we observe that there are only 4 preprocessing types and kernel sized which yielded
+to an accuracy of 0.9 or higher (**Tab. 2**). These are the second derivative of the normalised
+data which yielded to an accuracy of 0.91 at a kernel size of 90, the simple 
+Savitzkiy-Golay smoothed data with an accuracy of 0.9 at a kernel size of 70, 
+the second derivative of the raw data with an accuracy of 0.9 at a kernel size of
+90, and the first derivative of the normalised data with an accuracy of 0.9 at a 
+kernel size of 150.
+
+```{r cnn-highest hits, echo=FALSE}
+knitr::kable(highest[1:10,], caption = "**Tab. 2**: The ten highest accuracy results for 
+             different preprocessing types at varying kernel sizes.")
+```
+
+
+## Cross Validation
+
+After finding the optimal kernel sizes for different preprocessing techniques,
+a cross-validation approach was used to find the configuration with the optimal
+generalization potential. The documentation of the results can be found [here](cnn_crossvalidation.html)
 
 ## Citations on this page

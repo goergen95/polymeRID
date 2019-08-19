@@ -4,7 +4,7 @@ author: Darius Goergen
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
-    toc: false
+    toc: true
 editor_options:
   chunk_output_type: console
 bibliography: library.bib
@@ -21,7 +21,7 @@ wvn = readRDS(paste0(ref,"wavenumbers.rds"))
 
 
 
-## Welcome to my website on polymeRID!  
+## Introduction  
 
 
 Here I present the results of my work for a master's seminar at the 
@@ -41,7 +41,7 @@ distribution in the marine environment [@Auta2017] as well as in freshwater syst
 
 Different research questions demand for different methodologies for sampling,
 sample handling and laboratory analysis. However, the link between these 
-knowledge gaps is that any analysis of micro-plastics in the environment needs a 
+research fields is that any analysis of microplastics in the environment needs a 
 robust identification method to enable scientist to draw the right conclusions 
 and to bring forward recommendations to the public and decision makers to act upon
 their research findings.
@@ -49,40 +49,37 @@ their research findings.
 Evidently, there also exist a broad spectrum of different polymer identification
 strategies [@Loder2015;@Rocha-Santos2015a;@Shim2017], ranging from traditional microscopy 
 to spectroscopy as well as destructive methods of thermal analysis. A distinction
-has to be made concerning towards the extent of automation in identification
-processes. Lately, different approaches to automate in the identification process,
-either by individual elements or for whole samples on a focal plane, have reported 
-to the scientific community [@Masoumi2012;@Primpke2017;@Lorenzo-Navarro2018;@Zhang2018;@Primpke2019]
+has to be made towards the extent of automatisation in the identification
+process. Recently, different approaches to automate the task of polymer classification,
+either by for individual particles or for a whole collection of samples, e.g. on 
+a focal plane, have been reported to the scientific community [@Masoumi2012;@Primpke2017;@Lorenzo-Navarro2018;@Zhang2018;@Primpke2019]
 
 This project sets out to contribute to the ease of the cumbersome process of 
 classifying individual particles based on their spectral reflectance by hand.
 The idea is that up-to-date machine learning models applied to the 
 high-dimensional spectral data of particles found in environmental samples can 
 minimize the need for human intervention in the classification process and 
-thus significantly speed up the process of categorizing found particles.
-Other studies have reported substantial accuracies by applying different sorts
+thus significantly speed up the process of classification of particles.
+Other studies have reported substantial accuracies by applying different kinds
 of machine learning algorithms such as hierarchical clustering [@Primpke2017], 
 support-vector-machines [@bianco2019], random forest [@Hufnagl2019], as well as
-convolutional neural networks [@Liu2017] to classify micro plastics and other materials spectra.
+convolutional neural networks [@Liu2017] to classify the spectra of microplastics 
+and other materials found in environmental samples.
 
-This project was grouped into different working steps, which also were designed
-to allow reproducible workflows as well individual alteration of the code and data base. 
+This project was grouped into different working steps, which were designed 
+to allow the reproducibility of the workflows to the greatest extent possible
+as well as to allow alterations of the code and extensions to the data base. 
 These working steps are:    
 
-* [**Preparation**](preparation.html): At first the establishment of a comprehensive database of reference spectra was mandatory to allow the application of machine learning models. The preparation steps included spectral re-sampling and labeling of reference polymers and natural particles. Later, this database underwent some steps of baseline corrections as well as different level of pre-processing such as normalization and Savtizkiy-Golay filtering.  
+* [**Preparation**](preparation.html): At first the establishment of a comprehensive database of reference spectra was mandatory to allow the application of machine learning models. We used a OpenSource data base published by @Primpke2018. For potential extensions of the data base, we created a workflow of spectral resampling and baseline correction of reference polymers and other particles in accordance with the original data base.
 
-* [**Exploration**](exploration.html): At the different types of preprocessing techniques were assessed by a brute-force method in which all different levels of the data were presented to different machine learning models and their capability to correctly classify the data-set was captured. Additionally, different levels of noise was added to the data so that the models and preprocessing types which most robustly classify the spectra could be identified. 
+* [**Exploration**](exploration.html): Different types of preprocessing techniques were assessed by a cross-validation approach in which all different levels of the data were presented to a selection of machine learning models and their capability to correctly classify the data set was captured. Additionally, different levels of noise were added to the data so that the models and preprocessing types which most robustly classify polymer spectra could be identified. 
 
-* [**Calibration**](calibration.html): After the exploration stage, a applicable algorithm which can be calibrated to a potentially changing database needed to be established. That was important, so that the code can be used in the future as well e.g. when the reference database should be extended or the wave-numbers of interest might change.  
+* [**Calibration**](calibration.html): After the exploration stage, the best performing models were chosen to create a decision fusion model. A workflow was created to calibrate these models to a potentially changing data base when needed. That step is crucial, so that the work presented here can be used in the future, e.g. when the reference data base will be extended or in the case of a change in the spectral resolution of the samples.  
 
-* [**Classification**](classification.html): This last stage is the core part of the project in the sense that at this stage real environmental samples are to be classified in a user-friendly way to ease the categorization process. That means that some accuracy values of the classification need to be easily accessible as well as some possibilities for a human agent to assess the accuracy 
+* [**Classification**](classification.html): At this last stage of the project, a workflow was created to classify real environmental samples in a user-friendly way to ease the classification process. Here, some accuracy values of the classification are extracted and comprehensively handed to the user, as well as some plots for a visual confirmation of the classification results. This way, it is ensured that the results are easily accessible and the possibility for a human agent to assess the quality of
+the classification is implemented.
 
-
-```{r fig.cap = "**Fig.1**: Example of spectra characteristics for all PE spectra within the data base.", echo = FALSE}
-p = meanplot(data,wavenumbers = wvn, class = "PE")
-p = plotly::ggplotly(p)
-p
-```
 
 ## Citations on this page
 

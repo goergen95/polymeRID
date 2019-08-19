@@ -1,0 +1,165 @@
+---
+title: "CNN Cross Validation"
+author: Darius Goergen
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: false
+editor_options:
+  chunk_output_type: console
+bibliography: library.bib
+link-citations: yes
+---
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+source("code/setup_website.R")
+source("code/functions.R")
+data = read.csv(file = paste0(ref, "reference_database.csv"), header = TRUE)
+sg.data = preprocess(data[,1:ncol(data)-1], type = "sg")
+sg.data$class = data$class
+nOutcome = length(unique(data$class))
+results = read.csv(paste0(output,"nnet/kernels.csv"))
+highest = results[order(-results$val_acc),]
+```
+# Cross Validation
+
+Here, we test for the generalization potential of the CNNs trained with the 
+parameters yielding to the highest accuracy results. To this end, we perform a 
+10-fold cross-validation which is repeated 5 times. 
+```{r cnn-cv-highest, echo=FALSE}
+knitr::kable(highest[1:4,], caption = "**Tab. 1**: The ten highest accuracy results for 
+             different preprocessing types at varying kernel sizes.")
+```
+
+The following code takes the different levels of the input data and applies 
+the same cross-validation to each of the elements. The same folds are used, so that
+the results can be compared easily.
+
+```{r cnn-calibration-cv, eval = FALSE}
+
+data = read.csv(file = paste0(ref, "reference_database.csv"), header = TRUE)
+
+kernels = c(90,70,90,150)
+folds = 10
+repeats = 5
+p = 0.5
+nOutcome = length(unique(data$class))
+
+dataList = list()
+
+normd2.data = preprocess(data[,1:ncol(data)-1], type = "norm.d2")
+normd2.data$class = data$class
+dataList[["norm.d2"]] = normd2.data
+
+sg.data = preprocess(data[,1:ncol(data)-1], type = "norm")
+sg.data$class = data$class
+dataList[["sg"]] = sg.data
+
+rawd2.data = preprocess(data[,1:ncol(data)-1], type = "raw.d2")
+rawd2.data$class = data$class
+dataList[["raw.d2"]] = rawd2.data
+
+normd1.data = preprocess(data[,1:ncol(data)-1], type = "norm.d1")
+normd1.data$class = data$class
+dataList[["norm.d1"]] = nnormd1.data
+
+
+for (i in 1:length(dataList)){
+  tmp = dataList[[i]]
+  
+  # preparing data inputs
+  set.seed(42)
+  foldIndex = lapply(1:repeats, caret::createDataPartition, y=sg.tmp$class, times = folds, p=p)
+  foldIndex = do.call(c,foldIndex)
+  
+  cvData = list()
+  for (rep in 1:repeats){
+    rep_Index = foldIndex[(rep*folds-folds+1):(rep*folds)] #always jump to the correct number of folds forward for each repeat
+    
+    dataFold = lapply(1:folds,function(x){
+      
+      training = tmp[unlist(rep_Index[x]), ]
+      validation = tmp[-unlist(rep_Index[x]), ]
+      foldtmp = list(training,validation)
+      names(foldtmp) = c("training","validation")
+      return(foldtmp)
+    })
+    cvData[[rep]] = dataFold
+  }
+  results = data.frame(repeats = rep(0,repeats*folds),
+                       fold = rep(0,repeats*folds),
+                       loss = rep(0,repeats*folds),
+                       acc = rep(0,repeats*folds))
+  counter = 1
+  for (rep in 1:repeats){
+    #print(paste0("Starting repeat ",rep," out of ",repeats,"."))
+    for (fold in 1:folds){
+      
+      variables = ncol(cvData[[rep]][[fold]][[1]])-1
+      x_train = cvData[[rep]][[fold]][["training"]][,1:variables]
+      y_train = unlist(cvData[[rep]][[fold]][["training"]][1+variables])
+      x_test = cvData[[rep]][[fold]][["validation"]][,1:variables]
+      y_test = unlist(cvData[[rep]][[fold]][["validation"]][1+variables])
+      
+      # function to get keras array for dataframes
+      K <- keras::backend()
+      df_to_karray <- function(df){
+        tmp = as.matrix(df)
+        tmp = K$expand_dims(tmp, axis = 2L)
+        tmp = K$eval(tmp)
+      }
+      
+      # coerce data to keras structure
+      x_train = df_to_karray(x_train)
+      x_test = df_to_karray(x_test)
+      y_train = keras::to_categorical(as.numeric(y_train)-1,nOutcome)
+      y_test = keras::to_categorical(as.numeric(y_test)-1,nOutcome)
+      
+      # fitting the model
+      kernelMod = prepNNET(kernel, variables, nOutcome = nOutcome)
+      historyMod =  keras::fit(kernelMod, x = x_train, y = y_train,
+                               epochs=300,
+                               batch_size = 10 )
+      
+      evalK = keras::evaluate(kernelMod, x=x_test, y=y_test)
+      results$repeats[counter] = rep
+      results$fold[counter] = fold
+      results$loss[counter] = evalK$loss
+      results$acc[counter] = evalK$acc
+      print(results[counter,])
+      counter = counter + 1
+      write.csv(results, file = paste0(output,"nnet/cv/cvResults_K",kernel,".csv"))
+    }
+  }
+}
+
+```
+```{r cnn-calibration-readresults, echo = FALSE}
+results.normd2 = read.csv(paste0(output, "nnet/cv/cvResults_K90_norm.d2.csv"))
+results.sg = read.csv(paste0(output,"nnet/cv/cvResults_K70_sg.csv"))
+results.rawd2 = read.csv(paste0(output, "nnet/cv/cvResults_K90_raw.d2.csv"))
+results.normd1 = read.csv(paste0(output, "nnet/cv/cvResults_K150_norm.d1.csv"))
+```
+
+We can now retrive information about the accurcies for the complete cross-validation 
+process by calculating averages accross the accuracy values. 
+
+```{r cnn-calibration-aggregates}
+results = data.frame(type=c("norm.d2","sg","raw.d2","norm.d1"), accuracy = rep(0,4))
+results$accuracy[1] = round(mean(results.normd2$acc),3)
+results$accuracy[2] = round(mean(results.sg$acc),3)
+results$accuracy[3] = round(mean(results.rawd2$acc),3)
+results$accuracy[4] = round(mean(results.normd1$acc),3)
+results = results[order(-results$accuracy),]
+```
+```{r cnn-calibration-kntirOutput, echo=FALSE,}
+knitr::kable(results,caption = "**Tab. 2**: Results of the repeated cross-valiation for different preprocessing types.")
+```
+
+With an accuracy of approximatley 0.87 the use of the second derivative of the raw
+data yielded to the highes accuracy value when calculated in a cross-validation 
+approach. With 0.85 the second derivateve of the normalized data yielded to the 
+second highest accuracy.
+
+
+

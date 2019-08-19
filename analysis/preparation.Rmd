@@ -146,6 +146,14 @@ for (class in classIndex){
 write(classIndex, paste0(ref, "classes.txt"))
 ```
 
+## Spectra of Reference Samples
+Below one can find the spectra found within the data base. By selecting a class
+in the drop-down menu the plot of the respective class will be shown. The solid
+grey line in the center of the plot indicates the mean value for all samples for 
+the respective wavenumbers. The grey ribbon indicates the standard deviation from
+that mean value while the dashed lines show the minimum and the maximum found in
+the data base. 
+
 ```{r preparation-shiny-app, echo=FALSE, warning=FALSE, message=FALSE}
 knitr::include_app("https://goergen95.shinyapps.io/shiny_apps/", height = "500px")
 ```

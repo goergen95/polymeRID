@@ -14,8 +14,8 @@ link-citations: yes
 ```{r setup, include=FALSE, warning=FALSE, message=FALSE}
 source("code/setup_website.R")
 source("code/functions.R")
-library(plotly)
 ```
+
 
 The idea of the exploration stage is to find an optimal configuration between the
 hyper-parameters of the machine learning algorithms and different 

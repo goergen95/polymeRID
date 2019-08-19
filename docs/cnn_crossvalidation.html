@@ -13,7 +13,7 @@
 <meta name="author" content="Darius Goergen" />
 
 
-<title>Home</title>
+<title>CNN Cross Validation</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -21,9 +21,6 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -253,63 +250,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -317,16 +257,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -383,7 +313,7 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Home</h1>
+<h1 class="title toc-ignore">CNN Cross Validation</h1>
 <h4 class="author">Darius Goergen</h4>
 
 </div>
@@ -433,7 +363,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -711,6 +641,7 @@ Ignored files:
     Ignored:    website/
 
 Untracked files:
+    Untracked:  analysis/cnn_crossvalidation.Rmd
     Untracked:  smp/120619_W2_1000_1.txt
     Untracked:  smp/120619_W2_1000_2.txt
     Untracked:  smp/120619_W2_300_1.txt
@@ -728,12 +659,13 @@ Untracked files:
 
 Unstaged changes:
     Deleted:    Rplots.pdf
-    Modified:   analysis/cnn_calibration.Rmd
+    Deleted:    analysis/cnn_calibration.Rmd
     Modified:   analysis/cnn_exploration.Rmd
     Modified:   analysis/exploration.Rmd
     Modified:   analysis/index.Rmd
     Modified:   analysis/preparation.Rmd
     Modified:   analysis/rf_exploration.Rmd
+    Modified:   analysis/svm_exploration.Rmd
     Modified:   classification.R
     Modified:   code/cnn_cv_K70.R
     Modified:   code/functions.R
@@ -755,528 +687,211 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
-
 <p>
-These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
 </p>
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-File
-</th>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-<th>
-Message
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/2385fbc4a358ad383e48ee613c51de466f49f1a2/docs/index.html" target="_blank">2385fbc</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-14
-</td>
-<td>
-republish for layout change
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/5d28ce086cbe619d0fc42106ff15a04275c2d56d/analysis/index.Rmd" target="_blank">5d28ce0</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-14
-</td>
-<td>
-changed citation note
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/5d28ce086cbe619d0fc42106ff15a04275c2d56d/docs/index.html" target="_blank">5d28ce0</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-14
-</td>
-<td>
-changed citation note
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/c52182b28852210d205c6ae8ec5c5715077fbc69/analysis/index.Rmd" target="_blank">c52182b</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-rebuid website
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/c52182b28852210d205c6ae8ec5c5715077fbc69/docs/index.html" target="_blank">c52182b</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-rebuid website
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/6e92d0170f21f1e8f4ea9cd55612535cfccbfc67/docs/index.html" target="_blank">6e92d01</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/6cfd689b56021aeca0aa8d104fafff293d0aa77e/docs/index.html" target="_blank">6cfd689</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/5774923d62f16e752c2bd694b6a3dab2f33b7554/analysis/index.Rmd" target="_blank">5774923</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-included preparation
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/cbbd5b47ff00450ffd96b4669da1a8305fbbe3f4/docs/index.html" target="_blank">cbbd5b4</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/471e893e559623c4eb106fb5141a371cac2161a1/docs/index.html" target="_blank">471e893</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/b07b0a657ea791492fbc4813ed002b1f069d5cb9/analysis/index.Rmd" target="_blank">b07b0a6</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-update of index file
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/e8c8be288112955ae930b1ba6ab3d6c414e85ab6/docs/index.html" target="_blank">e8c8be2</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/342cd44e238f7c1cc8566f210eeec7d00773dab7/docs/index.html" target="_blank">342cd44</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/15bd467ead1241c023e7c4d5a1c7b5d2ee30f8ce/analysis/index.Rmd" target="_blank">15bd467</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-update of index file
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/3b99a1b949e57dc16bc548c91e8d6a350185db54/analysis/index.Rmd" target="_blank">3b99a1b</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-08
-</td>
-<td>
-fixed typos in index
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/32109b9672e33f0706f6772333181ea40eaca35e/docs/index.html" target="_blank">32109b9</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-07
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/7a32e1fee5472bf08f7448c95738d77bd54a4679/analysis/index.Rmd" target="_blank">7a32e1f</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-07
-</td>
-<td>
-included images in index
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/99906c83a4ead6818c44b5294032bdd2677e6386/docs/index.html" target="_blank">99906c8</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-07
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/7b2bbac10d1c56a2688c1317d45f2b16573e1a2f/analysis/index.Rmd" target="_blank">7b2bbac</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-07
-</td>
-<td>
-changed theme
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/5f2ca490675afc228021d4d263be0a2314015dbd/docs/index.html" target="_blank">5f2ca49</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-07
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/caf89e27f83b67040b85d6a819eff2ff89da7edc/analysis/index.Rmd" target="_blank">caf89e2</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-07
-</td>
-<td>
-wflow_publish(c(“analysis/index.Rmd”))
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/goergen95/polymeRID/348ad0a4900088fea1850923057f6f27743d2d6c/docs/index.html" target="_blank">348ad0a</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-05
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/5b8a2e6b34c96613b1680ccd4189a8a0228150d5/analysis/index.Rmd" target="_blank">5b8a2e6</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-08-05
-</td>
-<td>
-wflow_publish(c(“analysis/index.Rmd”))
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/6c813f46f73d2a468b97d45b5dc77370a3d7751a/analysis/index.Rmd" target="_blank">6c813f4</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-07-29
-</td>
-<td>
-implemented workflowr
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/goergen95/polymeRID/blob/d525cc26631d884643a5a5b052206ea8ed591a93/analysis/index.Rmd" target="_blank">d525cc2</a>
-</td>
-<td>
-goergen95
-</td>
-<td>
-2019-07-29
-</td>
-<td>
-Start workflowr project.
-</td>
-</tr>
-</tbody>
-</table>
-</div>
 <hr>
 </div>
 </div>
 </div>
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
-<p>Here I present the results of my work for a master’s seminar at the University of Marburg concerned with microplastic in the environment.<br />
-<br> <img src="assets/images/seperators.jpg" alt="Probe Seperators" /><br> <em>Photo of two sediment separators taken by Sarah Brüning</em></p>
-<p>Micro-plastic particles polluting the environment have been in the public focus for some time now. The scientific efforts of analyzing the occurrences of particles in the environment and their effects on ecosystems and human health is manifold, yet there is a lack of consensus on methods for sampling, sample handling, analysis and identification, especially for samples from aquatic ecosystems. Some of the most urgent research questions concerned with micro-plastic in the environment are the analysis of effects on biological lifeforms <span class="citation">(Zhang et al. <a href="#ref-Zhang2019">2019</a>)</span>, their movement and distribution in the marine environment <span class="citation">(Auta, Emenike, and Fauziah <a href="#ref-Auta2017">2017</a>)</span> as well as in freshwater systems <span class="citation">(Li, Liu, and Paul Chen <a href="#ref-Li2018b">2018</a>)</span>.</p>
-<p>Different research questions demand for different methodologies for sampling, sample handling and laboratory analysis. However, the link between these research fields is that any analysis of microplastics in the environment needs a robust identification method to enable scientist to draw the right conclusions and to bring forward recommendations to the public and decision makers to act upon their research findings.</p>
-<p>Evidently, there also exist a broad spectrum of different polymer identification strategies <span class="citation">(Löder and Gerdts <a href="#ref-Loder2015">2015</a>; Rocha-Santos and Duarte <a href="#ref-Rocha-Santos2015a">2015</a>; Shim, Hong, and Eo <a href="#ref-Shim2017">2017</a>)</span>, ranging from traditional microscopy to spectroscopy as well as destructive methods of thermal analysis. A distinction has to be made towards the extent of automatisation in the identification process. Recently, different approaches to automate the task of polymer classification, either by for individual particles or for a whole collection of samples, e.g. on a focal plane, have been reported to the scientific community <span class="citation">(Masoumi, Safavi, and Khani <a href="#ref-Masoumi2012">2012</a>; Primpke et al. <a href="#ref-Primpke2017">2017</a>; Lorenzo-Navarro et al. <a href="#ref-Lorenzo-Navarro2018">2018</a>; Zhang et al. <a href="#ref-Zhang2018">2018</a>; Primpke, Dias, and Gerdts <a href="#ref-Primpke2019">2019</a>)</span></p>
-<p>This project sets out to contribute to the ease of the cumbersome process of classifying individual particles based on their spectral reflectance by hand. The idea is that up-to-date machine learning models applied to the high-dimensional spectral data of particles found in environmental samples can minimize the need for human intervention in the classification process and thus significantly speed up the process of classification of particles. Other studies have reported substantial accuracies by applying different kinds of machine learning algorithms such as hierarchical clustering <span class="citation">(Primpke et al. <a href="#ref-Primpke2017">2017</a>)</span>, support-vector-machines <span class="citation">(V. Bianco P. Memmolo <a href="#ref-bianco2019">2019</a>)</span>, random forest <span class="citation">(Hufnagl et al. <a href="#ref-Hufnagl2019">2019</a>)</span>, as well as convolutional neural networks <span class="citation">(Liu et al. <a href="#ref-Liu2017">2017</a>)</span> to classify the spectra of microplastics and other materials found in environmental samples.</p>
-<p>This project was grouped into different working steps, which were designed to allow the reproducibility of the workflows to the greatest extent possible as well as to allow alterations of the code and extensions to the data base. These working steps are:</p>
-<ul>
-<li><p><a href="preparation.html"><strong>Preparation</strong></a>: At first the establishment of a comprehensive database of reference spectra was mandatory to allow the application of machine learning models. We used a OpenSource data base published by <span class="citation">Primpke et al. (<a href="#ref-Primpke2018">2018</a>)</span>. For potential extensions of the data base, we created a workflow of spectral resampling and baseline correction of reference polymers and other particles in accordance with the original data base.</p></li>
-<li><p><a href="exploration.html"><strong>Exploration</strong></a>: Different types of preprocessing techniques were assessed by a cross-validation approach in which all different levels of the data were presented to a selection of machine learning models and their capability to correctly classify the data set was captured. Additionally, different levels of noise were added to the data so that the models and preprocessing types which most robustly classify polymer spectra could be identified.</p></li>
-<li><p><a href="calibration.html"><strong>Calibration</strong></a>: After the exploration stage, the best performing models were chosen to create a decision fusion model. A workflow was created to calibrate these models to a potentially changing data base when needed. That step is crucial, so that the work presented here can be used in the future, e.g. when the reference data base will be extended or in the case of a change in the spectral resolution of the samples.</p></li>
-<li><p><a href="classification.html"><strong>Classification</strong></a>: At this last stage of the project, a workflow was created to classify real environmental samples in a user-friendly way to ease the classification process. Here, some accuracy values of the classification are extracted and comprehensively handed to the user, as well as some plots for a visual confirmation of the classification results. This way, it is ensured that the results are easily accessible and the possibility for a human agent to assess the quality of the classification is implemented.</p></li>
-</ul>
-</div>
-<div id="citations-on-this-page" class="section level2">
-<h2>Citations on this page</h2>
+<div id="cross-validation" class="section level1">
+<h1>Cross Validation</h1>
+<p>Here, we test for the generalization potential of the CNNs trained with the parameters yielding to the highest accuracy results. To this end, we perform a 10-fold cross-validation which is repeated 5 times.</p>
+<table>
+<caption><strong>Tab. 1</strong>: The ten highest accuracy results for different preprocessing types at varying kernel sizes.</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">X</th>
+<th align="left">types</th>
+<th align="right">kernel</th>
+<th align="right">loss</th>
+<th align="right">acc</th>
+<th align="right">val_loss</th>
+<th align="right">val_acc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>163</td>
+<td align="right">163</td>
+<td align="left">norm.d2</td>
+<td align="right">90</td>
+<td align="right">0.2898488</td>
+<td align="right">0.8961039</td>
+<td align="right">0.8323456</td>
+<td align="right">0.9142857</td>
+</tr>
+<tr class="even">
+<td>35</td>
+<td align="right">35</td>
+<td align="left">sg</td>
+<td align="right">70</td>
+<td align="right">0.2537513</td>
+<td align="right">0.9350649</td>
+<td align="right">1.3861195</td>
+<td align="right">0.9000000</td>
+</tr>
+<tr class="odd">
+<td>135</td>
+<td align="right">135</td>
+<td align="left">raw.d2</td>
+<td align="right">90</td>
+<td align="right">0.1529336</td>
+<td align="right">0.9350649</td>
+<td align="right">1.5874773</td>
+<td align="right">0.9000000</td>
+</tr>
+<tr class="even">
+<td>152</td>
+<td align="right">152</td>
+<td align="left">norm.d1</td>
+<td align="right">150</td>
+<td align="right">0.1060385</td>
+<td align="right">0.9740260</td>
+<td align="right">0.8856056</td>
+<td align="right">0.9000000</td>
+</tr>
+</tbody>
+</table>
+<p>The following code takes the different levels of the input data and applies the same cross-validation to each of the elements. The same folds are used, so that the results can be compared easily.</p>
+<pre class="r"><code>data = read.csv(file = paste0(ref, &quot;reference_database.csv&quot;), header = TRUE)
+
+kernels = c(90,70,90,150)
+folds = 10
+repeats = 5
+p = 0.5
+nOutcome = length(unique(data$class))
+
+dataList = list()
+
+normd2.data = preprocess(data[,1:ncol(data)-1], type = &quot;norm.d2&quot;)
+normd2.data$class = data$class
+dataList[[&quot;norm.d2&quot;]] = normd2.data
+
+sg.data = preprocess(data[,1:ncol(data)-1], type = &quot;norm&quot;)
+sg.data$class = data$class
+dataList[[&quot;sg&quot;]] = sg.data
+
+rawd2.data = preprocess(data[,1:ncol(data)-1], type = &quot;raw.d2&quot;)
+rawd2.data$class = data$class
+dataList[[&quot;raw.d2&quot;]] = rawd2.data
+
+normd1.data = preprocess(data[,1:ncol(data)-1], type = &quot;norm.d1&quot;)
+normd1.data$class = data$class
+dataList[[&quot;norm.d1&quot;]] = nnormd1.data
+
+
+for (i in 1:length(dataList)){
+  tmp = dataList[[i]]
+  
+  # preparing data inputs
+  set.seed(42)
+  foldIndex = lapply(1:repeats, caret::createDataPartition, y=sg.tmp$class, times = folds, p=p)
+  foldIndex = do.call(c,foldIndex)
+  
+  cvData = list()
+  for (rep in 1:repeats){
+    rep_Index = foldIndex[(rep*folds-folds+1):(rep*folds)] #always jump to the correct number of folds forward for each repeat
+    
+    dataFold = lapply(1:folds,function(x){
+      
+      training = tmp[unlist(rep_Index[x]), ]
+      validation = tmp[-unlist(rep_Index[x]), ]
+      foldtmp = list(training,validation)
+      names(foldtmp) = c(&quot;training&quot;,&quot;validation&quot;)
+      return(foldtmp)
+    })
+    cvData[[rep]] = dataFold
+  }
+  results = data.frame(repeats = rep(0,repeats*folds),
+                       fold = rep(0,repeats*folds),
+                       loss = rep(0,repeats*folds),
+                       acc = rep(0,repeats*folds))
+  counter = 1
+  for (rep in 1:repeats){
+    #print(paste0(&quot;Starting repeat &quot;,rep,&quot; out of &quot;,repeats,&quot;.&quot;))
+    for (fold in 1:folds){
+      
+      variables = ncol(cvData[[rep]][[fold]][[1]])-1
+      x_train = cvData[[rep]][[fold]][[&quot;training&quot;]][,1:variables]
+      y_train = unlist(cvData[[rep]][[fold]][[&quot;training&quot;]][1+variables])
+      x_test = cvData[[rep]][[fold]][[&quot;validation&quot;]][,1:variables]
+      y_test = unlist(cvData[[rep]][[fold]][[&quot;validation&quot;]][1+variables])
+      
+      # function to get keras array for dataframes
+      K &lt;- keras::backend()
+      df_to_karray &lt;- function(df){
+        tmp = as.matrix(df)
+        tmp = K$expand_dims(tmp, axis = 2L)
+        tmp = K$eval(tmp)
+      }
+      
+      # coerce data to keras structure
+      x_train = df_to_karray(x_train)
+      x_test = df_to_karray(x_test)
+      y_train = keras::to_categorical(as.numeric(y_train)-1,nOutcome)
+      y_test = keras::to_categorical(as.numeric(y_test)-1,nOutcome)
+      
+      # fitting the model
+      kernelMod = prepNNET(kernel, variables, nOutcome = nOutcome)
+      historyMod =  keras::fit(kernelMod, x = x_train, y = y_train,
+                               epochs=300,
+                               batch_size = 10 )
+      
+      evalK = keras::evaluate(kernelMod, x=x_test, y=y_test)
+      results$repeats[counter] = rep
+      results$fold[counter] = fold
+      results$loss[counter] = evalK$loss
+      results$acc[counter] = evalK$acc
+      print(results[counter,])
+      counter = counter + 1
+      write.csv(results, file = paste0(output,&quot;nnet/cv/cvResults_K&quot;,kernel,&quot;.csv&quot;))
+    }
+  }
+}</code></pre>
+<p>We can now retrive information about the accurcies for the complete cross-validation process by calculating averages accross the accuracy values.</p>
+<pre class="r"><code>results = data.frame(type=c(&quot;norm.d2&quot;,&quot;sg&quot;,&quot;raw.d2&quot;,&quot;norm.d1&quot;), accuracy = rep(0,4))
+results$accuracy[1] = round(mean(results.normd2$acc),3)
+results$accuracy[2] = round(mean(results.sg$acc),3)
+results$accuracy[3] = round(mean(results.rawd2$acc),3)
+results$accuracy[4] = round(mean(results.normd1$acc),3)
+results = results[order(-results$accuracy),]</code></pre>
+<table>
+<caption><strong>Tab. 2</strong>: Results of the repeated cross-valiation for different preprocessing types.</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">type</th>
+<th align="right">accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3</td>
+<td align="left">raw.d2</td>
+<td align="right">0.868</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td align="left">norm.d2</td>
+<td align="right">0.846</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td align="left">sg</td>
+<td align="right">0.839</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="left">norm.d1</td>
+<td align="right">0.830</td>
+</tr>
+</tbody>
+</table>
+<p>With an accuracy of approximatley 0.87 the use of the second derivative of the raw data yielded to the highes accuracy value when calculated in a cross-validation approach. With 0.85 the second derivateve of the normalized data yielded to the second highest accuracy.</p>
 <div id="refs">
-<div id="ref-Auta2017">
-<p>Auta, H. S., C. U. Emenike, and S. H. Fauziah. 2017. “Distribution and importance of microplastics in the marine environment. A review of the sources, fate, effects, and potential solutions.” Pergamon. <a href="https://doi.org/10.1016/j.envint.2017.02.013">https://doi.org/10.1016/j.envint.2017.02.013</a>.</p>
-</div>
-<div id="ref-Hufnagl2019">
-<p>Hufnagl, Benedikt, Dieter Steiner, Elisabeth Renner, Martin G.J. Löder, Christian Laforsch, and Hans Lohninger. 2019. “A methodology for the fast identification and monitoring of microplastics in environmental samples using random decision forest classifiers.” <em>Analytical Methods</em> 11 (17): 2277–85. <a href="https://doi.org/10.1039/c9ay00252a">https://doi.org/10.1039/c9ay00252a</a>.</p>
-</div>
-<div id="ref-Li2018b">
-<p>Li, Jingyi, Huihui Liu, and J. Paul Chen. 2018. “Microplastics in freshwater systems: A review on occurrence, environmental effects, and methods for microplastics detection.” <em>Water Research</em> 137 (December 2017). Elsevier Ltd: 362–74. <a href="https://doi.org/10.1016/j.watres.2017.12.056">https://doi.org/10.1016/j.watres.2017.12.056</a>.</p>
-</div>
-<div id="ref-Liu2017">
-<p>Liu, Jinchao, Margarita Osadchy, Lorna Ashton, Michael Foster, Christopher J. Solomon, and Stuart J. Gibson. 2017. “Deep convolutional neural networks for Raman spectrum recognition: A unified solution.” <em>Analyst</em> 142 (21): 4067–74. <a href="https://doi.org/10.1039/c7an01371j">https://doi.org/10.1039/c7an01371j</a>.</p>
-</div>
-<div id="ref-Lorenzo-Navarro2018">
-<p>Lorenzo-Navarro, Javier, Modesto Castrillón-Santana, May Gómez, Alicia Herrera, and Pedro A Marín-Reyes. 2018. “Automatic Counting and Classification of Microplastic Particles.” <a href="https://doi.org/10.5220/0006725006460652">https://doi.org/10.5220/0006725006460652</a>.</p>
-</div>
-<div id="ref-Loder2015">
-<p>Löder, Martin G.J., and Gunnar Gerdts. 2015. “Methodology used for the detection and identification of microplastics—a critical appraisal.” In <em>Marine Anthropogenic Litter</em>, 201–27. Springer International Publishing. <a href="https://doi.org/10.1007/978-3-319-16510-3_8">https://doi.org/10.1007/978-3-319-16510-3_8</a>.</p>
-</div>
-<div id="ref-Masoumi2012">
-<p>Masoumi, Hamed, SM Safavi, and Zahra Khani. 2012. “Identification and Classification of Plastic Resins using Near Infrared Reflectance.” <em>Waset</em> 6 (5): 213–20. <a href="http://www.waset.ac.nz/journals/waset/v65/v65-29.pdf">http://www.waset.ac.nz/journals/waset/v65/v65-29.pdf</a>.</p>
-</div>
-<div id="ref-Primpke2019">
-<p>Primpke, S., P. A. Dias, and G. Gerdts. 2019. “Automated identification and quantification of microfibres and microplastics.” <em>Analytical Methods</em> 11 (16): 2138–47. <a href="https://doi.org/10.1039/c9ay00126c">https://doi.org/10.1039/c9ay00126c</a>.</p>
-</div>
-<div id="ref-Primpke2018">
-<p>Primpke, Sebastian, Marisa Wirth, Claudia Lorenz, and Gunnar Gerdts. 2018. “Reference database design for the automated analysis of microplastic samples based on Fourier transform infrared (FTIR) spectroscopy.” <em>Analytical and Bioanalytical Chemistry</em> 410 (21). Analytical; Bioanalytical Chemistry: 5131–41. <a href="https://doi.org/10.1007/s00216-018-1156-x">https://doi.org/10.1007/s00216-018-1156-x</a>.</p>
-</div>
-<div id="ref-Primpke2017">
-<p>Primpke, S., C. Lorenz, R. Rascher-Friesenhausen, and G. Gerdts. 2017. “An automated approach for microplastics analysis using focal plane array (FPA) FTIR microscopy and image analysis.” <em>Analytical Methods</em> 9 (9). Royal Society of Chemistry: 1499–1511. <a href="https://doi.org/10.1039/c6ay02476a">https://doi.org/10.1039/c6ay02476a</a>.</p>
-</div>
-<div id="ref-Rocha-Santos2015a">
-<p>Rocha-Santos, Teresa, and Armando C. Duarte. 2015. “A critical overview of the analytical approaches to the occurrence, the fate and the behavior of microplastics in the environment.” <em>TrAC - Trends in Analytical Chemistry</em> 65 (September 2017). Elsevier B.V.: 47–53. <a href="https://doi.org/10.1016/j.trac.2014.10.011">https://doi.org/10.1016/j.trac.2014.10.011</a>.</p>
-</div>
-<div id="ref-Shim2017">
-<p>Shim, Won Joon, Sang Hee Hong, and Soeun Eo Eo. 2017. “Identification methods in microplastic analysis: A review.” <em>Analytical Methods</em> 9 (9): 1384–91. <a href="https://doi.org/10.1039/c6ay02558g">https://doi.org/10.1039/c6ay02558g</a>.</p>
-</div>
-<div id="ref-bianco2019">
-<p>V. Bianco P. Memmolo, F Merola P Carcagni C Distante P Ferraro. 2019. “High-accuracy identification of micro-plastics by holographic microscopy enabled support vector machine.” In. Vol. 10887. <a href="https://doi.org/10.1117/12.2509515">https://doi.org/10.1117/12.2509515</a>.</p>
-</div>
-<div id="ref-Zhang2018">
-<p>Zhang, Jixiong, Kuangda Tian, Chunli Lei, and Shungeng Min. 2018. “Identification and quantification of microplastics in table sea salts using micro-NIR imaging methods.” <em>Analytical Methods</em> 10 (24): 2881–7. <a href="https://doi.org/10.1039/c8ay00125a">https://doi.org/10.1039/c8ay00125a</a>.</p>
-</div>
-<div id="ref-Zhang2019">
-<p>Zhang, Shaoliang, Jiuqi Wang, Xu Liu, Fengjuan Qu, Xueshan Wang, Xinrui Wang, Yu Li, and Yankun Sun. 2019. “Microplastics in the environment: A review of analytical methods, distribution, and biological effects.” <em>TrAC - Trends in Analytical Chemistry</em> 111: 62–72. <a href="https://doi.org/10.1016/j.trac.2018.12.002">https://doi.org/10.1016/j.trac.2018.12.002</a>.</p>
-</div>
+
 </div>
 <br>
 <p>
@@ -1306,34 +921,29 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] plotly_4.9.0              tensorflow_1.14.0        
- [3] abind_1.4-5               e1071_1.7-2              
- [5] keras_2.2.4.1             workflowr_1.4.0.9001     
- [7] baseline_1.2-1            gridExtra_2.3            
- [9] stringr_1.4.0             prospectr_0.1.3          
-[11] RcppArmadillo_0.9.600.4.0 openxlsx_4.1.0.1         
-[13] magrittr_1.5              ggplot2_3.2.0            
-[15] reshape2_1.4.3            dplyr_0.8.3              
+ [1] tensorflow_1.14.0         abind_1.4-5              
+ [3] e1071_1.7-2               keras_2.2.4.1            
+ [5] workflowr_1.4.0.9001      baseline_1.2-1           
+ [7] gridExtra_2.3             stringr_1.4.0            
+ [9] prospectr_0.1.3           RcppArmadillo_0.9.600.4.0
+[11] openxlsx_4.1.0.1          magrittr_1.5             
+[13] ggplot2_3.2.0             reshape2_1.4.3           
+[15] dplyr_0.8.3              
 
 loaded via a namespace (and not attached):
- [1] reticulate_1.13   tidyselect_0.2.5  xfun_0.8         
- [4] purrr_0.3.2       lattice_0.20-38   colorspace_1.4-1 
- [7] generics_0.0.2    viridisLite_0.3.0 htmltools_0.3.6  
-[10] yaml_2.2.0        base64enc_0.1-3   rlang_0.4.0      
-[13] pillar_1.4.2      glue_1.3.1        withr_2.1.2      
-[16] foreach_1.4.7     plyr_1.8.4        munsell_0.5.0    
-[19] gtable_0.3.0      zip_2.0.3         htmlwidgets_1.3  
-[22] codetools_0.2-16  evaluate_0.14     knitr_1.24       
-[25] SparseM_1.77      tfruns_1.4        class_7.3-15     
-[28] Rcpp_1.0.2        scales_1.0.0      backports_1.1.4  
-[31] jsonlite_1.6      fs_1.3.1          digest_0.6.20    
-[34] stringi_1.4.3     grid_3.6.1        rprojroot_1.3-2  
-[37] tools_3.6.1       lazyeval_0.2.2    tibble_2.1.3     
-[40] tidyr_0.8.3       crayon_1.3.4      whisker_0.3-2    
-[43] pkgconfig_2.0.2   zeallot_0.1.0     Matrix_1.2-17    
-[46] data.table_1.12.2 httr_1.4.1        assertthat_0.2.1 
-[49] rmarkdown_1.14    iterators_1.0.12  R6_2.4.0         
-[52] git2r_0.26.1      compiler_3.6.1   </code></pre>
+ [1] reticulate_1.13  tidyselect_0.2.5 xfun_0.8         purrr_0.3.2     
+ [5] lattice_0.20-38  colorspace_1.4-1 generics_0.0.2   htmltools_0.3.6 
+ [9] yaml_2.2.0       base64enc_0.1-3  rlang_0.4.0      pillar_1.4.2    
+[13] glue_1.3.1       withr_2.1.2      foreach_1.4.7    plyr_1.8.4      
+[17] munsell_0.5.0    gtable_0.3.0     zip_2.0.3        codetools_0.2-16
+[21] evaluate_0.14    knitr_1.24       SparseM_1.77     tfruns_1.4      
+[25] class_7.3-15     highr_0.8        Rcpp_1.0.2       scales_1.0.0    
+[29] backports_1.1.4  jsonlite_1.6     fs_1.3.1         digest_0.6.20   
+[33] stringi_1.4.3    grid_3.6.1       rprojroot_1.3-2  tools_3.6.1     
+[37] lazyeval_0.2.2   tibble_2.1.3     crayon_1.3.4     whisker_0.3-2   
+[41] pkgconfig_2.0.2  zeallot_0.1.0    Matrix_1.2-17    assertthat_0.2.1
+[45] rmarkdown_1.14   iterators_1.0.12 R6_2.4.0         git2r_0.26.1    
+[49] compiler_3.6.1  </code></pre>
 </div>
 </div>
 
@@ -1351,8 +961,6 @@ footer is added to webpages before the MathJax javascript. -->
 </script>
 
 
-</div>
-</div>
 
 </div>
 
@@ -1385,32 +993,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
