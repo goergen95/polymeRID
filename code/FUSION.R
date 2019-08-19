@@ -23,9 +23,11 @@ set.seed(42)
 seeds = sample(1:1000, length(folds) * length(repeats))
 
 sg.data = preprocess(data[,1:ncol(data)-1], type = "sg")
-d1.data = preprocess(data[,1:ncol(data)-1], type = "raw.d1")
+d2.data = preprocess(data[,1:ncol(data)-1], type = "raw.d2")
+normd2.data = preprocess(data[,1:ncol(data)-1], type = "norm.d2")
 sg.data$class = data$class
-d1.data$class = data$class
+d2.data$class = data$class
+normd2.data$class = data$class
 
 classResults = list()
 accuracyResults = list()
@@ -41,8 +43,10 @@ for (rep in repeats){
     testingRaw = data[-index$Resample1,]
     trainingSG = sg.data[index$Resample1,]
     testingSG = sg.data[-index$Resample1,]
-    trainingD1 = d1.data[index$Resample1,]
-    testingD1 = d1.data[-index$Resample1,]
+    trainingD2 = d2.data[index$Resample1,]
+    testingD2 = d2.data[-index$Resample1,]
+    trainingNormD2 = normd2.data[index$Resample1,]
+    testingNormD2 = normd2.data[-index$Resample1,]
 
 
     # preparing RF Models
@@ -64,32 +68,32 @@ for (rep in repeats){
 
     # preparing CNN Models
     K <- keras::backend()
-    x_train = as.matrix(trainingSG[,1:ncol(trainingSG)-1])
+    x_train = as.matrix(trainingD2[,1:ncol(trainingD2)-1])
     x = K$expand_dims(x_train, axis = 2L)
     x_train = K$eval(x)
-    y_train = keras::to_categorical(as.numeric(trainingSG$class)-1, length(unique(trainingSG$class)))
+    y_train = keras::to_categorical(as.numeric(trainingD2$class)-1, length(unique(trainingD2$class)))
 
-    x_testSG = as.matrix(testingSG[,1:ncol(testingSG)-1])
-    x = K$expand_dims(x_testSG, axis = 2L)
-    x_testSG = K$eval(x)
-    y_testSG = keras::to_categorical(as.numeric(testingSG$class)-1, length(unique(testingSG$class)))
+    x_testD2 = as.matrix(testingSG[,1:ncol(testingD2)-1])
+    x = K$expand_dims(x_testD2, axis = 2L)
+    x_testD2 = K$eval(x)
+    y_testD2 = keras::to_categorical(as.numeric(testingD2$class)-1, length(unique(testingD2$class)))
 
-    cnnSG = prepNNET(kernel = 70, variables = ncol(sg.data)-1, nOutcome = length(unique(sg.data$class)))
-    history = fit(cnnSG, x_train, y_train, batch_size = 10, epochs = 300)
+    cnnD2 = prepNNET(kernel = 90, variables = ncol(d2.data)-1, nOutcome = length(unique(d2.data$class)))
+    history = fit(cnnD2, x_train, y_train, batch_size = 10, epochs = 300)
 
 
-    x_train = as.matrix(trainingD1[,1:ncol(trainingD1)-1])
+    x_train = as.matrix(trainingNormD2[,1:ncol(trainingNormD2)-1])
     x = K$expand_dims(x_train, axis = 2L)
     x_train = K$eval(x)
-    y_train = keras::to_categorical(as.numeric(trainingD1$class)-1, length(unique(trainingD1$class)))
+    y_train = keras::to_categorical(as.numeric(trainingNormD2$class)-1, length(unique(trainingNormD2$class)))
 
-    x_testD1 = as.matrix(testingD1[,1:ncol(testingD1)-1])
-    x = K$expand_dims(x_testD1, axis = 2L)
-    x_testD1 = K$eval(x)
-    y_testD1 = keras::to_categorical(as.numeric(testingD1$class)-1, length(unique(testingD1$class)))
+    x_testND2 = as.matrix(testingNormD2[,1:ncol(testingNormD2)-1])
+    x = K$expand_dims(x_testND2, axis = 2L)
+    x_testND2 = K$eval(x)
+    y_testND2 = keras::to_categorical(as.numeric(testingNormD2$class)-1, length(unique(testingNormD2$class)))
 
-    cnnD1 = prepNNET(kernel = 70, variables = ncol(d1.data)-1, nOutcome = length(unique(d1.data$class)))
-    history = fit(cnnD1, x_train, y_train, batch_size = 10, epochs = 300)
+    cnnND2 = prepNNET(kernel = 90, variables = ncol(normd2.data)-1, nOutcome = length(unique(normd2.data$class)))
+    history = fit(cnnND2, x_train, y_train, batch_size = 10, epochs = 300)
 
 
 
@@ -99,13 +103,13 @@ for (rep in repeats){
     propRFRaw =  predict(rfModRaw, pcaRaw_testing, type = "prob")
     classRFSG = as.character(predict(rfModSG, pcaSG_testing))
     propRFSG = predict(rfModSG, pcaSG_testing, type = "prob")
-    classCNNSG = as.character(classes[keras::predict_classes(cnnSG, x_testSG)+1])
-    propCNNSG = keras::predict_proba(cnnSG, x_testSG)
-    classCNND1 = as.character(classes[keras::predict_classes(cnnD1, x_testD1)+1])
-    propCNND1 = keras::predict_proba(cnnD1, x_testD1)
+    classCNND2 = as.character(classes[keras::predict_classes(cnnD2, x_testD2)+1])
+    propCNND2 = keras::predict_proba(cnnD2, x_testD2)
+    classCNNND2 = as.character(classes[keras::predict_classes(cnnND2, x_testND2)+1])
+    propCNNND2 = keras::predict_proba(cnnND2, x_testND2)
 
     # probability
-    probs = (propRFRaw + propRFSG + propCNND1 + propCNNSG) / 4
+    probs = (propRFRaw + propRFSG + propCNND2 + propCNNND2) / 4
     pred = lapply(1:nrow(probs), function(x){
       which.max(probs[x,])
     })
@@ -177,23 +181,23 @@ saveRDS(pca, file = paste0(mod, "BASE/rfModRawPCA.rds"))
 
 #CNN Raw
 K <- keras::backend()
-x_train = as.matrix(sg.data[,1:ncol(sg.data)-1])
+x_train = as.matrix(d2.data[,1:ncol(d2.data)-1])
 x = K$expand_dims(x_train, axis = 2L)
 x_train = K$eval(x)
-y_train = keras::to_categorical(as.numeric(sg.data$class)-1, length(unique(sg.data$class)))
+y_train = keras::to_categorical(as.numeric(d2.data$class)-1, length(unique(d2.data$class)))
 
-cnnSG = prepNNET(kernel = 70, variables = ncol(sg.data)-1, nOutcome = length(unique(sg.data$class)))
-history = fit(cnnSG, x_train, y_train, batch_size = 10, epochs = 300)
-keras::save_model_hdf5(cnnSG, filepath = paste0(mod, "BASE/cnnSG.hdf"))
+cnnD2 = prepNNET(kernel = 90, variables = ncol(d2.data)-1, nOutcome = length(unique(d2.data$class)))
+history = fit(cnnD2, x_train, y_train, batch_size = 10, epochs = 300)
+keras::save_model_hdf5(cnnD2, filepath = paste0(mod, "BASE/cnnD2.hdf"))
 
 #CNN D1
-x_train = as.matrix(d1.data[,1:ncol(d1.data)-1])
+x_train = as.matrix(normd2.data[,1:ncol(normd2.data)-1])
 x = K$expand_dims(x_train, axis = 2L)
 x_train = K$eval(x)
-y_train = keras::to_categorical(as.numeric(d1.data$class)-1, length(unique(d1.data$class)))
+y_train = keras::to_categorical(as.numeric(normd2.data$class)-1, length(unique(normd2.data$class)))
 
-cnnD1 = prepNNET(kernel = 70, variables = ncol(d1.data)-1, nOutcome = length(unique(d1.data$class)))
+cnnND2 = prepNNET(kernel = 90, variables = ncol(normd2.data)-1, nOutcome = length(unique(normd2.data$class)))
 history = fit(cnnD1, x_train, y_train, batch_size = 10, epochs = 300)
-keras::save_model_hdf5(cnnD1, filepath = paste0(mod, "BASE/cnnD1.hdf"))
+keras::save_model_hdf5(cnnND2, filepath = paste0(mod, "BASE/cnnND2.hdf"))
 
 

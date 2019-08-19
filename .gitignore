@@ -2,6 +2,8 @@ run/
 plots/
 output/
 files/
+smp/
+website/smp
 packrat/src
 packrat/lib
 packrat/src_ext

@@ -175,7 +175,7 @@ createTrainingSet = function(data, category = "class",
 }
 
 
-meanplot = function(data,class){
+meanplot = function(data, class, wavenumbers = NULL){
   #prpare data
   wvn =  as.numeric(stringr::str_remove(names(data), "wvn")[-ncol(data)])
   cldata = data[data$class == class,]

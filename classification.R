@@ -153,3 +153,7 @@ if (TYPE == "FUSION"){
   write.csv(results, paste0(root, "/results_",TIME,".csv"))
 }
 
+if (TYPE == "RFRAW") {}
+if (TYPE == "RFSG"){}
+if (TYPE == "CNN") {}
+

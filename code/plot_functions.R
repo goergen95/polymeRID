@@ -1,6 +1,8 @@
 # function for plotting
-meanplot = function(data,wavenumbers,class){
+
+meanplot = function(data, class, wavenumbers = NULL){
   #prpare data
+  wvn =  as.numeric(stringr::str_remove(names(data), "wvn")[-ncol(data)])
   cldata = data[data$class == class,]
   MIN = Rfast::colMins(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
   MAX = Rfast::colMaxs(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
@@ -17,10 +19,11 @@ meanplot = function(data,wavenumbers,class){
     geom_line(aes(y=mean),alpha=0.4)+
     geom_line(aes(y=max),linetype="dotted")+
     geom_line(aes(y=min),linetype="dotted")+
-    annotate(geom="text",label=paste0("class: ",class,"\nsamples: ",cldata$N[1]),x=0,y=max(cldata$mean))+
+    annotate(geom="text",label=paste0("class: ",class,"\nsamples: ",cldata$N[1]),x=500,y=max(cldata$mean))+
     ylab(label="reflectance")+
     theme_minimal()
   return(tmp)}
+
 
 
 samplePlot = function(data,sample,class,probs="",name=""){

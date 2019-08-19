@@ -13,7 +13,8 @@ data = lapply(classes,function(class){
 data = do.call("rbind",data)
 
 kernels = c(10,20,30,40,50,60,70,80,90,100,125,150,175,200)
-types = c("raw","norm","sg","sg.norm","raw.d1")
+#types = c("raw","norm","sg","sg.norm","raw.d1")
+types = c("sg.d1", "sg.d2","sg.norm.d1", "sg.norm.d2","raw.d2", "norm.d1", "norm.d2")
 
 
 results = data.frame(types = rep(0, length(kernels) * length(types)),
@@ -90,7 +91,7 @@ for (kernel in kernels){
     results$acc[counter] = history$metrics$acc[100]
     results$val_loss[counter] = history$metrics$val_loss[100]
     results$val_acc[counter] = history$metrics$val_acc[100]
-    write.csv(results, file = paste0(output,"nnet/kernels.csv"))
+    write.csv(results, file = paste0(output,"nnet/kernels_2.csv"))
     counter = counter + 1
   }
 
