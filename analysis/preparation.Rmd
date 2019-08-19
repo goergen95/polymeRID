@@ -146,7 +146,7 @@ for (class in classIndex){
 write(classIndex, paste0(ref, "classes.txt"))
 ```
 
-```{r preparation-shiny-app, echo=FALSE}
+```{r preparation-shiny-app, echo=FALSE, warning=FALSE, message=FALSE}
 #source("plot_functions.R")
 #wavenumbers = readRDS("wavenumbers.rds")
 #data = read.csv(file = "reference_database.csv", header = TRUE)
