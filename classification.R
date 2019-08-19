@@ -56,8 +56,8 @@ rfModRaw = readRDS(files[grep("rfModRaw.rds", files)])
 rfModSG = readRDS(files[grep("rfModSG.rds", files)])
 pcaRaw = readRDS(files[grep("rfModRawPCA.rds", files)])
 pcaSG = readRDS(files[grep("rfModSGPCA.rds", files)])
-cnnSG = keras::load_model_hdf5(files[grep("cnnSG",files)])
-cnnD1 = keras::load_model_hdf5(files[grep("cnnD1", files)])
+cnnD2 = keras::load_model_hdf5(files[grep("cnnD2",files)])
+cnnND2 = keras::load_model_hdf5(files[grep("cnnND2", files)])
 
 
 ids = list.files(smp,pattern = FORMAT)
@@ -67,10 +67,13 @@ if (TYPE == "FUSION"){
 
   # prepare data
   sampleRAW = samples
-  sampleRAW[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
-  sampleSG =  preprocess(samples, type = "sg")
-  sampleSG[which(wavenumbers<=2420 & wavenumbers>=1900)] = 0
-  sampleD1 = preprocess(samples, type = "raw.d1")
+  sampleRAW[,which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  sampleSG = preprocess(samples, type = "sg")
+  sampleSG[,which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  sampleD2 =  preprocess(samples, type = "raw.d2")
+  sampleD2[,which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+  sampleND2 = preprocess(samples, type = "norm.d2")
+  sampleND2[,which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
 
 
   nVarrfRaw = nrow(rfModRaw$importance)
@@ -80,12 +83,12 @@ if (TYPE == "FUSION"){
 
 
   K = keras::backend()
-  x_sampleSG = as.matrix(sampleSG)
-  x = K$expand_dims(x_sampleSG, axis = 2L)
-  x_sampleSG = K$eval(x)
-  x_sampleD1 = as.matrix(sampleD1)
-  x = K$expand_dims(x_sampleD1, axis = 2L)
-  x_sampleD1 = K$eval(x)
+  x_sampleD2 = as.matrix(sampleD2)
+  x = K$expand_dims(x_sampleD2, axis = 2L)
+  x_sampleD2 = K$eval(x)
+  x_sampleND2 = as.matrix(sampleND2)
+  x = K$expand_dims(x_sampleND2, axis = 2L)
+  x_sampleND2 = K$eval(x)
 
   # dataNORM = as.data.frame(base::scale(data[,1:length(wavenumbers)]))
   #   dataSG = as.data.frame(prospectr::savitzkyGolay(data[,1:length(wavenumbers)], p = 3, w = 11, m = 0))
@@ -105,13 +108,13 @@ if (TYPE == "FUSION"){
   propRFRaw =  stats::predict(rfModRaw, pcaRAW, type = "prob")
   classRFSG = as.character(stats::predict(rfModSG, pcaSG))
   propRFSG = stats::predict(rfModSG, pcaSG, type = "prob")
-  classCNNSG = as.character(classes[keras::predict_classes(cnnSG, x_sampleSG)+1])
-  propCNNSG = keras::predict_proba(cnnSG, x_sampleSG)
-  classCNND1 = as.character(classes[keras::predict_classes(cnnD1, x_sampleD1)+1])
-  propCNND1 = keras::predict_proba(cnnD1, x_sampleD1)
+  classCNND2 = as.character(classes[keras::predict_classes(cnnD2, x_sampleD2)+1])
+  propCNND2 = keras::predict_proba(cnnD2, x_sampleD2)
+  classCNNND2 = as.character(classes[keras::predict_classes(cnnND2, x_sampleND2)+1])
+  propCNNND2 = keras::predict_proba(cnnND2, x_sampleND2)
 
   # restructuring results
-  probs = (propRFRaw + propRFSG + propCNND1 + propCNNSG) / 4
+  probs = (propRFRaw + propRFSG + propCNND2 + propCNNND2) / 4
   pred = lapply(1:nrow(probs), function(x){
     which.max(probs[x,])
   })
@@ -130,8 +133,10 @@ if (TYPE == "FUSION"){
     hit = hits[[id]]
     classes = names(hit)
     values = as.numeric(hit)
-    sample = read.table(sampleList[id])
-    names(sample) = c("wavenumbers", "reflectance")
+    sample = as.data.frame(t(samples[id,]))
+    sample$wavenumbers = wavenumbers
+    sample[which(wavenumbers<=2420 & wavenumbers>=2200),] = 0
+    names(sample) = c( "reflectance", "wavenumbers")
     if(values[1] < .5) level = "no agreement"
     if(values[1] >= .5 & values[1] < .6) level = "very low agreement"
     if(values[1] >= .6 & values[1] < .7) level = "low agreement"

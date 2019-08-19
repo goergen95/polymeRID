@@ -1,0 +1,265 @@
+---
+title: "Classification"
+author: Darius Goergen
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+bibliography: library.bib
+link-citations: yes
+---
+
+```{r calibration-setup, echo=FALSE, warning=FALSE, message=FALSE}
+source("code/setup_website.R")
+source("code/functions.R")
+data = read.csv(file = paste0(ref, "reference_database.csv"), header = TRUE)
+```
+
+## Overview
+
+The overall aim of this project was to ease the process of classifying the spectra
+of particles found in environmental samples. To this end, we created a script which
+takes `.txt` files in the `smp` directory and classifies them based on the decision
+fusion explained [here](calibration.html).
+The script expects on file for each sample. The names of the files need to be unique
+and will be used as an identifier in the output. Also, it is expected that the file
+consists of two columns. The first columns indicates the wavenumbers of the sample
+as an numeric, while the second column holds information about the reflectance value.
+
+## Preparing Classification
+
+The head of the classification script contains some variables that might be changed.
+This is important if extensions were made to the data base and a new calibration was done.
+In this case, the directory containing the models can be specified with the `MODEL`
+variable. For now, however, the variables hints towards the `BASE` models which were created
+during the first calibration. Also, the type of the classification can be specified in the
+`TYPE` variable. Currently, the fusion of all four models is chosen, but any single model
+could be selected. Finally, the `FORMAT` variables indicates the file extension of the sample
+data, since it would be also possible to provide spectral data in `.csv` format. 
+At the beginning of each classification process, a directory is created in the 
+`smp` directory which contains the current date and time as well as the `MODEL` type which 
+was used. 
+
+```{r classification-header, eval = FALSE}
+MODEL = "BASE"
+TYPE = "FUSION"
+FORMAT = ".txt"
+
+TIME = format(Sys.time(),"%Y%m%d_%H%M")
+root = paste0(smp,TIME,"_",TYPE)
+plots = paste0(root,"/plots")
+raw = paste0(root,"/files")
+dir.create(root)
+dir.create(plots)
+dir.create(raw)
+model = paste0(mod,MODEL)
+
+```
+
+## Reading Data
+
+Then, the data base and the sample data is read into R. The reflectance values
+of the sample data are resampled to the spectral resolution of the data base and then
+a baseline correction is applied, following the procedure of @Primpke2018.
+Finally, all machine learning models are loaded.
+
+```{r classification-data-models, eval=FALSE}
+
+classes = readLines(paste0(ref,"classes.txt"))
+data = lapply(classes,function(x){
+  print(x)
+  specs = read.csv(list.files(ref,full.names=T)[grep(paste("_",x,".csv",sep=""),list.files(ref))],header=T)
+  return(specs)
+})
+data = do.call("rbind",data)
+wavenumbers = readRDS(paste0(model,"/wavenumbers.rds"))
+
+wvn = as.numeric(str_remove(names(data)[-ncol(data)],"wvn"))
+index = which(wvn %in% wavenumbers)
+data = data[,c(index,ncol(data))]
+
+sampleList = list.files(smp,pattern=FORMAT,full.names = TRUE)
+if (length(sampleList)==0){
+  cat("No samples present in sample directory")
+  #quit(status = 1)
+}
+Nsamples = length(sampleList)
+prepSMP = function(x,wvn){
+  tmp = read.table(x)
+  names(tmp) = c("wavenumbers","reflectance")
+  tmp = prospectr::resample2(tmp$reflectance,tmp$wavenumbers,wvn)
+  return(tmp)
+}
+
+samples = lapply(sampleList,prepSMP,wavenumbers)
+samples = as.data.frame(do.call("rbind",samples))
+names(samples) = names(data)[-ncol(data)]
+
+dummy = as.matrix(samples)
+baselineDummy = baseline(dummy,method="rfbaseline",span=NULL,NoXP=64,maxit=c(10))
+#baselineDummy = baseline(dummy, method="rollingBall", wm = 500, ws = 500 )
+spectra = getCorrected(baselineDummy)
+samples = as.data.frame(spectra)
+
+
+files = list.files(model, full.names = TRUE)
+rfModRaw = readRDS(files[grep("rfModRaw.rds", files)])
+rfModSG = readRDS(files[grep("rfModSG.rds", files)])
+pcaRaw = readRDS(files[grep("rfModRawPCA.rds", files)])
+pcaSG = readRDS(files[grep("rfModSGPCA.rds", files)])
+cnnD2 = keras::load_model_hdf5(files[grep("cnnD2",files)])
+cnnND2 = keras::load_model_hdf5(files[grep("cnnND2", files)])
+
+```
+
+## Classification
+
+For the decision fusion, the samples are preprocessed according to the expected input
+for the different models (see [here](https://github.com/goergen95/polymeRID/blob/master/classification.R))
+and the wavenumbers in the C02 window (2420 to 2200 1/cm) are set to 0. Then, 
+each model is used to predict an output for the samples and the decision fusion
+takes places by combining the probability outputs from all models. Additionally,
+all non-synthetic polymer classes are merged to a broader class called `OTHER`.
+
+```{r classification-prediction, eval= FALSE}
+ # predicting
+  classRFRaw = as.character(stats::predict(rfModRaw, pcaRAW))
+  propRFRaw =  stats::predict(rfModRaw, pcaRAW, type = "prob")
+  classRFSG = as.character(stats::predict(rfModSG, pcaSG))
+  propRFSG = stats::predict(rfModSG, pcaSG, type = "prob")
+  classCNND2 = as.character(classes[keras::predict_classes(cnnD2, x_sampleD2)+1])
+  propCNND2 = keras::predict_proba(cnnD2, x_sampleD2)
+  classCNNND2 = as.character(classes[keras::predict_classes(cnnND2, x_sampleND2)+1])
+  propCNNND2 = keras::predict_proba(cnnND2, x_sampleND2)
+
+  # restructuring results
+  probs = (propRFRaw + propRFSG + propCNND2 + propCNNND2) / 4
+  pred = lapply(1:nrow(probs), function(x){
+    which.max(probs[x,])
+  })
+  predVals = lapply(1:nrow(probs), function(x){
+    probs[x,unlist(pred)[x]]
+  })
+  hits = lapply(1:nrow(probs), function(x){
+    hits = sort(probs[x, ], decreasing = T)[1:3]
+  })
+
+  predVals = unlist(predVals)
+  pred = names(unlist(pred))
+  pred[which(pred %in% c("FIBRE","FUR","WOOD"))] = "OTHER"
+  results = data.frame(id = ids, class = pred, prob = predVals, level = rep(0,Nsamples))
+```
+
+## Generating Output
+
+Finally, an individual plot with the three classes showing the highest probability
+is created for each sample. Additionally, a data frame called `results` containing
+information on the level of agreement for the class with the highest probability
+is written to disk to allow a quick assessment of the classification process.
+The level of agreement is based on the fused classification probability, labeling
+probabilities below 0.5 as "now agreement" and increasing the agreement level every
+10% up to >0.90 labeled as "very high agreement".
+The plots are saved to a `plot` directory in the current classification directory
+and can be used to manually assess the classification.
+
+```{r classification-plots, eval=FALSE}
+ids = list.files(smp,pattern = FORMAT)
+ids = str_remove(ids, FORMAT)
+
+ for (id in 1:length(ids)){
+    hit = hits[[id]]
+    classes = names(hit)
+    values = as.numeric(hit)
+    sample = as.data.frame(t(samples[id,]))
+    sample$wavenumbers = wavenumbers
+    sample[which(wavenumbers<=2420 & wavenumbers>=2200),] = 0
+    names(sample) = c( "reflectance", "wavenumbers")
+    if(values[1] < .5) level = "no agreement"
+    if(values[1] >= .5 & values[1] < .6) level = "very low agreement"
+    if(values[1] >= .6 & values[1] < .7) level = "low agreement"
+    if(values[1] >= .7 & values[1] < .8) level = "medium agreement"
+    if(values[1] >= .8 & values[1] < .9) level = "high agreement"
+    if(values[1] >= .9) level = "very high agreement"
+    results$level[id] = level
+
+    annotation = paste0(level,"\n",
+                        classes[1], ": ", round(values[1], 3), "\n",
+                        classes[2], ": ", round(values[2], 3), "\n",
+                        classes[3], ": ", round(values[3], 3))
+    class1 = samplePlot(data = data, sample = sample, class = classes[1], prob = annotation, name = ids[id])
+    class2 = samplePlot(data = data, sample = sample, class = classes[2])
+    class3 = samplePlot(data = data, sample = sample, class = classes[3])
+    multiclass = gridExtra::grid.arrange(class1,class2,class3)
+    ggsave(plot=multiclass,file=paste0(plots,"/",ids[id],"_probClasses.png"),dpi=300,device="png",units="cm",width=50,height=30)
+  }
+  write.csv(results, paste0(root, "/results_",TIME,".csv"))
+```
+
+
+## Results
+
+Here, we evaluate the decision fusion models by some environmental samples which 
+were provided by Sarah Brüning and Frauke von den Driesch. 
+First we can take a look at the general classification results as it is written to
+the `results.csv`.
+```{r classification-classification, warning=FALSE, message=FALSE, echo=FALSE}
+results = read.csv(paste0(smp,"20190819_1910_FUSION/results_20190819_1910.csv"))
+knitr::kable(results, caption = "**Tab. 1**: Classification results for 14 sample spectra.")
+```
+
+Additionally, we included two exemplary plots, overlaying the spectrum of two
+samples with the mean spectrum of the prediction. Note that the firs plot corresponds
+to row 5 in the table above, the second plot to line 13. 
+
+```{r classification-sample-plot, warning=FALSE, message=FALSE, echo=FALSE}
+MODEL = "BASE"
+TYPE = "FUSION"
+FORMAT = ".txt"
+library(plotly)
+wavenumbers = readRDS(paste0(mod,"BASE/wavenumbers.rds"))
+sampleList = list.files(smp,pattern=FORMAT,full.names = TRUE)
+if (length(sampleList)==0){
+  cat("No samples present in sample directory")
+  #quit(status = 1)
+}
+Nsamples = length(sampleList)
+prepSMP = function(x,wvn){
+  tmp = read.table(x)
+  names(tmp) = c("wavenumbers","reflectance")
+  tmp = prospectr::resample2(tmp$reflectance,tmp$wavenumbers,wvn)
+  return(tmp)
+}
+
+samples = lapply(sampleList,prepSMP,wavenumbers)
+samples = as.data.frame(do.call("rbind",samples))
+names(samples) = names(data)[-ncol(data)]
+
+dummy = as.matrix(samples)
+baselineDummy = baseline(dummy,method="rfbaseline",span=NULL,NoXP=64,maxit=c(10))
+#baselineDummy = baseline(dummy, method="rollingBall", wm = 500, ws = 500 )
+spectra = getCorrected(baselineDummy)
+samples = as.data.frame(spectra)
+samples[,which(wavenumbers<=2420 & wavenumbers>=2200)] = 0
+
+sample = read.table(sampleList[5])
+sample[which(wavenumbers<=2420 & wavenumbers>=2200),] = 0
+names(sample) = c("wavenumbers", "reflectance")
+
+
+p = samplePlot(data, sample, class = "HDPE")
+p = ggplotly(p)
+
+sample = read.table(sampleList[13])
+sample[which(wavenumbers<=2420 & wavenumbers>=2200),] = 0
+names(sample) = c("wavenumbers", "reflectance")
+p2 = samplePlot(data, sample, class = "PA")
+p2 = ggplotly(p2)
+p
+p2
+
+```
+
+
+
