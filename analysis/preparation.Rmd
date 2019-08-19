@@ -162,7 +162,8 @@ shinyApp(
 
   server = function(input, output) {
     output$meanSpectrumPlot = renderPlot({
-      ggplotly(meanplot(data, wavenumbers = wavenumbers, class = input$class))
+      p = meanplot(data, wavenumbers = wavenumbers, class = input$class)
+      ggplotly(p)
     })
   },
 
