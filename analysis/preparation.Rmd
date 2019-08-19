@@ -147,29 +147,7 @@ write(classIndex, paste0(ref, "classes.txt"))
 ```
 
 ```{r preparation-shiny-app, echo=FALSE, warning=FALSE, message=FALSE}
-#source("plot_functions.R")
-#wavenumbers = readRDS("wavenumbers.rds")
-#data = read.csv(file = "reference_database.csv", header = TRUE)
-library(shiny)
-library(plotly)
-shinyApp(
-
-  ui = fluidPage(
-    selectInput("class", "Class:",
-                choices = unique(data$class)),
-    plotlyOutput("meanSpectrumPlot")
-  ),
-
-  server = function(input, output) {
-    output$meanSpectrumPlot = renderPlotly({
-      meanplot(data, wavenumbers = wavenumbers, class = input$class)
-
-    })
-  },
-
-  options = list(height = 500)
-)
-
+knitr::include_app("https://goergen95.shinyapps.io/shiny_apps/", height = "500px")
 ```
 
 
