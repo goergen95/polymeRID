@@ -391,7 +391,7 @@ div.section {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -400,7 +400,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -409,10 +409,10 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-08-19
+<strong>Last updated:</strong> 2019-08-21
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>polymeRID/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -428,12 +428,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="section-strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="section-strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -500,10 +500,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreeb6fd75e7a8b650a52ef12c28d341531b667047e8targetblankb6fd75ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/b6fd75e7a8b650a52ef12c28d341531b667047e8" target="_blank">b6fd75e</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreeb86ee39e77bb816ae0a8545fbbf50ea6edb8dadbtargetblankb86ee39a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/b86ee39e77bb816ae0a8545fbbf50ea6edb8dadb" target="_blank">b86ee39</a> </a>
 </p>
 </div>
-<div id="section-strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreeb6fd75e7a8b650a52ef12c28d341531b667047e8targetblankb6fd75ea" class="panel-collapse collapse">
+<div id="section-strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreeb86ee39e77bb816ae0a8545fbbf50ea6edb8dadbtargetblankb86ee39a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -710,6 +710,9 @@ Ignored files:
     Ignored:    smp/20190815_1847_FUSION/
     Ignored:    website/
 
+Unstaged changes:
+    Modified:   analysis/preparation.Rmd
+
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -747,6 +750,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/goergen95/polymeRID/f2ee83c6fd5264329023a1ff1bccf40d5fa9dee4/docs/preparation.html" target="_blank">f2ee83c</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-08-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1300,8 +1320,8 @@ included preparation
 </div>
 <div id="section-reference-data" class="section level2">
 <h2>Reference Data</h2>
-<p>For this project we used a data base published by <span class="citation">Primpke et al. (<a href="#section-ref-Primpke2018">2018</a>)</span> online. The data base can be downloaded <a href="https://static-content.springer.com/esm/art%3A10.1007%2Fs00216-018-1156-x/MediaObjects/216_2018_1156_MOESM2_ESM.xlsx">here</a>. The authors state the samples were collected based on the FTIR-spectrometer Bruker Tensor 27 System for the spectral range 4000 to 40 1/cm. Additionally, some data of polymer-based fibers and spectra of biological origins were received from the <a href="https://www.faserinstitut.de/">Bremer Faserinstitut</a>. During preprocessing, they applied a concave rubberband correction based on 10 iterations and 64 baseline points. They also excluded the C02 band between 2420 to 2200 1/cm by setting the data points to 0. This should be kept in mind, since the inclusion of additional reference samples requires the same procedure for the data base to stay in a consistent state. The data provided by <span class="citation">Primpke et al. (<a href="#section-ref-Primpke2018">2018</a>)</span> shows a spectral resolution of 2.1 1/cm. Additional reference samples need to be resampled to the same spectral resolution and the same baseline correction should be applied.</p>
-<p>To ensure consistency, the data base was read into R and the wavenumbers were saved in a separate file for the future use of resampling additional reference spectra.</p>
+<p>For this project we used a data base published by <span class="citation">Primpke et al. (<a href="#section-ref-Primpke2018">2018</a>)</span> online. The data base can be downloaded <a href="https://static-content.springer.com/esm/art%3A10.1007%2Fs00216-018-1156-x/MediaObjects/216_2018_1156_MOESM2_ESM.xlsx">here</a>. The authors state that the samples were collected based on the FTIR-spectrometer Bruker Tensor 27 System for the spectral range 4000 to 40 1/cm. Additionally, some data of polymer-based fibers and spectra of biological origins were received from the <a href="https://www.faserinstitut.de/">Bremer Faserinstitut</a>. During pre-processing, they applied a concave rubberband correction based on ten iterations and 64 baseline points. They also excluded the C02 band between 2200 to 2420 1/cm by setting the data points to 0. This should be kept in mind, since the inclusion of additional reference samples requires the same procedure for the database to stay in a consistent state. The data shows a spectral resolution of 2.1 1/cm. Additional reference samples need to be resampled to the same spectral resolution and the same baseline correction should be applied.</p>
+<p>To ensure consistency, the data base was read into <code>R</code> and the wavenumbers were saved in a separate file for the future use of resampling additional reference spectra.</p>
 <pre class="r"><code>library(openxlsx)
 url = &quot;https://static-content.springer.com/esm/art%3A10.1007%2Fs00216-018-1156-x/MediaObjects/216_2018_1156_MOESM2_ESM.xlsx&quot;
 
@@ -1310,15 +1330,15 @@ data = openxlsx::read.xlsx(url)
 wavenumbers = as.numeric(names(data)[2:1864])
 # saving wavenumbers to reference sample directory
 saveRDS(wavenumbers, paste0(ref, &quot;wavenumbers.rds&quot;))</code></pre>
-<p>An important feature of any data base is the distribution of the different classes. Here, we only print the 20 most common classes, since there are a lot of reference samples only found once or twice within the data base.</p>
+<p>An important feature of any data base is the distribution of different classes. Here, we only print the 20 most common classes, because there are a lot of reference samples only found once or twice within the database.</p>
 <pre class="r"><code>data$Abbreviation = as.factor(data$Abbreviation)
 summary(data$Abbreviation)[1:10]</code></pre>
 <pre><code>  PES    PP  LDPE  HDPE   PET    PE Nylon    PA    PS   PUR 
    15    12    11    10     9     8     7     7     7     7 </code></pre>
 </div>
-<div id="section-construction-of-the-data-base" class="section level2">
-<h2>Construction of the Data Base</h2>
-<p>We are interested in assigning the correct class to potential plastic particles. The most important classes found in the data base to us are thus the ones of artificial polymer origin. However, sometimes also particles of biological origin will be subject to a spectral analysis, because they resemble the appearance of microplastics in environmental samples. Any machine learning algorithm trained only with reference samples from plastics would eventually assign a plastic-class also to the particles of biological origin. It will just assign the class with the greatest similarity to the classes it learned. This can lead to so-called false positive errors. To reduce the error of false positives, we include some of the samples of biological origin as well. We summaries these samples to broader classes.</p>
+<div id="section-construction-of-the-database" class="section level2">
+<h2>Construction of the Database</h2>
+<p>We are interested in assigning the correct class to potential plastic particles. The most important classes to us found in the database are the ones of artificial polymer origin. However, sometimes particles of biological origins will also be subject to a spectral analysis, because they resemble the appearance of microplastic in environmental samples. Any machine-learning algorithm trained only with reference samples from plastics would eventually assign one of these classes to the particles of biological origins. It will only assign the class with the greatest similarity to the classes it has learned. This can lead to so-called false positive errors. To reduce the occurence of false positives we include some of the samples of biological origin as well. We summarize these samples to broader classes.</p>
 <pre class="r"><code># furs and wools
 indexFur = grep(&quot;fur&quot;, data$Abbreviation)
 indexWool = grep(&quot;wool&quot;, data$Abbreviation)
@@ -1357,13 +1377,13 @@ syntPolymer$class[grep(&quot;Nylon&quot;,syntPolymer$class)] = &quot;PA&quot;</c
 </div>
 <div id="section-class-distribution" class="section level2">
 <h2>Class Distribution</h2>
-<p>We now bind the reference samples together and take a look at the distribution of classes in the resulting data frame, which is the concrete data base for the following calculations.</p>
+<p>We now bind the reference samples together and take a look at the distribution of classes in the resulting data frame, which is the concrete database used for the following calculations.</p>
 <pre class="r"><code>data = rbind(furs,wood,fibre,syntPolymer) 
 data$class = as.factor(data$class)
 summary(data$class)</code></pre>
 <pre><code>FIBRE   FUR  HDPE  LDPE    PA    PE   PES   PET    PP    PS   PUR  WOOD 
    27    23    10    11    14     8    15     9    12     7     7     4 </code></pre>
-<p>In total, 93 (53%) reference samples of plastic polymers are present in the data base and 44 (47%) of biological origin. Within the plastic samples, we find that the data is very balanced with no single class showing less than 7 samples. For the samples of biological origin, however, the class <code>FIBRE</code> dominates the distribution. This could prove as an disadvantage if a machine learning algorithm picks up this unbalance by minimizing its error rate simply by more frequently predicting the <code>FIBRE</code> class. At this point, we will leave the resulting data base as it is and save it to disk. We save the data in individual files as well as in a comprehensive data base in csv format. This way we ensure that later extensions to the data base are easy to manage.</p>
+<p>In total, 93 (53%) reference samples of plastic polymers are present in the database and 44 (47%) of biological origin. Within the plastic samples, we found that the data is very balanced with no single class showing less than seven samples. For the samples of biological origin, however, the class <code>FIBRE</code> dominates the distribution. This could prove a disadvantage if a machine-learning algorithm picks up this unbalance by minimizing its error-rate simply by more frequently predicting the <code>FIBRE</code> class. At this point, we will leave the resulting data-base as it is and save it to disk. We save the data in individual files as well as, in a comprehensive file in <code>.csv</code> format. This way we ensure that later extensions to the database are more easily manageable.</p>
 <pre class="r"><code>write.csv(data, file = paste0(ref, &quot;reference_database.csv&quot;), row.names=FALSE)
 
 # writing class control file
@@ -1378,7 +1398,7 @@ write(classIndex, paste0(ref, &quot;classes.txt&quot;))</code></pre>
 </div>
 <div id="section-spectra-of-reference-samples" class="section level2">
 <h2>Spectra of Reference Samples</h2>
-<p>Below one can find the spectra found within the data base. By selecting a class in the drop-down menu the plot of the respective class will be shown. The solid grey line in the center of the plot indicates the mean value for all samples for the respective wavenumbers. The grey ribbon indicates the standard deviation from that mean value while the dashed lines show the minimum and the maximum found in the data base.</p>
+<p>One can find below the spectra found within the database. By selecting an entry in the drop-down menu the plot of the respective class will be shown. The solid grey line in the center of the plot indicates the mean value for all samples of the respective wavenumbers. The grey ribbon indicates the standard deviation from that mean value, while the dashed lines show the minimum and the maximum values, respectively.</p>
 <iframe src="https://goergen95.shinyapps.io/shiny_apps/?showcase=0" width="672" height="500px">
 </iframe>
 </div>
