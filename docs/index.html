@@ -391,7 +391,7 @@ div.section {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -400,7 +400,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -409,10 +409,10 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-08-19
+<strong>Last updated:</strong> 2019-08-21
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>polymeRID/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -428,12 +428,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -500,10 +500,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreeb6fd75e7a8b650a52ef12c28d341531b667047e8targetblankb6fd75ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/b6fd75e7a8b650a52ef12c28d341531b667047e8" target="_blank">b6fd75e</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree95501a0d3aae46a4da79194a9f5fe33aaebe1db1targetblank95501a0a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/95501a0d3aae46a4da79194a9f5fe33aaebe1db1" target="_blank">95501a0</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreeb6fd75e7a8b650a52ef12c28d341531b667047e8targetblankb6fd75ea" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree95501a0d3aae46a4da79194a9f5fe33aaebe1db1targetblank95501a0a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -710,6 +710,9 @@ Ignored files:
     Ignored:    smp/20190815_1847_FUSION/
     Ignored:    website/
 
+Unstaged changes:
+    Modified:   analysis/index.Rmd
+
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -747,6 +750,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/goergen95/polymeRID/f2ee83c6fd5264329023a1ff1bccf40d5fa9dee4/docs/index.html" target="_blank">f2ee83c</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-08-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1251,16 +1271,16 @@ Start workflowr project.
 <h2>Introduction</h2>
 <p>Here I present the results of my work for a master’s seminar at the University of Marburg concerned with microplastic in the environment.<br />
 <br> <img src="assets/images/seperators.jpg" alt="Probe Seperators" /><br> <em>Photo of two sediment separators taken by Sarah Brüning</em></p>
-<p>Micro-plastic particles polluting the environment have been in the public focus for some time now. The scientific efforts of analyzing the occurrences of particles in the environment and their effects on ecosystems and human health is manifold, yet there is a lack of consensus on methods for sampling, sample handling, analysis and identification, especially for samples from aquatic ecosystems. Some of the most urgent research questions concerned with micro-plastic in the environment are the analysis of effects on biological lifeforms <span class="citation">(Zhang et al. <a href="#ref-Zhang2019">2019</a>)</span>, their movement and distribution in the marine environment <span class="citation">(Auta, Emenike, and Fauziah <a href="#ref-Auta2017">2017</a>)</span> as well as in freshwater systems <span class="citation">(Li, Liu, and Paul Chen <a href="#ref-Li2018b">2018</a>)</span>.</p>
-<p>Different research questions demand for different methodologies for sampling, sample handling and laboratory analysis. However, the link between these research fields is that any analysis of microplastics in the environment needs a robust identification method to enable scientist to draw the right conclusions and to bring forward recommendations to the public and decision makers to act upon their research findings.</p>
-<p>Evidently, there also exist a broad spectrum of different polymer identification strategies <span class="citation">(Löder and Gerdts <a href="#ref-Loder2015">2015</a>; Rocha-Santos and Duarte <a href="#ref-Rocha-Santos2015a">2015</a>; Shim, Hong, and Eo <a href="#ref-Shim2017">2017</a>)</span>, ranging from traditional microscopy to spectroscopy as well as destructive methods of thermal analysis. A distinction has to be made towards the extent of automatisation in the identification process. Recently, different approaches to automate the task of polymer classification, either by for individual particles or for a whole collection of samples, e.g. on a focal plane, have been reported to the scientific community <span class="citation">(Masoumi, Safavi, and Khani <a href="#ref-Masoumi2012">2012</a>; Primpke et al. <a href="#ref-Primpke2017">2017</a>; Lorenzo-Navarro et al. <a href="#ref-Lorenzo-Navarro2018">2018</a>; Zhang et al. <a href="#ref-Zhang2018">2018</a>; Primpke, Dias, and Gerdts <a href="#ref-Primpke2019">2019</a>)</span></p>
-<p>This project sets out to contribute to the ease of the cumbersome process of classifying individual particles based on their spectral reflectance by hand. The idea is that up-to-date machine learning models applied to the high-dimensional spectral data of particles found in environmental samples can minimize the need for human intervention in the classification process and thus significantly speed up the process of classification of particles. Other studies have reported substantial accuracies by applying different kinds of machine learning algorithms such as hierarchical clustering <span class="citation">(Primpke et al. <a href="#ref-Primpke2017">2017</a>)</span>, support-vector-machines <span class="citation">(V. Bianco P. Memmolo <a href="#ref-bianco2019">2019</a>)</span>, random forest <span class="citation">(Hufnagl et al. <a href="#ref-Hufnagl2019">2019</a>)</span>, as well as convolutional neural networks <span class="citation">(Liu et al. <a href="#ref-Liu2017">2017</a>)</span> to classify the spectra of microplastics and other materials found in environmental samples.</p>
-<p>This project was grouped into different working steps, which were designed to allow the reproducibility of the workflows to the greatest extent possible as well as to allow alterations of the code and extensions to the data base. These working steps are:</p>
+<p>Microplastic particles polluting the environment has been in the public focus for some time now. The scientific efforts of analyzing the occurrences of particles in the environment and their effects on ecosystems and human health is manifold, yet there is a lack of consensus on methods for sampling, sample handling, analysis and identification, especially for samples from aquatic ecosystems. Some of the most urgent research questions concerned with microplastic are the effects on biological lifeforms <span class="citation">(Zhang et al. <a href="#ref-Zhang2019">2019</a>)</span>, their movement through and distribution in marine environments <span class="citation">(Auta, Emenike, and Fauziah <a href="#ref-Auta2017">2017</a>)</span> as well as in freshwater ecosystems <span class="citation">(Li, Liu, and Paul Chen <a href="#ref-Li2018b">2018</a>)</span>.</p>
+<p>Different research questions demand different methodologies for sampling, sample handling and laboratory analysis. However, the link between different research domains is that any analysis of microplastic in the environment needs a robust identification method to enable scientists to bring forward meaningful recommendations to the public and decision makers.</p>
+<p>A broad spectrum of different polymer identification strategies evidently exists <span class="citation">(Löder and Gerdts <a href="#ref-Loder2015">2015</a>; Rocha-Santos and Duarte <a href="#ref-Rocha-Santos2015a">2015</a>; Shim, Hong, and Eo <a href="#ref-Shim2017">2017</a>)</span>, ranging from traditional microscopy to spectroscopy as well as destructive methods of thermal analysis. A distinction has to be made towards the extent of automatization in the identification process. Recently, different approaches to automate the task of polymer classification, either by individual particles or for a whole collection of samples simultaneously have been reported to the scientific community <span class="citation">(Masoumi, Safavi, and Khani <a href="#ref-Masoumi2012">2012</a>; Primpke et al. <a href="#ref-Primpke2017">2017</a>; Lorenzo-Navarro et al. <a href="#ref-Lorenzo-Navarro2018">2018</a>; Zhang et al. <a href="#ref-Zhang2018">2018</a>; Primpke, Dias, and Gerdts <a href="#ref-Primpke2019">2019</a>)</span>.</p>
+<p>This project sets out to contribute to the ease of the cumbersome process of classifying individual particles based on their spectral reflectance by hand. The idea is that up-to-date machine learning models applied to the high-dimensional spectral data of particles found in environmental samples can minimize the need for human intervention in the classification process and thus significantly speed up the process of classification. Other studies have reported substantial accuracies by applying different kinds of machine learning algorithms such as hierarchical clustering <span class="citation">(Primpke et al. <a href="#ref-Primpke2017">2017</a>)</span>, support-vector-machines <span class="citation">(V. Bianco P. Memmolo <a href="#ref-bianco2019">2019</a>)</span>, random forest <span class="citation">(Hufnagl et al. <a href="#ref-Hufnagl2019">2019</a>)</span>, as well as convolutional neural networks <span class="citation">(Liu et al. <a href="#ref-Liu2017">2017</a>)</span> to classify the spectra of microplastic and other materials found in environmental samples.</p>
+<p>This project was grouped into different working steps, which were designed to allow to reproduce the workflows to the greatest extent possible as well as to allow alterations of the code and extensions to the database. These working steps are:</p>
 <ul>
-<li><p><a href="preparation.html"><strong>Preparation</strong></a>: At first the establishment of a comprehensive database of reference spectra was mandatory to allow the application of machine learning models. We used a OpenSource data base published by <span class="citation">Primpke et al. (<a href="#ref-Primpke2018">2018</a>)</span>. For potential extensions of the data base, we created a workflow of spectral resampling and baseline correction of reference polymers and other particles in accordance with the original data base.</p></li>
-<li><p><a href="exploration.html"><strong>Exploration</strong></a>: Different types of preprocessing techniques were assessed by a cross-validation approach in which all different levels of the data were presented to a selection of machine learning models and their capability to correctly classify the data set was captured. Additionally, different levels of noise were added to the data so that the models and preprocessing types which most robustly classify polymer spectra could be identified.</p></li>
-<li><p><a href="calibration.html"><strong>Calibration</strong></a>: After the exploration stage, the best performing models were chosen to create a decision fusion model. A workflow was created to calibrate these models to a potentially changing data base when needed. That step is crucial, so that the work presented here can be used in the future, e.g. when the reference data base will be extended or in the case of a change in the spectral resolution of the samples.</p></li>
-<li><p><a href="classification.html"><strong>Classification</strong></a>: At this last stage of the project, a workflow was created to classify real environmental samples in a user-friendly way to ease the classification process. Here, some accuracy values of the classification are extracted and comprehensively handed to the user, as well as some plots for a visual confirmation of the classification results. This way, it is ensured that the results are easily accessible and the possibility for a human agent to assess the quality of the classification is implemented.</p></li>
+<li><p><a href="preparation.html"><strong>Preparation</strong></a>: At first the establishment of a comprehensive database of reference spectra was mandatory to allow the application of machine-learning models. We used an OpenSource database published by <span class="citation">Primpke et al. (<a href="#ref-Primpke2018">2018</a>)</span>. For potential future extensions, we created a workflow of spectral resampling and baseline correction for reference polymers and other particles to ensure the consistency of the database.</p></li>
+<li><p><a href="exploration.html"><strong>Exploration</strong></a>: Different types of pre-processing techniques were assessed by a cross-validation approach in which different representations of data were presented to a selection of machine-learning models. Their capability to correctly classify the database was captured. Additionally, increasing levels of noise were added to the data so that the models and pre-processing techniques which most robustly classify polymer spectra could be identified.</p></li>
+<li><p><a href="calibration.html"><strong>Calibration</strong></a>: After the exploration stage, the best performing models were chosen to create a decision fusion model. A workflow was created to calibrate these models to a potentially changing database when needed. This step is crucial so that the work presented here can be used in the future, i.e. in the case of a extension of the reference database or a change in the spectral resolution.</p></li>
+<li><p><a href="classification.html"><strong>Classification</strong></a>: At the final stage of the project, a workflow was created to classify real environmental samples in a user-friendly way to ease the classification process. Here, some accuracy values of the classification are extracted and comprehensively handed to the user, as well as some plots for a visual confirmation of the classification results. This way, it is ensured that the results are easily accessible and the possibility for a human agent to assess the quality of the classification is implemented.</p></li>
 </ul>
 </div>
 <div id="citations-on-this-page" class="section level2">

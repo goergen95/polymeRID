@@ -30,55 +30,54 @@ University of Marburg concerned with microplastic in the environment.
 ![Probe Seperators](assets/images/seperators.jpg)<br>
 *Photo of two sediment separators taken by Sarah Brüning*
 
-Micro-plastic particles polluting the environment have been in the public focus
+Microplastic particles polluting the environment has been in the public focus
 for some time now. The scientific efforts of analyzing the occurrences
 of particles in the environment and their effects on ecosystems and human health
 is manifold, yet there is a lack of consensus on methods for sampling, sample handling,
 analysis and identification, especially for samples from aquatic ecosystems.
-Some of the most urgent research questions concerned with micro-plastic in the environment
-are the analysis of effects on biological lifeforms [@Zhang2019], their movement and
-distribution in the marine environment [@Auta2017] as well as in freshwater systems [@Li2018b].
+Some of the most urgent research questions concerned with microplastic
+are the effects on biological lifeforms [@Zhang2019], their movement through and
+distribution in marine environments [@Auta2017] as well as in freshwater ecosystems [@Li2018b].
 
-Different research questions demand for different methodologies for sampling,
-sample handling and laboratory analysis. However, the link between these 
-research fields is that any analysis of microplastics in the environment needs a 
-robust identification method to enable scientist to draw the right conclusions 
-and to bring forward recommendations to the public and decision makers to act upon
-their research findings.
+Different research questions demand different methodologies for sampling,
+sample handling and laboratory analysis. However, the link between different
+research domains is that any analysis of microplastic in the environment needs a 
+robust identification method to enable scientists to bring forward 
+meaningful recommendations to the public and decision makers.
 
-Evidently, there also exist a broad spectrum of different polymer identification
-strategies [@Loder2015;@Rocha-Santos2015a;@Shim2017], ranging from traditional microscopy 
+A broad spectrum of different polymer identification strategies evidently exists
+[@Loder2015;@Rocha-Santos2015a;@Shim2017], ranging from traditional microscopy 
 to spectroscopy as well as destructive methods of thermal analysis. A distinction
-has to be made towards the extent of automatisation in the identification
+has to be made towards the extent of automatization in the identification
 process. Recently, different approaches to automate the task of polymer classification,
-either by for individual particles or for a whole collection of samples, e.g. on 
-a focal plane, have been reported to the scientific community [@Masoumi2012;@Primpke2017;@Lorenzo-Navarro2018;@Zhang2018;@Primpke2019]
+either by individual particles or for a whole collection of samples simultaneously
+have been reported to the scientific community [@Masoumi2012;@Primpke2017;@Lorenzo-Navarro2018;@Zhang2018;@Primpke2019].
 
 This project sets out to contribute to the ease of the cumbersome process of 
 classifying individual particles based on their spectral reflectance by hand.
 The idea is that up-to-date machine learning models applied to the 
 high-dimensional spectral data of particles found in environmental samples can 
 minimize the need for human intervention in the classification process and 
-thus significantly speed up the process of classification of particles.
+thus significantly speed up the process of classification.
 Other studies have reported substantial accuracies by applying different kinds
 of machine learning algorithms such as hierarchical clustering [@Primpke2017], 
 support-vector-machines [@bianco2019], random forest [@Hufnagl2019], as well as
-convolutional neural networks [@Liu2017] to classify the spectra of microplastics 
+convolutional neural networks [@Liu2017] to classify the spectra of microplastic
 and other materials found in environmental samples.
 
 This project was grouped into different working steps, which were designed 
-to allow the reproducibility of the workflows to the greatest extent possible
-as well as to allow alterations of the code and extensions to the data base. 
+to allow to reproduce the workflows to the greatest extent possible
+as well as to allow alterations of the code and extensions to the database. 
 These working steps are:    
 
-* [**Preparation**](preparation.html): At first the establishment of a comprehensive database of reference spectra was mandatory to allow the application of machine learning models. We used a OpenSource data base published by @Primpke2018. For potential extensions of the data base, we created a workflow of spectral resampling and baseline correction of reference polymers and other particles in accordance with the original data base.
+* [**Preparation**](preparation.html): At first the establishment of a comprehensive database of reference spectra was mandatory to allow the application of machine-learning models. We used an OpenSource database published by @Primpke2018. For potential future extensions, we created a workflow of spectral resampling and baseline correction for reference polymers and other particles to ensure the consistency of the database.
 
-* [**Exploration**](exploration.html): Different types of preprocessing techniques were assessed by a cross-validation approach in which all different levels of the data were presented to a selection of machine learning models and their capability to correctly classify the data set was captured. Additionally, different levels of noise were added to the data so that the models and preprocessing types which most robustly classify polymer spectra could be identified. 
+* [**Exploration**](exploration.html): Different types of pre-processing techniques were assessed by a cross-validation approach in which different representations of data were presented to a selection of machine-learning models. Their capability to correctly classify the database was captured. Additionally, increasing levels of noise were added to the data so that the models and pre-processing techniques which most robustly classify polymer spectra could be identified. 
 
-* [**Calibration**](calibration.html): After the exploration stage, the best performing models were chosen to create a decision fusion model. A workflow was created to calibrate these models to a potentially changing data base when needed. That step is crucial, so that the work presented here can be used in the future, e.g. when the reference data base will be extended or in the case of a change in the spectral resolution of the samples.  
+* [**Calibration**](calibration.html): After the exploration stage, the best performing models were chosen to create a decision fusion model. A workflow was created to calibrate these models to a potentially changing database when needed. This step is crucial so that the work presented here can be used in the future, i.e. in the case of a 
+extension of the reference database or a change in the spectral resolution.  
 
-* [**Classification**](classification.html): At this last stage of the project, a workflow was created to classify real environmental samples in a user-friendly way to ease the classification process. Here, some accuracy values of the classification are extracted and comprehensively handed to the user, as well as some plots for a visual confirmation of the classification results. This way, it is ensured that the results are easily accessible and the possibility for a human agent to assess the quality of
-the classification is implemented.
+* [**Classification**](classification.html): At the final stage of the project, a workflow was created to classify real environmental samples in a user-friendly way to ease the classification process. Here, some accuracy values of the classification are extracted and comprehensively handed to the user, as well as some plots for a visual confirmation of the classification results. This way, it is ensured that the results are easily accessible and the possibility for a human agent to assess the quality of the classification is implemented.
 
 
 ## Citations on this page
