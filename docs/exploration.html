@@ -321,7 +321,7 @@ div.section {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -330,7 +330,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -339,10 +339,10 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-08-19
+<strong>Last updated:</strong> 2019-08-21
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>polymeRID/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -358,12 +358,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -430,10 +430,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreeb6fd75e7a8b650a52ef12c28d341531b667047e8targetblankb6fd75ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/b6fd75e7a8b650a52ef12c28d341531b667047e8" target="_blank">b6fd75e</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree1f530221cb2d9f5f01e7f52776f8334af04fb279targetblank1f53022a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/1f530221cb2d9f5f01e7f52776f8334af04fb279" target="_blank">1f53022</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreeb6fd75e7a8b650a52ef12c28d341531b667047e8targetblankb6fd75ea" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree1f530221cb2d9f5f01e7f52776f8334af04fb279targetblank1f53022a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -640,6 +640,9 @@ Ignored files:
     Ignored:    smp/20190815_1847_FUSION/
     Ignored:    website/
 
+Unstaged changes:
+    Modified:   analysis/exploration.Rmd
+
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -677,6 +680,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/goergen95/polymeRID/f2ee83c6fd5264329023a1ff1bccf40d5fa9dee4/docs/exploration.html" target="_blank">f2ee83c</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-08-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -803,8 +823,8 @@ started exploration tab
 </div>
 </div>
 </div>
-<p>The idea of the exploration stage is to find an optimal configuration between the hyper-parameters of the machine learning algorithms and different representations of the input data. On the one hand, algorithms such as support-vector-machines (SVM), random forest (RF) and convolutional neural networks (CNN), need proper fine-tuning of their parameters to effectively learn the patterns we are interested in. On the other hand, it is possible to present the data in different forms to the algorithms, each representing different “ways” to look at the samples. The main goal of such an exploration is to optimize the outcome of the training process, bearing in mind that such a process is basically a function of desired accuracy, computational costs, and data availability.</p>
-<p>Here, all three previously mentioned machine learning algorithms, SVM, RF, and, CNN were tested for their ability to classify plastic polymers based on their spectral reflectance data measured by a FTIR spectrometer. Consequently, the workflow and the results are presented individually for the different algorithms.</p>
+<p>The idea of the exploration stage is to find an optimal configuration between the hyper-parameters of the machine-learning algorithms and different representations of the input data. On the one hand, algorithms such as support-vector-machines (SVM), random forest (RF) and convolutional neural networks (CNN), need proper fine-tuning of their parameters to effectively learn the patterns we are interested in. On the other hand, it is possible to present the data in different forms to the algorithms, each representing different “ways” to look at the samples. The main goal of such an exploration is to optimize the outcome of the training process, bearing in mind that such a process is basically a function of desired accuracy, computational costs, and data availability.</p>
+<p>Here, all three previously mentioned machine-learning algorithms, SVM, RF and CNN were tested for their ability to classify plastic polymers based on their spectral reflectance measured by an FTIR spectrometer. Consequently, the workflow and the results are presented individually for each individual algorithm.</p>
 <ul>
 <li><p><a href="rf_exploration.html"><strong>Random Forest (RF)</strong></a></p></li>
 <li><p><a href="svm_exploration.html"><strong>Support-Vector-Machine (SVM)</strong></a></p></li>

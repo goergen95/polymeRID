@@ -18,7 +18,7 @@ source("code/functions.R")
 
 
 The idea of the exploration stage is to find an optimal configuration between the
-hyper-parameters of the machine learning algorithms and different 
+hyper-parameters of the machine-learning algorithms and different 
 representations of the input data. On the one hand, algorithms such as 
 support-vector-machines (SVM), random forest (RF) and convolutional neural networks
 (CNN), need proper fine-tuning of their parameters to effectively learn the
@@ -28,10 +28,10 @@ to look at the samples. The main goal of such an exploration is to optimize the
 outcome of the training process, bearing in mind that such a process is 
 basically a function of desired accuracy, computational costs, and data availability.
 
-Here, all three previously mentioned machine learning algorithms, SVM, RF, and, CNN
+Here, all three previously mentioned machine-learning algorithms, SVM, RF and CNN
 were tested for their ability to classify plastic polymers based on their spectral
-reflectance data measured by a FTIR spectrometer. Consequently, the workflow and
-the results are presented individually for the different algorithms.
+reflectance measured by an FTIR spectrometer. Consequently, the workflow and
+the results are presented individually for each individual algorithm.
 
 * [**Random Forest (RF)**](rf_exploration.html)
 
