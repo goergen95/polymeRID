@@ -18,12 +18,12 @@ source("code/functions.R")
 
 ## Overview
 Support Vector Machine (SVM) is a non-parametric classification method which was
-initially designed for binary classification problems and which was developed in 
+initially designed for binary classification problems and was developed in 
 its current form by @Boser:1992:TAO:130385.130401. A detailed overview of the 
 SVM algorithm is found in @Burges1998. The principal idea behind SVM is to find 
-an optimal hyperplane which separates two classes from another by the largest
-possible margin. The algorithm is optimized by iteratively maximizing this margin 
-but while only considering the closest observations of both classes to the margin. 
+an optimal hyperplane which separates two classes from each other by the largest
+possible margin. The algorithm is optimized by iteratively maximizing this margin. 
+Only the closest observations to the margin are considered. 
 These specific observations are also called support-vectors. Multidimensional 
 data can be processed by mapping the data into a higher dimensional feature 
 space through a specified mapping function. This function is called kernel 
@@ -31,20 +31,20 @@ function, and mainly four different groups are used: linear, polynomial, radial
 and sigmoid functions [@Burges1998]. In this project only the radial basis 
 function was used. Multi-class problems are addressed by calculating an optimal 
 margin following the one class-against-all pattern and conducting a majority vote 
-and the end of the calculations. SVM need some tuning parameters. These are the 
-regularization parameter `C` and the kernel width `γ`. The regularization 
-parameter is also called penalty value, as it is a constant giving penalty to 
-misclassified observations. There optimal values might change if different 
+at the end of the calculations. SVM needs proper fine-tuning of its parameters. These are the 
+regularization parameter `C` and the kernel width `γ` for radial basis functions. 
+The regularization parameter is also called "penalty value", as it is a constant giving penalty to 
+misclassified observations. The optimal values might change if different 
 representations of the data are presented to the algorithm.
 
 
 ## Adding Noise
 
-Different levels of data reprocessing might emphasize different features of 
+Different techniques of data pre-processing might emphasize different features of 
 the patterns to be learned by an algorithm. To grasp this, different transformations
 of the data were presented to the SVM algorithm. Additionally, the raw data signal
 was jittered to test which transformation might prove beneficial in delivering 
-high classification accuracies even in the presence of noise. To test this, 
+a high classification accuracy even in the presence of noise. To test this, 
 we define a function which adds noise to the raw data and returns a list with
 the number of elements equal to the levels of noise applied.
 
@@ -74,15 +74,15 @@ head(noisy_data[["noise100"]])[1:3,1:3]
 ```
 
 
-## Data Preprocessing
+## Data Pre-processing
 
-Then, in another user defined function which uses the `noisy_data` objected as input
-specified data transformations are applied. These are normalization which centers
-and scales the input data, as well as different forms of the Savitzkiy-Golay filter [@Savitzky1964]
-and first and second derivative of a raw spectrum. The function iterates through
-the noise level elements in the `noisy_data` object and returns each specified 
+In another function which uses the `noisy_data`-object as input,
+specific data transformations are applied. These is normalization which centers
+and scales the input data, different forms of the Savitzkiy-Golay filter [@Savitzky1964],
+and first and second derivatives of the raw spectra. The function iterates through
+the elements in the `noisy_data` object and returns each specified 
 transformation in a list element below the noise level. The exemplary function below
-applies the preprocessing for normalization, standard filtering and first 
+applies the pre-processing for normalization, standard filtering and first 
 derivative only. The implementation of the function used in the project
 can be found [here](https://github.com/goergen95/polymeRID/blob/master/code/functions.R#12).
 
@@ -128,20 +128,20 @@ head(test_dataset[["noise500"]][["raw.d1"]])[1:3,1:3]
 
 ## Dimensionality Reduction
 
-The data base of @Primpke2018 currently shows 1863 variables for each observations.
-Most of these data points do not bear relevant information to distinguish between
+The database of @Primpke2018 currently shows 1863 variables for each observation.
+Most of these data points do not hold relevant information to distinguish between
 different types of particles. To shorten the computation time, one can use 
 dimensionality reduction techniques such as principal component analysis (PCA).
-PCA also has been used to transform spectral data of micro-plastics in marine 
-ecosystems before [@Jung2018;@Lorenzo-Navarro2018]. PCA basically takes the input
-data for a given number of observation and by performing a orthogonal transformation
-to the data transforms these possible correlated variables to uncorrelated 
-principal components. This way, both redundancies in the data as well as possible
-noise can be accounted for. PCA previously has been successfully applied to
-FTIR-spectrometer data [@Hori2003;@Nieuwoudt2004;@Mueller2013;@Ami2013;@Fu2014].
+PCA has already been used to transform spectral data of microplastic in marine 
+ecosystems [@Jung2018; @Lorenzo-Navarro2018]. PCA basically takes the input
+data for a given number of observations and performs a orthogonal transformation
+to  derive uncorrelated principal components from the possibly correlated variables.
+Both redundancies in the data as well as the presence of noise can be accounted for this way. 
+PCA has previously been successfully applied to FTIR-spectroscopy data [@Hori2003; @Nieuwoudt2004; @Mueller2013; @Ami2013; @Fu2014].
 Simultaneously, the number of variables can be significantly reduced by applying
-PCA and thus speeding up the training process. Below we will apply a PCA to the
-raw data as an example.
+PCA and thus speeding up the training process. Below we apply a PCA to the
+raw data as an example only. 
+
 ```{r PCA-raw , message=FALSE}
 library(factoextra)
 tmp = test_dataset[["noise0"]][["raw"]]
@@ -153,31 +153,31 @@ thresInd = which(var_info$cumulative.variance.percent>=threshold)[1]
 pca_data = pca$x[,1:thresInd]
 ```
 We can use the index variable `thresInd` we just defined to take a look upon
-all the principal components which explain 99% of the variance in the data set.
+all the principal components which explain 99% of the variance of the data.
 
 ```{r pca-table, echo=FALSE}
 library(knitr)
 knitr::kable(var_info[1:thresInd,])
 ```
 
-We effectively reduced the number of variables from 1683 to 15 which still bear 
-99% of the variance we can find in the original data set. However, when it comes
-to machine learning, it is important to realize that this new data set is not fit
+We effectively reduced the number of variables from 1683 to 15 which still bears 
+99% of the variance we find in the original data. When it comes
+to machine learning, however, it is important to realize that this new data set is not fit
 to be used in a training process. If we now randomly split the observations into
-training and test, we effectively mix up these two sets because information of 
-the test set has already influenced the outcome of the PCA. Therefor, the data set
-need to be split beforehand of the PCA. The analysis is done on the training data 
-only and then the same orthogonal transformations will be applied to the test data.
-This way it can be ensured that the test set is truly independent from the 
+a training and testing set, we effectively mix up these two sets because information of 
+the testing set has already influenced the outcome of the PCA. Therefore, the data set
+needs to be split before applying the PCA. The analysis is done on the training data 
+only and then the same orthogonal transformations is applied to the testing data.
+This way it can be ensured that the test set is truly independent of the 
 training process.
 
 ## Cross Validation
 
-Here, we apply a 10-fold cross-validation which is repeated 5 times. The following 
+We apply a 10-fold cross-validation which is repeated five times. The following 
 code takes a complete data set as input, applies a splitting function from the
-`caret` package and then builds the PCA upon the the test set and finally applies
-the same transformation to the test set. We apply it for the raw data only.
-Also, we randomly split the data to 50% training and 50% test.
+`caret` package and then builds the PCA upon the the training set and finally applies
+the same transformation to the testing set. Here, it is only applied for the raw data.
+We also randomly split the data to a 50% training and a 50% testing set.
 
 ```{r PCA_loop}
 folds = 10
@@ -226,8 +226,8 @@ for (rep in 1:repeats){
 
 ```
 We now have a list object with the number of elements equivalent to the repeats.
-Below each repeat element we can access the individual folds.
-There we find two elements which we can access by referring to `"training"`
+Below the level of repeats individual folds can be accessed.
+There the splitted data set can be accessed by referring to `"training"`
 and `"testing"`.
 ```{r PCA_access}
 pcaData[["repeat5"]][["fold10"]][["training"]][1:3,1:3]
@@ -239,12 +239,12 @@ summary(pcaData[["repeat5"]][["fold10"]][["validation"]]$response)
 
 ## Parameter Tuning
 
-For the SVM algorithm we also implemented a simple search pattern for optimal 
-parameters for the regularization parameter `C` and the kernel width `γ`. We did
+For the SVM algorithm a simple search pattern for the optimal configuration for
+the regularization parameter `C` and the kernel width `γ` was implemented. We did
 this by applying a search grid for the parameters and calculating each possible
 combination. Note that due to limits in computation capacities we restricted
 the search to 25 combinations only. The code below calculates a model for each
-possible combinations, evaluating it capacity to correctly classify the training
+possible combination, evaluating its capacity to correctly classify the training
 data and then chooses the optimal model to evaluate the validation data. 
 
 ```{r svm-paramter-tuning, eval = TRUE}
@@ -276,10 +276,9 @@ confMat = caret::confusionMatrix(prediction, y_test)
 print(confMat$table)
 ```
 
-This code is integrated into a function which applies this search pattern to all 
-folds for all repeats and can be found [here](https://github.com/goergen95/polymeRID/blob/master/code/functions.R#321).
-Finally, we can apply this function to the different levels of preprocessing which
-were discussed before and obtaining the accuracies in the `results` object.
+The process of splitting the data set into training and testing was automated by
+putting the above code in a function which can be found [here](https://github.com/goergen95/polymeRID/blob/master/code/functions.R#239).
+Finally, this function was applied to the different pre-procesesing levels, as discussed before.
 
 ```{r CV-apply, eval = FALSE}
 source("code/functions.R")
@@ -327,8 +326,8 @@ results = readRDS(paste0(output,"svm/exploration.rds"))
 
 ## Results 
 
-We can now take a look at the kappa scores the algorithm achieved during training
-for different representations of the data and at increasing noise levels.
+The plot below shows the Kappa scores the algorithm achieved during training
+for different representations of the data at increasing noise levels.
 
 ```{r plot-results, echo = FALSE, warning=FALSE, message=FALSE}
 library(plotly)
@@ -344,14 +343,15 @@ test = ggplot(data=results)+
 t = ggplotly(test)
 t
 ```
-We can observe that with higher noise ratios the kappa score is reduced significantly.
+
+It can be observed that with higher noise level the Kappa score is reduced significantly.
 All data transformations yield to very low accuracies when the noise increases.
 In the absence of significant noise, however, the simple Savitzkiy-Golay filter,
-the raw data as well as the first and second order derivatives yield to a kappa
-score of about 0.75. We can look at this more mathematically by calculating the average 
-slopes of the data transformations methods and order the data frame from low to
-high slopes. Note that we only take the kappa score at noise level 0 and 10
-to calculate the average slope.
+the raw data, as well as the first and second order derivatives yield to a kappa
+score of about 0.75. Looking at this more mathematically by calculating the average 
+slopes of the Kappa scores reveals the transformations with the most stable results. 
+Note that we only take the kappa score at noise level 0 and 10 to calculate the average slope,
+since higher noise levels yielded to unsatisfactory accuracies.
 
 ```{r slope-calculation}
 noise0 = results[results$level == "noise0", ]
@@ -365,7 +365,7 @@ df = df[order(-slopes),]
 knitr::kable(df)
 ```
 
-We can now confirm, that the average decrease in kappa score is the lowest for
+This confirms that the average decrease in Kappa score is the lowest for
 the Savitzkiy-Golay filtered data followed by the raw data. Then, the first derivative
 of the filtered data achieves the next lowest slope, but it has to be noted that the
 overall kappa score level of this data transformation is lower than for the derivatives
