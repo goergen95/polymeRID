@@ -409,7 +409,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-08-19
+<strong>Last updated:</strong> 2019-08-22
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -500,10 +500,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreeb6fd75e7a8b650a52ef12c28d341531b667047e8targetblankb6fd75ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/b6fd75e7a8b650a52ef12c28d341531b667047e8" target="_blank">b6fd75e</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree7e9eddd2a668f3ff384f2643cd2edd320639533etargetblank7e9eddda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/7e9eddd2a668f3ff384f2643cd2edd320639533e" target="_blank">7e9eddd</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtreeb6fd75e7a8b650a52ef12c28d341531b667047e8targetblankb6fd75ea" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree7e9eddd2a668f3ff384f2643cd2edd320639533etargetblank7e9eddda" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -749,6 +749,40 @@ Message
 <tbody>
 <tr>
 <td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/goergen95/polymeRID/blob/7e9eddd2a668f3ff384f2643cd2edd320639533e/analysis/calibration.Rmd" target="_blank">7e9eddd</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-08-22
+</td>
+<td>
+wflow_publish(files = c(“analysis/cnn_crossvalidation.Rmd”, “analysis/cnn_exploration.Rmd”,
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/goergen95/polymeRID/f2ee83c6fd5264329023a1ff1bccf40d5fa9dee4/docs/calibration.html" target="_blank">f2ee83c</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-08-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 html
 </td>
 <td>
@@ -790,11 +824,11 @@ included calibration
 </div>
 <div id="overview" class="section level2">
 <h2>Overview</h2>
-<p>For the calibration we implemented a decision fusion between the best performing models in the exploration stage. Since SVM-based models did not achieve very high accuracies we only included two RF models and two CNN. The RF models yielding to the highest accuracies were trained with with the raw data and the Savitzkiy-Golay smoothed data. For the CNNs, we observed the highest accuracies with with the second derivative of the raw data and with the second derivative of the normalized data. These models are going to be used during calibration. To get an accuracy value for the fusion approach, again we use and cross-validation approach.</p>
+<p>For the calibration a decision fusion between the best performing models during the exploration stage was implemented. Since SVM-based models did not achieve very high accuracies we only included two RF models and two CNNs. The RF models yielding to the highest accuracies were trained with the raw data and the Savitzkiy-Golay smoothed data. For the CNNs we observed the highest accuracies with the second derivative of the raw data and with the second derivative of the normalized data. These models will be used during calibration. To gain an accuracy value for the fusion approach, again a cross-validation will be used.</p>
 </div>
 <div id="cross-validation" class="section level2">
-<h2>Cross Validation</h2>
-<p>The cross-validation of the decision fusion was conducted on 10 folds and repeated 5 times. The complete code can be found <a href="https://github.com/goergen95/polymeRID/blob/master/code/FUSION.R">here</a>. For every fold, 4 models are trained and evaluated against a 50% test split. The final decision is then achieved by combining the probability output of each model and assigning the class with the highest overall probability.</p>
+<h2>Cross-Validation</h2>
+<p>The cross-validation of the decision fusion was conducted on ten folds and repeated five times. The complete code can be found <a href="https://github.com/goergen95/polymeRID/blob/master/code/FUSION.R">here</a>. For every fold, four models are trained and evaluated against a 50% test split. The final class decision is then achieved by combining the probability output of each model and assigning the class with the highest overall probability.</p>
 <pre class="r"><code>    classRFRaw = as.character(predict(rfModRaw, pcaRaw_testing))
     propRFRaw =  predict(rfModRaw, pcaRaw_testing, type = &quot;prob&quot;)
     classRFSG = as.character(predict(rfModSG, pcaSG_testing))
@@ -824,11 +858,11 @@ included calibration
     obsv = as.factor(obsv)
     pred = as.factor(pred)
     cfMat = caret::confusionMatrix(pred,obsv)</code></pre>
-<p>Note, that we combine the classes which are not synthetic polymers to a class called <code>OTHER</code> since we are only interested in the correct classification of plastic polymers. If a particle is correctly identified as non-plastic the main goal of the analysis is achieved, no matter if the different models disagree on exact non-plastic class. By using the <code>caret::confusionMatrix()</code> function we easily get overall accuracy values as well as class specific metrics.</p>
+<p>Note, that the classes which are not synthetic polymers are combined to a class called <code>OTHER</code> since we are only interested in the correct classification of plastic polymers. When a particle is correctly identified as non-plastic the main goal of the analysis is achieved, no matter if the different models disagree on the exact non-plastic class. By using the <code>caret::confusionMatrix()</code> function overall accuracy values are easily extracted as well as class specific metrics.</p>
 </div>
 <div id="results" class="section level2">
 <h2>Results</h2>
-<p>By calculating the average across all folds and all repeats we end up with our final accuracy results per class and in general.</p>
+<p>By calculating the average across all folds and all repeats final accuracy results are obtained.</p>
 <table>
 <caption><strong>Tab. 1</strong>: Overall accuracy values for the decision fusion after cross-validation.</caption>
 <thead>
@@ -860,9 +894,9 @@ included calibration
 </tr>
 </tbody>
 </table>
-<p>We achieved an overall accuracy of <strong>91.4%</strong> with a Kappa coefficient of 0.89 (<strong>Tab. 1</strong>). This is accuracy is substantially higher than compared to the single model accuracies of RF and CNN. By the decision fusion and combining the non-synthetic classes we were able to rise the accuracy about 5%.</p>
+<p>We achieved an overall accuracy of <strong>91.4%</strong> with a Kappa coefficient of 0.89 (<strong>Tab. 1</strong>). This accuracy is substantially higher than compared to the single model accuracies of RF and CNN. By the decision fusion and combining the non-synthetic classes we were able to rise the accuracy by about 5%.</p>
 <table>
-<caption><strong>Tab. 2</strong>: Class specific accuracy metrics for the decision fusion after cross-validation.</caption>
+<caption><strong>Tab. 2</strong>: Class-specific accuracy metrics for the decision fusion after cross-validation.</caption>
 <thead>
 <tr class="header">
 <th></th>
@@ -1022,7 +1056,7 @@ included calibration
 </tr>
 </tbody>
 </table>
-<p>When we analyse the class specific accuracy metrics (<strong>Tab. 2</strong>) we observe that the lowest sensitivity is 0.69 for <code>PES</code>. That means that <code>PES</code> is most likely to not be identified correctly. <code>PET</code> shows a similar low sensitivity value of 0.76. <code>PP</code> shows the highest sensitivity value of 1, which means that all samples classified as <code>PP</code> actually represent that class. Concerning the specificity, across all classes we observe similar values of about 0.99. In general, we can state that we achieved a very good distinction between non-synthetic polymers and microplastic polymers. However, some microplastic polymers, such as <code>PES</code> and <code>PET</code> achieve only poor accuracies (<strong>0.84</strong> and <strong>0.86</strong> of balanced accuracy respectively). These shortcomings might be compensated for with future extensions of the training data base which could include more samples, especially for these two classes as well as others. In the end, the machine learning algorithms can only learn from the data base which is presented to them. Therefore, adding reference samples could prove beneficial when it comes to accuracy.</p>
+<p>Analyzing the class-specific accuracy metrics (<strong>Tab. 2</strong>) we observe that the lowest sensitivity is 0.69 for <code>PES</code>. That means that <code>PES</code> is most likely not to be identified correctly. <code>PET</code> shows a similar low sensitivity value of 0.76. <code>PP</code> shows the highest sensitivity value of 1, which means that all samples classified as <code>PP</code> actually represent that class. Concerning the specificity, gor all classes similar values of about 0.99 are observed. In general, it can stated that a very good distinction between non-synthetic polymers and microplastic polymers was achieved. However, some microplastic classes, such as <code>PES</code> and <code>PET</code> achieve only poor accuracies (<strong>0.84</strong> and <strong>0.86</strong> of balanced accuracy respectively). These shortcomings might be compensated for with extensions to the reference database. Machine learning algorithms can only learn from the database which is presented to them. Therefore, adding reference samples could prove beneficial when it comes to accuracy.</p>
 <div id="refs">
 
 </div>
