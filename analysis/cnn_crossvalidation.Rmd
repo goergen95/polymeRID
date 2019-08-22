@@ -21,19 +21,20 @@ nOutcome = length(unique(data$class))
 results = read.csv(paste0(output,"nnet/kernels.csv"))
 highest = results[order(-results$val_acc),]
 ```
-# Cross Validation
+## Cross Validation
 
-Here, we test for the generalization potential of the CNNs trained with the 
-parameters yielding to the highest accuracy results. To this end, we perform a 
-10-fold cross-validation which is repeated 5 times. 
+In this section, the generalization potential of the CNNs with different parameter 
+configurations is tested. Before, optimal data transformations and kernel sizes were explored (**Tab. 1**).
+
 ```{r cnn-cv-highest, echo=FALSE}
 knitr::kable(highest[1:4,], caption = "**Tab. 1**: The ten highest accuracy results for 
              different preprocessing types at varying kernel sizes.")
 ```
 
+We perform a 10-fold cross-validation (CV) which is repeated five times. 
 The following code takes the different levels of the input data and applies 
-the same cross-validation to each of the elements. The same folds are used, so that
-the results can be compared easily.
+the CV to each of the elements. To easily compare the results, the same folds are used 
+for each data transformation.
 
 ```{r cnn-calibration-cv, eval = FALSE}
 
@@ -141,24 +142,24 @@ results.rawd2 = read.csv(paste0(output, "nnet/cv/cvResults_K90_raw.d2.csv"))
 results.normd1 = read.csv(paste0(output, "nnet/cv/cvResults_K150_norm.d1.csv"))
 ```
 
-We can now retrive information about the accurcies for the complete cross-validation 
+We can now retrieve information about the accurcies for the complete CV
 process by calculating averages accross the accuracy values. 
 
 ```{r cnn-calibration-aggregates}
-results = data.frame(type=c("norm.d2","sg","raw.d2","norm.d1"), accuracy = rep(0,4))
-results$accuracy[1] = round(mean(results.normd2$acc),3)
-results$accuracy[2] = round(mean(results.sg$acc),3)
-results$accuracy[3] = round(mean(results.rawd2$acc),3)
-results$accuracy[4] = round(mean(results.normd1$acc),3)
+results = data.frame(type = c("norm.d2", "sg", "raw.d2", "norm.d1"), accuracy = rep(0, 4))
+results$accuracy[1] = round(mean(results.normd2$acc), 3)
+results$accuracy[2] = round(mean(results.sg$acc), 3)
+results$accuracy[3] = round(mean(results.rawd2$acc), 3)
+results$accuracy[4] = round(mean(results.normd1$acc), 3)
 results = results[order(-results$accuracy),]
 ```
 ```{r cnn-calibration-kntirOutput, echo=FALSE,}
 knitr::kable(results,caption = "**Tab. 2**: Results of the repeated cross-valiation for different preprocessing types.")
 ```
 
-With an accuracy of approximatley 0.87 the use of the second derivative of the raw
-data yielded to the highes accuracy value when calculated in a cross-validation 
-approach. With 0.85 the second derivateve of the normalized data yielded to the 
+With an accuracy of approximately 0.87 the use of the second derivative of the raw
+data yielded to the highest accuracy value when calculated in a cross-validation 
+approach. With 0.85 the second derivative of the normalized data yielded to the 
 second highest accuracy.
 
 

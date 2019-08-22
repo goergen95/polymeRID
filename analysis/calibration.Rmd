@@ -20,21 +20,21 @@ source("code/functions.R")
 
 ## Overview
 
-For the calibration we implemented a decision fusion between the best performing
-models in the exploration stage. Since SVM-based models did not achieve very
-high accuracies we only included two RF models and two CNN. The RF models yielding 
-to the highest accuracies were trained with with the raw data and the Savitzkiy-Golay
-smoothed data. For the CNNs, we observed the highest accuracies with with the 
+For the calibration a decision fusion between the best performing
+models during the exploration stage was implemented. Since SVM-based models did not achieve very
+high accuracies we only included two RF models and two CNNs. The RF models yielding 
+to the highest accuracies were trained with the raw data and the Savitzkiy-Golay
+smoothed data. For the CNNs we observed the highest accuracies with the 
 second derivative of the raw data and with the second derivative of the normalized data. 
-These models are going to be used during calibration. To get an accuracy value
-for the fusion approach, again we use and cross-validation approach.
+These models will be used during calibration. To gain an accuracy value
+for the fusion approach, again a cross-validation will be used.
 
-## Cross Validation
+## Cross-Validation
 
-The cross-validation of the decision fusion was conducted on 10 folds and repeated
-5 times. The complete code can be found [here](https://github.com/goergen95/polymeRID/blob/master/code/FUSION.R).
-For every fold, 4 models are trained and evaluated against a 50% test split.
-The final decision is then achieved by combining the probability output of each model
+The cross-validation of the decision fusion was conducted on ten folds and repeated
+five times. The complete code can be found [here](https://github.com/goergen95/polymeRID/blob/master/code/FUSION.R).
+For every fold, four models are trained and evaluated against a 50% test split.
+The final class decision is then achieved by combining the probability output of each model
 and assigning the class with the highest overall probability.
 
 ```{r calibration-decision-fusion, eval=FALSE}
@@ -70,11 +70,11 @@ and assigning the class with the highest overall probability.
     cfMat = caret::confusionMatrix(pred,obsv)
 ```
 
-Note, that we combine the classes which are not synthetic polymers to a class called
+Note, that the classes which are not synthetic polymers are combined to a class called
 `OTHER` since we are only interested in the correct classification of plastic polymers.
-If a particle is correctly identified as non-plastic the main goal of the analysis
-is achieved, no matter if the different models disagree on exact non-plastic class.
-By using the `caret::confusionMatrix()` function we easily get overall accuracy values
+When a particle is correctly identified as non-plastic the main goal of the analysis
+is achieved, no matter if the different models disagree on the exact non-plastic class.
+By using the `caret::confusionMatrix()` function overall accuracy values are easily extracted
 as well as class specific metrics. 
 
 ## Results
@@ -82,8 +82,10 @@ as well as class specific metrics.
 accuracies = readRDS(paste0(output, "fusion/meanAccuracyResults.rds"))
 classInfo = readRDS(paste0(output, "fusion/meanClassResults.rds"))
 ```
-By calculating the average across all folds and all repeats
-we end up with our final accuracy results per class and in general.
+
+By calculating the average across all folds and all repeats final accuracy results
+are obtained.
+
 ```{r calibration-accuracy, echo=FALSE}
 knitr::kable(round(accuracies[1:5],3), caption = "**Tab. 1**: Overall accuracy values for the decision fusion after cross-validation.",
              col.names = "value")
@@ -91,26 +93,25 @@ knitr::kable(round(accuracies[1:5],3), caption = "**Tab. 1**: Overall accuracy v
 ```
 
 We achieved an overall accuracy of **91.4%** with a Kappa coefficient of 
-0.89 (**Tab. 1**). This is accuracy is substantially higher than compared to the single model
+0.89 (**Tab. 1**). This accuracy is substantially higher than compared to the single model
 accuracies of RF and CNN. By the decision fusion and combining the non-synthetic 
-classes we were able to rise the accuracy about 5%.
+classes we were able to rise the accuracy by about 5%.
 
 ```{r calibration-classInfo, echo=FALSE}
-knitr::kable(round(classInfo,3), caption = "**Tab. 2**: Class specific accuracy metrics for the decision fusion after cross-validation.")
+knitr::kable(round(classInfo,3), caption = "**Tab. 2**: Class-specific accuracy metrics for the decision fusion after cross-validation.")
 ```
 
-When we analyse the class specific accuracy metrics (**Tab. 2**) we observe that 
-the lowest sensitivity is 0.69 for `PES`. That means that `PES` is most likely to
-not be identified correctly. `PET` shows a similar low sensitivity value of 0.76.
+Analyzing the class-specific accuracy metrics (**Tab. 2**) we observe that 
+the lowest sensitivity is 0.69 for `PES`. That means that `PES` is most likely not to
+be identified correctly. `PET` shows a similar low sensitivity value of 0.76.
 `PP` shows the highest sensitivity value of 1, which means that all samples classified
-as `PP` actually represent that class. Concerning the specificity, across all classes
-we observe similar values of about 0.99. In general, we can state that we achieved
-a very good distinction between non-synthetic polymers and microplastic polymers. 
-However, some microplastic polymers, such as `PES` and `PET` achieve only poor
+as `PP` actually represent that class. Concerning the specificity, gor all classes
+similar values of about 0.99 are observed. In general, it can stated that a very 
+good distinction between non-synthetic polymers and microplastic polymers was achieved. 
+However, some microplastic classes, such as `PES` and `PET` achieve only poor
 accuracies (**0.84** and **0.86** of balanced accuracy respectively). These shortcomings
-might be compensated for with future extensions of the training data base which could
-include more samples, especially for these two classes as well as others. In the end,
-the machine learning algorithms can only learn from the data base which is presented to them.
+might be compensated for with extensions to the reference database. Machine learning 
+algorithms can only learn from the database which is presented to them.
 Therefore, adding reference samples could prove beneficial when it comes to accuracy.
 
 

@@ -20,27 +20,27 @@ data = read.csv(file = paste0(ref, "reference_database.csv"), header = TRUE)
 ## Overview
 
 The overall aim of this project was to ease the process of classifying the spectra
-of particles found in environmental samples. To this end, we created a script which
+of particles found in environmental samples. A script was created which
 takes `.txt` files in the `smp` directory and classifies them based on the decision
 fusion explained [here](calibration.html).
-The script expects on file for each sample. The names of the files need to be unique
-and will be used as an identifier in the output. Also, it is expected that the file
-consists of two columns. The first columns indicates the wavenumbers of the sample
-as an numeric, while the second column holds information about the reflectance value.
+The script expects one file for each sample. The names of the files need to be unique
+and will be used as an identifier in the output. It is also expected that the file
+consists of two columns. The first column indicates the wavenumbers of the sample
+as a numeric, while the second column contains information about the reflectance value.
 
 ## Preparing Classification
 
-The head of the classification script contains some variables that might be changed.
-This is important if extensions were made to the data base and a new calibration was done.
+The head of the classification script contains some variables that can be changed.
+This is important if extensions were made to the database or a new calibration was to be done.
 In this case, the directory containing the models can be specified with the `MODEL`
-variable. For now, however, the variables hints towards the `BASE` models which were created
+variable. For now, however, the variables hint towards the `BASE` models which were created
 during the first calibration. Also, the type of the classification can be specified in the
 `TYPE` variable. Currently, the fusion of all four models is chosen, but any single model
-could be selected. Finally, the `FORMAT` variables indicates the file extension of the sample
-data, since it would be also possible to provide spectral data in `.csv` format. 
-At the beginning of each classification process, a directory is created in the 
-`smp` directory which contains the current date and time as well as the `MODEL` type which 
-was used. 
+can be selected. Finally, the `FORMAT` variable indicates the file extension of the sample
+data, since it is also possible to provide spectral data in `.csv` format. 
+At the beginning of each classification process, an entry is created in the 
+`smp` directory named with the current timestamp as well as the `MODEL` type which 
+is going to be used. 
 
 ```{r classification-header, eval = FALSE}
 MODEL = "BASE"
@@ -60,10 +60,10 @@ model = paste0(mod,MODEL)
 
 ## Reading Data
 
-Then, the data base and the sample data is read into R. The reflectance values
-of the sample data are resampled to the spectral resolution of the data base and then
-a baseline correction is applied, following the procedure of @Primpke2018.
-Finally, all machine learning models are loaded.
+The database and the sample data is read into R. The reflectance values
+of the sample data are resampled to the spectral resolution of the database and then
+a baseline correction is applied, using the procedure of @Primpke2018.
+Finally, all machine-learning models are loaded from the `mod` directory.
 
 ```{r classification-data-models, eval=FALSE}
 
@@ -116,12 +116,12 @@ cnnND2 = keras::load_model_hdf5(files[grep("cnnND2", files)])
 
 ## Classification
 
-For the decision fusion, the samples are preprocessed according to the expected input
+For the decision fusion, the samples are pre-processed according to the expected input
 for the different models (see [here](https://github.com/goergen95/polymeRID/blob/master/classification.R))
-and the wavenumbers in the C02 window (2420 to 2200 1/cm) are set to 0. Then, 
-each model is used to predict an output for the samples and the decision fusion
-takes places by combining the probability outputs from all models. Additionally,
-all non-synthetic polymer classes are merged to a broader class called `OTHER`.
+and the wavenumbers in the C02 window (2200 to 2420 1/cm) are set to 0. Each model 
+is then used to predict an output for the samples. The decision fusion
+takes places by combining the probability outputs from each model. In addition,
+all non-synthetic polymer classes are merged to a broader class named `OTHER`.
 
 ```{r classification-prediction, eval= FALSE}
  # predicting
@@ -154,13 +154,14 @@ all non-synthetic polymer classes are merged to a broader class called `OTHER`.
 
 ## Generating Output
 
-Finally, an individual plot with the three classes showing the highest probability
-is created for each sample. Additionally, a data frame called `results` containing
-information on the level of agreement for the class with the highest probability
-is written to disk to allow a quick assessment of the classification process.
-The level of agreement is based on the fused classification probability, labeling
-probabilities below 0.5 as "now agreement" and increasing the agreement level every
-10% up to >0.90 labeled as "very high agreement".
+In conclusion, several outputs are created for the user to assess the classification results.
+Individual plots with the three classes showing the highest probability
+are created for each sample. Furthermore, a data 
+frame named `results` containing information on the level of agreement for 
+the class with the highest probability is written to disk to allow a quick 
+assessment of the classification process. The level of agreement is based on the
+fused classification probability, labeling probabilities below 0.5 as "no agreement" 
+and increasing the agreement level every 10% up to >0.90 labeled as "very high agreement".
 The plots are saved to a `plot` directory in the current classification directory
 and can be used to manually assess the classification.
 
@@ -202,16 +203,17 @@ ids = str_remove(ids, FORMAT)
 
 Here, we evaluate the decision fusion models by some environmental samples which 
 were provided by Sarah Brüning and Frauke von den Driesch. 
-First we can take a look at the general classification results as it is written to
-the `results.csv`.
+The overall classification results, as they are written to
+the `results.csv`, are presented below.
+
 ```{r classification-classification, warning=FALSE, message=FALSE, echo=FALSE}
 results = read.csv(paste0(smp,"20190819_1910_FUSION/results_20190819_1910.csv"))
 knitr::kable(results, caption = "**Tab. 1**: Classification results for 14 sample spectra.")
 ```
 
-Additionally, we included two exemplary plots, overlaying the spectrum of two
-samples with the mean spectrum of the prediction. Note that the firs plot corresponds
-to row 5 in the table above, the second plot to line 13. 
+Additionally, two exemplary plots overlaying the spectra of two
+samples with mean spectra of the classified polymer in the database are shown. 
+Note that the first plot corresponds to row 5 in the table above, the second plot to line 13. 
 
 ```{r classification-sample-plot, warning=FALSE, message=FALSE, echo=FALSE}
 MODEL = "BASE"
