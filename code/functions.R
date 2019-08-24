@@ -1,3 +1,22 @@
+#' Adding noise to spectra data
+#'
+#' Function to add different levels of noise to a dataset containing
+#' reflectance spectra and class information.
+#'
+#' @param data A data frame object containing observations in rows and variables
+#' in columns. The 'data' object is suspected to contain one column which can be
+#' specified with the parameter 'category' which contains information about the
+#' classes of the observations. All other columns are treated as variables.
+#' @param levels A vector specifying the levels of noise that should be added by
+#' \code{\link{base::jitter}} function. Note that the value '0' has to be added
+#' to get an unjitereted version of 'data' as well.
+#' @param category A string specifying the name of the column which contains
+#' information about the classes of the observations.
+#'
+#' @return A list with as many elements as specified in the parameter 'levels'
+#' each containing the jittered data corresponding to the 'level' values.
+#' @export
+#'
 addNoise = function(data,levels = c(0,10,100,250,500),category="class"){
   data.return = list()
   for (n in levels){
@@ -9,6 +28,25 @@ addNoise = function(data,levels = c(0,10,100,250,500),category="class"){
   return(data.return)
 }
 
+#' Apply a preprocessing technique to spectral data
+#'
+#'This function applies a specificable pre-processing technique to a data frame
+#'containing spectral reflectance values.
+#'
+#' @param data A data frame object containing reflectance values only. This means,
+#' class information about the observations should be excluded from the object.
+#' @param SGpara List of integer values used to apply a Savitzkiy-Golay filter
+#' from the 'prospectr' package. \code{\link{prospectr::jitter}}. These are 'p' the
+#' polynomial order and 'w' the window size which must be odd.
+#' @param lag An integer specifying the lag which should be used when calculating
+#' the first or second derivative.
+#' @param type A single charachter vector specifying the pre-processing to be
+#' applied to the 'data' object.
+#'
+#' @return A data frame object with the same number of observations (rows) as the
+#' input 'data'. Depending on the pre-processing 'type' number of columns might
+#' be lower that in the input 'data'.
+#' @export
 preprocess = function(data, SGpara = list(p=3,w=11), lag = 15,
                       type = c("norm", "sg", "sg.d1", "sg.d2",
                                "sg.norm", "sg.norm.d1", "sg.norm.d2",
@@ -77,17 +115,43 @@ preprocess = function(data, SGpara = list(p=3,w=11), lag = 15,
 
 
 
+#' Creating a Traning Set
+#'
+#' This function takes a single data frame or a list of data frames (e.g. an object
+#' returned by the \code{\link{addNoise}} function) containing 'raw' reflectance
+#' values and applies specificable pre-processing techniques. In the end, each of
+#' the input elements undergoes the same pre-process and the resulting object
+#' can be used in a training process.
+#' @param data A data frame or a list of data frames containing 'raw' spectral
+#' reflectance values. Note, that only numeric values are allowed except for one
+#' column containing information of the classes of the observations. This column
+#' can be specified in the 'category' parameter.
+#' @param category A single string object specifiying the name of the column with
+#' the information on the classes of the observations. This column will be excluded
+#' from the pre-processing, but re-attached before the data objects are returned.
+#' @param SGpara List of integer values used to apply a Savitzkiy-Golay filter
+#' from the 'prospectr' package. \code{\link{prospectr::jitter}}. These are 'p' the
+#' polynomial order and 'w' the window size which must be odd.
+#' @param lag An integer specifying the lag which should be used when calculating
+#' the first or second derivative.
+#' @param type A vector of strings specifying the pre-processing techniques which
+#' should be applied to the 'data' object.
+#'
+#' @return A list with elements equal to the product of the number of input
+#' elements and the number of specified pre-processing techniques. At the first
+#' level, the elements equal to the input 'data' can be accessed. Below that
+#' level, the individual pre-processed data is found.
+#' @export
 createTrainingSet = function(data, category = "class",
                              SGpara = list(p=3,w=11), lag = 15,
                              type = c("raw", "norm", "sg", "sg.d1", "sg.d2",
                                "sg.norm", "sg.norm.d1", "sg.norm.d2",
                                "raw.d1", "raw.d2", "norm.d1", "norm.d2")){
 
+  types = c("raw", "norm", "sg", "sg.d1", "sg.d2",
+           "sg.norm", "sg.norm.d1", "sg.norm.d2",
+           "raw.d1", "raw.d2", "norm.d1", "norm.d2")
 
-
-  types =  c("raw","norm", "sg", "sg.d1", "sg.d2",
-             "sg.norm", "sg.norm.d1", "sg.norm.d2",
-             "raw.d1", "raw.d2", "norm.d1", "norm.d2")
   if (sum(!type %in%  types) != 0 ){
     stop("There are unknown preprocessing types provided.")
   }
@@ -175,6 +239,23 @@ createTrainingSet = function(data, category = "class",
 }
 
 
+#' Spectra plot of polymer class
+#'
+#'This function executes some calculations to get a plot for a specificable
+#'class found in the 'data' object. It calculates the mean value of all samples
+#'from the class, indicates the standard deviation from that mean value with a
+#'grey ribbon and additionaly shows the mimimal and maximum values for every
+#'wavenumber.
+#' @param data A data frame object containing spectral reflectance data of different
+#' classes. All columns need to contain numeric values, except the last column
+#' which is expected to contain the class information for the observations.
+#' @param class A single string indicating the class for which a plot should
+#' be created.
+#' @param wavenumbers A numeric vector which specifies the wavenumbers which
+#' should be included on the x-axis of the plot.
+#'
+#' @return A 'ggplot' object.
+#' @export
 meanplot = function(data, class, wavenumbers = NULL){
   #prpare data
   wvn =  as.numeric(stringr::str_remove(names(data), "wvn")[-ncol(data)])
@@ -201,7 +282,27 @@ meanplot = function(data, class, wavenumbers = NULL){
 
 
 
-samplePlot = function(data,sample,class,probs="",name=""){
+#' Sample plot of classfied spectra
+#'
+#'This function takes an vector of reflectanve values and plots it together
+#'with a specified 'class' found in the 'data' object for comparison.
+#' @param data A data frame object containng only numeric values except for the last
+#' column which is expected to contain information on the class of the observations.
+#' @param sample A numeric vector containing the spectral reflectance values of
+#' a sample. It is expected that the wavenumbers are the same as in the 'data'
+#' object.
+#' @param class A charachter string specifying the class for which statistical metrics
+#' should be included in the plot. Must be present in the last column of the
+#' 'data' object.
+#' @param probs Optional string containing the probability with which the sample
+#' belongs to a specific class.
+#' @param anno Optional string object which can be used to annotate the plot.
+#'
+#' @return A 'ggplot' object.
+#' @export
+#'
+#' @examples
+samplePlot = function(data,sample,class,probs="",anno=""){
   cldata = data[data$class == class,]
   MIN = Rfast::colMins(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
   MAX = Rfast::colMaxs(as.matrix(cldata[,1:ncol(cldata)-1]),value=TRUE)
@@ -228,18 +329,40 @@ samplePlot = function(data,sample,class,probs="",name=""){
                                       #"\nProbability: ",round(probs,3),
                                       #"\nConfidence: ",
                                       "\n",probs),x=3500,y=Inf,hjust=1,vjust=1)+
-    annotate(geom="text",label=name,x=1000,y=Inf,hjust=1,vjust=1)+
+    annotate(geom="text",label=anno,x=1000,y=Inf,hjust=1,vjust=1)+
     ylab(label="reflectance")+
     theme_minimal()
   return(figure)
 }
 
 
-
-
-## CV
-# funcionality: get indices for the different folds by using caret functions
-
+#' Cross-Validation for RF and SVM
+#'
+#'This function is used to apply a cross-validation for Random Forest (RF)
+#'and Support-Vector-Machine (SVM) with an included Principal Component Analysis
+#'(PCA) used for dimensionality reduction of spectral reflectance data. Before
+#'applying the PCA, the training and test set for each fold are splitted, so that
+#'the PCA is truely independent from the test set.
+#' @param data A data frame object which is expected to contain only numeric values
+#' except for the last column where information about the classes of the observations
+#' is expected
+#' @param folds An integer specifying the number of folds in the cross-validation.
+#' @param repeats An integer specifying the number of repeats for the cross-validation.
+#' @param threshold An integer between 1 and 100 specifiying the cumulative explained
+#' variance in the principal components which shall be used in training.
+#' @param metric A charachter string specyfiyng the metric to keep track of. Currently,
+#' only "Kappa" and "Accuracy" are valid parameters.
+#' @param seed An integer used to ensure reproducibility when splitting the data.
+#' @param p A numeric between 0 and 1, specifying the percentage of observations going
+#' into training.
+#' @param method A charachter specifiying if RF or SVM should be applied.
+#'
+#' @return A list object with four elements. The first element contains the
+#' mean value of 'metric' accross all folds and repeats. The second element contains
+#' the number of variables used after applying the PCA. The third element contains a vector
+#' with all values of the 'metric' during CV. The fourth element contains
+#' a final modell trained on all observations present in the 'data' object.
+#' @export
 pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=0.5,method="svm"){
   set.seed(seed)
   foldIndex = lapply(1:repeats,caret::createDataPartition,y=data$class,times = folds,p=p)
@@ -376,7 +499,20 @@ pcaCV = function(data,folds=15,repeats=10,threshold=99,metric="Kappa",seed=42,p=
 }
 
 
-prepNNET <- function(kernel,variables,nOutcome){
+#' Build and compile a CNN
+#'
+#'This function builds and compiles a convolutional neural network using the Keras
+#'package with specified kernel size, number of variables an number of outcome
+#'classes.
+#' @param kernel An integer specifying the 'kernel_size' used in 1D-convolutional
+#' layers in the CNN.
+#' @param variables An integer speciying the input size. It is equal to the number
+#' of variables of a spectral reflectance data set.
+#' @param nOutcome The number of classes the model should be able to predict.
+#'
+#' @return A keras model object which can be used in training.
+#' @export
+prepCNN <- function(kernel,variables,nOutcome){
   model = keras_model_sequential()
   model %>%
   # block 1
@@ -417,6 +553,23 @@ compile(model,loss="categorical_crossentropy",optimizer="adam",metrics="accuracy
 }
 
 
+#' Cross-Validation for CNN
+#'
+#'This function applies a cross-validation for a CNN network compiled with
+#'the keras package.
+#' @param data A data frame object containing only numeric values except the last
+#' column which is expected to cintain information on the classes of the observations.
+#' @param folds An integer specyfiying the number of folds to be applied.
+#' @param repeats An integer specyfiying the number of repeats to be applied.
+#' @param p  An value between 0 and 1 specifying the percentage of observations
+#' contained in the training dataset.
+#' @param kernel An integer specifying the kernel_size in 1D-convolutional layers.
+#' It is used when calling the \code{\link{prepCNN}}
+#' @param seed An integer used to ensure reproducibility of the training/test split.
+#' @param nOutcome An integer specifiying the number of classes in the outcome.
+#'
+#' @return A data frame object containing accuracy values for every fold and repeat.
+#' @export
 nnetCV <- function(data,folds=10,repeats=15,p=0.5, kernel, seed=42, nOutcome){
 
   # preparing data inputs

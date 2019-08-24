@@ -3,12 +3,13 @@
 # (https://link.springer.com/article/10.1007%2Fs00216-018-1156-x)
 source("code/setup.R")
 
-rawPrimpke = read.csv(paste0(run, "216_2018_1156_MOESM2_ESM.csv"), header=FALSE)
+url = "https://static-content.springer.com/esm/art%3A10.1007%2Fs00216-018-1156-x/MediaObjects/216_2018_1156_MOESM2_ESM.xlsx"
+
+rawPrimpke = openxlsx::read.xlsx(url)
 # extract wavenumbers from first row
-wavenumbers = as.numeric(rawPrimpke[1 , 2:1864])
-# saveRDS(wavenumbers,paste0(ref,"wavenumbers.rds"))
-# read data again to get column names
-rawPrimpke = read.csv(paste0(run, "216_2018_1156_MOESM2_ESM.csv"), header=TRUE)
+wavenumbers = as.numeric(names(data)[2:1864])
+# saving wavenumbers to reference sample directory
+saveRDS(wavenumbers, paste0(ref, "wavenumbers.rds"))
 
 #==============================================================================#
             ### Working on the database of Primpke et al. (2018) ###
@@ -39,12 +40,12 @@ wood$class = "WOOD"
 rm(indexWood)
 
 # polymers
-polyIndex = which(rawPrimpke$Natural..Synthetic =="synthetic polymer")
+polyIndex = which(rawPrimpke$`Natural./Synthetic` =="synthetic polymer")
 syntPolymer = rawPrimpke[polyIndex,]
-counts = summary(syntPolymer$Abbreviation)
+counts = summary(as.factor(syntPolymer$Abbreviation))
 polyNames = names(counts)[1:11] # only major polymers
 syntPolymer = syntPolymer[which(syntPolymer$Abbreviation %in%  polyNames) , ]
-classes = droplevels(syntPolymer$Abbreviation)
+classes = syntPolymer$Abbreviation
 syntPolymer = syntPolymer[ , c(2:1864)] # leave out index column
 names(syntPolymer) = paste("wvn",wavenumbers,sep="")
 syntPolymer$class = as.character(classes)
@@ -52,8 +53,8 @@ rm (polyIndex, counts, classes)
 
 # lets group together some polymer classes
 syntPolymer$class[grep("Nylon",syntPolymer$class)] = "PA"
-syntPolymer$class[grep("HDPE",syntPolymer$class)] = "PE"
-syntPolymer$class[grep("LDPE",syntPolymer$class)] = "PE"
+#syntPolymer$class[grep("HDPE",syntPolymer$class)] = "PE"
+#syntPolymer$class[grep("LDPE",syntPolymer$class)] = "PE"
 
 #==============================================================================#
               ### Working on our own sample data ###
@@ -102,12 +103,10 @@ syntPolymer$class[grep("LDPE",syntPolymer$class)] = "PE"
 #==============================================================================#
                   ### Bringing the two databases together ###
 
-data = rbind(furs,wood,fibre,syntPolymer) #
+data = rbind(furs,wood,fibre,syntPolymer) # currently only primpke data
 data$class = as.factor(data$class)
 descrip = as.data.frame(t(summary(data$class)))
-cat("Overview of the distribution of classes in the database:\n",
-    print(descrip, row.names = FALSE, quote = TRUE))
-
+print(descrip)
 wavenumbers = as.numeric(stringr::str_remove(names(data), "wvn")[-ncol(data)])
 write.csv(data, file = paste0(ref, "reference_database.csv"), row.names=FALSE)
 

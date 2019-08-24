@@ -3,6 +3,7 @@ plots/
 output/
 files/
 smp/
+ref/
 website/smp
 packrat/src
 packrat/lib
