@@ -1,5 +1,5 @@
-source("/mnt/SSD/polymer/polymeRID/code/setup_website.R")
-source("/mnt/SSD/polymer/polymeRID/code/functions.R")
+source("code/setup.R")
+source("code/functions.R")
 #system("source misc/cuda10.1-env")
 # reading data based on class control file
 classes = readLines(paste0(ref, "classes.txt"))
@@ -91,13 +91,25 @@ for (kernel in kernels){
     results$acc[counter] = history$metrics$acc[100]
     results$val_loss[counter] = history$metrics$val_loss[100]
     results$val_acc[counter] = history$metrics$val_acc[100]
-    write.csv(results, file = paste0(output,"nnet/kernels_2.csv"))
+    write.csv(results, file = paste0(output,"nnet/kernels.csv"))
     counter = counter + 1
   }
 
   print(results)
 }
 
+
+maxInd = sort(results$val_acc, decreasing = TRUE)[1:3]
+kernelInd = results$kernel[results$val_acc %in% maxInd]
+
+cvResults = lapply(kernelInd, nnetCV,
+                   nOutcome = length(levels(data$class)),
+                   data=data,
+                   folds=10,
+                   repeats=5,
+                   p=0.9,
+                   seed = 42)
+write.csv(cvResults, file = paste0(output, "nnet/cvResults.csv")
 
 
 

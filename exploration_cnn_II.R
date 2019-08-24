@@ -1,5 +1,5 @@
-source("/mnt/SSD/polymer/polymeRID/code/setup_website.R")
-source("/mnt/SSD/polymer/polymeRID/code/functions.R")
+source("code/setup.R")
+source("code/functions.R")
 #system("source misc/cuda10.1-env")
 # reading data based on class control file
 data = read.csv(file = paste0(ref, "reference_database.csv"), header = TRUE)
