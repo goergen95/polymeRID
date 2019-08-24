@@ -3,6 +3,7 @@ source("code/setup.R")
 source("code/functions.R")
 
 # name of the column containing the class information
+TYPE = "SVM"
 category = "class"
 TIME = format(Sys.time(), "%Y%m%d_%H%M")
 dir.create(paste0(output,TIME))
@@ -31,23 +32,6 @@ testDataset = createTrainingSet(noisyData, category = category,
                                   "sg.norm", "sg.norm.d1", "sg.norm.d2",
                                   "raw.d1", "raw.d2", "norm.d1", "norm.d2"))
 
-# we obtained a large list object with the following structure
-#   $noise0
-#     $type1
-#     $...
-#     $typeN
-#   $...
-#     $type1
-#     $...
-#     $typeN
-#   $noiseN
-#     $type1
-#     $...
-#     $typeN
-# we will use that object in a training loop, extracting the desired accuracy
-# value and saving the models to disk
-# we use another user defined function for a cross validation process
-
 # lets prepare the selection vectors for the loop
 types = names(testDataset[[1]])
 levels = lapply(names(testDataset), function(x){
@@ -62,11 +46,11 @@ for (level in unique(levels)){
     print(paste0("Level: ",level," Type: ",type))
     tmpData = testDataset[[level]][[type]]
     tmpData[which(wavenumbers<=2420 & wavenumbers>=2200)] = 0 # setting C02 window to 0
-    tmpModel = pcaCV(tmpData,folds = 10,repeats = 5,threshold = 99,metric = "Kappa",p=0.5,method="rf")
+    tmpModel = pcaCV(tmpData,folds = 10,repeats = 5,threshold = 99,metric = "Kappa",p=0.5,method="svm")
     saveRDS(tmpModel,file = paste0(output,TIME,"/model_",level,"_",type,"_",round(tmpModel[[1]],2),".rds"))
     results[which(results$level==level & results$type==type),"kappa"] = as.numeric(tmpModel[[1]])
     print(results)
 
   }
 }
-saveRDS(results,file=paste0(output,TIME,"/exploration_",TIME,".rds"))
+saveRDS(results,file=paste0(output,TIME,"/exploration_",TYPE,".rds"))

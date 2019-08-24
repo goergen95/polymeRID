@@ -1,129 +1,203 @@
-# this script is used to calibrate a training model to the data present in the ref directory
-# the data is supposed to be provided in the csv file format
-# all measurements of different individuals of  reference polymers are found in the same csv file.
-# the csv file should be named with an string lateral uniquley identifying the polymer class
-# the same string should be put into the classes.txt as only the classes present in this file will be trained.
-# the csv files are supposed to be in wide format, the first row containing numerics for the wavenumbers
-# the second row containing the measured reflectance values. "," should be used as cell delimieters, "." as decimal limiter
-source("code/setup.R")
-source("code/functions.R")
+############ FUSION #################
 
-TYPE = "NNET"
-# alternatives would be
-#TYPE = "SG"
-#TYPE = "SGNORM"
-#TYPE = "NORM"
-category = "class"
-window = c(3800,400) # window of wavnumbers included in training
-TIME = format(Sys.time(), "%Y%m%d_%H%M")
-dir.create(paste0(mod, TIME))
-dir.create(paste0(mod, TIME,"/logs"))
-
-                    # Don't change anything below this line #
-#==============================================================================#
-
+source("/mnt/SSD/polymer/polymeRID/code/setup_website.R")
+source("/mnt/SSD/polymer/polymeRID/code/functions.R")
+#system("source misc/cuda10.1-env")
 # reading data based on class control file
 classes = readLines(paste0(ref, "classes.txt"))
 data = lapply(classes,function(class){
   print(class)
   files = list.files(ref, full.names=TRUE)
-  file = files[grep(paste(class, ".csv", sep=""), files)]
+  file = files[grep(paste("_",class, ".csv", sep=""), files)]
   data = read.csv(file, header = TRUE)
   return(data)
 })
 data = do.call("rbind",data)
 
-# extracting wavenumbers from reference database
-waveChar = stringr::str_remove(names(data[!names(data) %in% category]),
-                               pattern = "wvn")
-wavenumbers = as.numeric(waveChar)
-index = which(wavenumbers<=window[1] & wavenumbers>=window[2])
-wavenumbers = wavenumbers[index]
-data = data[,c(index, which(names(data) %in% category))]
-# save wavenumbers for classification purposes
-saveRDS(wavenumbers,paste0(mod,TIME,"/wavenumbers_",TIME,".rds"))
+folds = 1:10
+repeats = 1:5
+folds = paste("fold",folds,sep="")
+repeats = paste("rep",repeats,sep="")
 
-if (TYPE == "NNET"){
-  # prepare data
-  K <- keras::backend()
-  df_to_karray <- function(df){
-    tmp = as.matrix(df)
-    tmp = K$expand_dims(tmp, axis = 2L)
-    tmp = K$eval(tmp)
+set.seed(42)
+seeds = sample(1:1000, length(folds) * length(repeats))
+
+sg.data = preprocess(data[,1:ncol(data)-1], type = "sg")
+d2.data = preprocess(data[,1:ncol(data)-1], type = "raw.d2")
+normd2.data = preprocess(data[,1:ncol(data)-1], type = "norm.d2")
+sg.data$class = data$class
+d2.data$class = data$class
+normd2.data$class = data$class
+
+classResults = list()
+accuracyResults = list()
+counter = 1
+for (rep in repeats){
+  for (fold in folds){
+
+    # create data split
+    set.seed(seeds[counter])
+    index = caret::createDataPartition(data$class, times = 1, p = 0.5)
+
+    trainingRaw = data[index$Resample1,]
+    testingRaw = data[-index$Resample1,]
+    trainingSG = sg.data[index$Resample1,]
+    testingSG = sg.data[-index$Resample1,]
+    trainingD2 = d2.data[index$Resample1,]
+    testingD2 = d2.data[-index$Resample1,]
+    trainingNormD2 = normd2.data[index$Resample1,]
+    testingNormD2 = normd2.data[-index$Resample1,]
+
+
+    # preparing RF Models
+    pcaRaw = prcomp(trainingRaw[,1:ncol(trainingRaw)-1,])
+    varInfo = factoextra::get_eigenvalue(pcaRaw)
+    thresInd = which(varInfo$cumulative.variance.percent >= 99)[1]
+    pcaRaw_training = pcaRaw$x[ ,1:thresInd]
+    pcaRaw_testing = predict(pcaRaw, testingRaw)[ ,1:thresInd]
+
+    rfModRaw = randomForest::randomForest(pcaRaw_training,trainingRaw$class, ntree = 500)
+
+    pcaSG = prcomp(trainingSG[,1:ncol(trainingSG)-1,])
+    varInfo = factoextra::get_eigenvalue(pcaSG)
+    thresInd = which(varInfo$cumulative.variance.percent >= 99)[1]
+    pcaSG_training = pcaSG$x[ ,1:thresInd]
+    pcaSG_testing = predict(pcaSG, testingSG)[ ,1:thresInd]
+
+    rfModSG = randomForest::randomForest(pcaSG_training,trainingSG$class, ntree = 500)
+
+    # preparing CNN Models
+    K <- keras::backend()
+    x_train = as.matrix(trainingD2[,1:ncol(trainingD2)-1])
+    x = K$expand_dims(x_train, axis = 2L)
+    x_train = K$eval(x)
+    y_train = keras::to_categorical(as.numeric(trainingD2$class)-1, length(unique(trainingD2$class)))
+
+    x_testD2 = as.matrix(testingSG[,1:ncol(testingD2)-1])
+    x = K$expand_dims(x_testD2, axis = 2L)
+    x_testD2 = K$eval(x)
+    y_testD2 = keras::to_categorical(as.numeric(testingD2$class)-1, length(unique(testingD2$class)))
+
+    cnnD2 = prepNNET(kernel = 90, variables = ncol(d2.data)-1, nOutcome = length(unique(d2.data$class)))
+    history = fit(cnnD2, x_train, y_train, batch_size = 10, epochs = 300)
+
+
+    x_train = as.matrix(trainingNormD2[,1:ncol(trainingNormD2)-1])
+    x = K$expand_dims(x_train, axis = 2L)
+    x_train = K$eval(x)
+    y_train = keras::to_categorical(as.numeric(trainingNormD2$class)-1, length(unique(trainingNormD2$class)))
+
+    x_testND2 = as.matrix(testingNormD2[,1:ncol(testingNormD2)-1])
+    x = K$expand_dims(x_testND2, axis = 2L)
+    x_testND2 = K$eval(x)
+    y_testND2 = keras::to_categorical(as.numeric(testingNormD2$class)-1, length(unique(testingNormD2$class)))
+
+    cnnND2 = prepNNET(kernel = 90, variables = ncol(normd2.data)-1, nOutcome = length(unique(normd2.data$class)))
+    history = fit(cnnND2, x_train, y_train, batch_size = 10, epochs = 300)
+
+
+
+    # predicting
+    classes = unique(trainingRaw$class)
+    classRFRaw = as.character(predict(rfModRaw, pcaRaw_testing))
+    propRFRaw =  predict(rfModRaw, pcaRaw_testing, type = "prob")
+    classRFSG = as.character(predict(rfModSG, pcaSG_testing))
+    propRFSG = predict(rfModSG, pcaSG_testing, type = "prob")
+    classCNND2 = as.character(classes[keras::predict_classes(cnnD2, x_testD2)+1])
+    propCNND2 = keras::predict_proba(cnnD2, x_testD2)
+    classCNNND2 = as.character(classes[keras::predict_classes(cnnND2, x_testND2)+1])
+    propCNNND2 = keras::predict_proba(cnnND2, x_testND2)
+
+    # probability
+    probs = (propRFRaw + propRFSG + propCNND2 + propCNNND2) / 4
+    pred = lapply(1:nrow(probs), function(x){
+      which.max(probs[x,])
+    })
+
+    predVals = lapply(1:nrow(probs), function(x){
+      probs[x,unlist(pred)[x]]
+    })
+
+
+    predVals = unlist(predVals)
+    pred= names(unlist(pred))
+    obsv = as.character(testingRaw$class)
+
+    pred[which(pred %in% c("FIBRE","FUR","WOOD"))] = "OTHER"
+    obsv[which(obsv %in% c("FIBRE","FUR","WOOD"))] = "OTHER"
+
+    obsv = as.factor(obsv)
+    pred = as.factor(pred)
+    cfMat = caret::confusionMatrix(pred,obsv)
+    classValues = cfMat$byClass
+    accVals = cfMat$overall
+
+    classResults[[rep]][[fold]] = classValues
+    accuracyResults[[rep]][[fold]] = accVals
+
+    counter = counter + 1
   }
-  index = which(wavenumbers<=2420 & wavenumbers>=1900)
-  data[,index] = 0
-
-  predictors = df_to_karray(data[,-which(names(data)==category)])
-  target = keras::to_categorical(as.numeric(data[,category])-1, length(classes))
-
-  convNet = prepNNET(kernel = 89, variables = length(wavenumbers), nOutcome = length(classes))
-  history = fit(convNet, x = predictors, y = target,
-                #callbacks =  callback_tensorboard(paste0(mod,TIME,"/logs")),
-                epochs = 300, batch_size = 10)
-  cat(paste0("The final accuracy for the neural network is ",round(mean(history$metrics$acc[300]),3)))
-  keras::save_model_hdf5(convNet,  filepath = paste0(mod,TIME,"/",TIME,"_convnet.hdf"))
-  saveRDS(history, file = paste0(mod,TIME,"/",TIME,"_history.rds"))
 }
 
-if (TYPE == "FUSION"){
-  data.norm = preprocess(data,type="norm")
-  data.norm = as.data.frame(base::scale(data[,-which(names(data)==category)]))
-  data.norm[category] = data[category]
-  data.sg.norm = as.data.frame(prospectr::savitzkyGolay(data.norm[,-which(names(data.norm)==category)], p = 3, w = 11, m = 0))
-  data.sg.norm[category] = data[category]
-  data.sg = as.data.frame(prospectr::savitzkyGolay(data[,-which(names(data)==category)], p = 3, w = 11, m = 0))
-  data.sg[category] = data[category]
-
-  index = which(wavenumbers<=2420 & wavenumbers>=1900)
-  data[,index] = 0
-  data.norm[,index] = 0
-  data.norm[is.na(data.norm)] = 0
-  data.sg[,index] = 0
-  data.sg.norm[is.na(data.sg.norm)] = 0
-  data.sg.norm[,index] = 0
-
-  # apply PCA-CV to the individual data-frames
-  rfRAW = pcaCV(data,folds=10,repeats = 5,threshold = 99,metric = "Kappa",method = "rf")
-  saveRDS(rfRAW,file = paste0(mod,TIME,"/rfRAW_",TIME,".rds"))
-  rfNORM = pcaCV(data.norm,folds=10,repeats = 5,threshold = 99,metric = "Kappa",method = "rf")
-  saveRDS(rfNORM,file = paste0(mod,TIME,"/rfNORM_",TIME,".rds"))
-  rfSGNORM = pcaCV(data.sg.norm,folds=10,repeats = 5,threshold = 99,metric = "Kappa",method = "rf")
-  saveRDS(rfSGNORM,file = paste0(mod,TIME,"/rfSGNORM_",TIME,".rds"))
-  rfSG = pcaCV(data.sg,folds=10,repeats = 5,threshold = 99,metric = "Kappa",method = "rf")
-  saveRDS(rfSG,file = paste0(mod,TIME,"/rfSG_",TIME,".rds"))
-  accuracy = unlist(c(rfNORM[[1]],rfSGNORM[[1]],rfSG[[1]]),rfRAW[[1]])
-  cat(paste0("The mean kappa score for the decision fusion models is ",round(mean(accuracy),3)))
-}
+saveRDS(classResults, file = paste0(output, "fusion/classResults.rds"))
+saveRDS(accuracyResults, file = paste0(output, "fusion/accuracyResults.rds"))
 
 
-if (TYPE == "RAW"){
-  rfRAW = pcaCV(data,folds=10,repeats = 4,threshold = 99,metric = "Kappa",method = "rf")
-  saveRDS(rfRAW,file = paste0(mod,TIME,"/rfRAW_",TIME,".rds"))
-  cat(paste0("The cross-validated kappa score for the RAW model is ",round(mean(unlist(rfSG[[1]])),3)))
-}
+accuracies = as.data.frame(matrix(unlist(accuracyResults),ncol=7,nrow=50, byrow = T))
+names(accuracies) = names(accuracyResults[[1]][[1]])
+accuracies = colMeans(accuracies, na.rm = T)
+accuracies = round(accuracies, 4)
+saveRDS(accuracies, file = paste0(output, "fusion/meanAccuracyResults.rds"))
 
 
-if (TYPE == "SG"){
-  data.sg = as.data.frame(prospectr::savitzkyGolay(data[,-which(names(data)==category)], p = 3, w = 11, m = 0))
-  data.sg[category] = data[category]
-  rfSG = pcaCV(data.sg,folds=10,repeats = 4,threshold = 99,metric = "Kappa",method = "rf")
-  saveRDS(rfSG,file = paste0(mod,TIME,"/rfSG_",TIME,".rds"))
-  cat(paste0("The cross-validated kappa score for the SG model is ",round(mean(unlist(rfSG[[1]])),3)))
-}
+classInfo = array(unlist(classResults), dim = c(dim(classResults$rep1$fold1)[1], dim(classResults$rep1$fold1)[2], 50 ))
+meanClassInfo = apply(classInfo, c(1,2), mean, na.rm=TRUE)
+dimnames(meanClassInfo)= dimnames(classResults$rep1$fold1)
+saveRDS(meanClassInfo, file = paste0(output, "fusion/meanClassResults.rds"))
 
-if (TYPE == "SGNORM"){
-  data.sg.norm = as.data.frame(prospectr::savitzkyGolay(data.norm[,-which(names(data.norm)==category)], p = 3, w = 11, m = 0))
-  data.sg.norm[category] = data.norm[category]
-  rfSGNORM = pcaCV(data.sg.norm,folds=10,repeats = 5,threshold = 99,metric = "Kappa",method = "rf")
-  saveRDS(rfSGNORM,file = paste0(mod,TIME,"/rfSGNORM_",TIME,".rds"))
-  cat(paste0("The cross-validated kappa score for the SGNORM model is ",round(mean(unlist(rfSGNORM[[1]])),3)))
-}
 
-if (TYPE == "NORM"){
-  data.norm = as.data.frame(base::scale(data[,-which(names(data)==category)]))
-  data.norm[category] = data[category]
-  rfNORM = pcaCV(data.norm,folds=10,repeats = 5,threshold = 99,metric = "Kappa",method = "rf")
-  saveRDS(rfNORM,file = paste0(mod,TIME,"/rfNORM_",TIME,".rds"))
-  cat(paste0("The cross-validated kappa score for the NORM model is ",round(mean(unlist(rfNORM[[1]])),3)))
-}
+
+# training of the final models
+# RF SG
+pca = prcomp(sg.data[,1:ncol(sg.data)-1])
+varInfo = factoextra::get_eigenvalue(pca)
+thresInd = which(varInfo$cumulative.variance.percent >= 99)[1]
+x_train = pca$x[ ,1:thresInd]
+y_train = sg.data$class
+
+rfModSG = randomForest::randomForest(x_train, y_train, ntree=500)
+saveRDS(rfModSG, file = paste0(mod, "BASE/rfModSG.rds"))
+saveRDS(pca, file = paste0(mod, "BASE/rfModSGPCA.rds"))
+#RF Raw
+pca = prcomp(data[,1:ncol(data)-1])
+varInfo = factoextra::get_eigenvalue(pca)
+thresInd = which(varInfo$cumulative.variance.percent >= 99)[1]
+x_train = pca$x[ ,1:thresInd]
+y_train = data$class
+
+rfModRaw = randomForest::randomForest(x_train, y_train, ntree=500)
+saveRDS(rfModSG, file = paste0(mod, "BASE/rfModRaw.rds"))
+saveRDS(pca, file = paste0(mod, "BASE/rfModRawPCA.rds"))
+
+#CNN Raw
+K <- keras::backend()
+x_train = as.matrix(d2.data[,1:ncol(d2.data)-1])
+x = K$expand_dims(x_train, axis = 2L)
+x_train = K$eval(x)
+y_train = keras::to_categorical(as.numeric(d2.data$class)-1, length(unique(d2.data$class)))
+
+cnnD2 = prepNNET(kernel = 90, variables = ncol(d2.data)-1, nOutcome = length(unique(d2.data$class)))
+history = fit(cnnD2, x_train, y_train, batch_size = 10, epochs = 300)
+keras::save_model_hdf5(cnnD2, filepath = paste0(mod, "BASE/cnnD2.hdf"))
+
+#CNN D1
+x_train = as.matrix(normd2.data[,1:ncol(normd2.data)-1])
+x = K$expand_dims(x_train, axis = 2L)
+x_train = K$eval(x)
+y_train = keras::to_categorical(as.numeric(normd2.data$class)-1, length(unique(normd2.data$class)))
+
+cnnND2 = prepNNET(kernel = 90, variables = ncol(normd2.data)-1, nOutcome = length(unique(normd2.data$class)))
+history = fit(cnnND2, x_train, y_train, batch_size = 10, epochs = 300)
+keras::save_model_hdf5(cnnND2, filepath = paste0(mod, "BASE/cnnND2.hdf"))
+
+
