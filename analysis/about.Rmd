@@ -7,4 +7,16 @@ editor_options:
   chunk_output_type: console
 ---
 
-Describe your project.
+This website was created during a seminar at the University of Marburg.
+You are free to use, share and change the code under the licence provided.
+Be advised that in order to use the scripts presented here you should make sure
+that your machine is equiped with a nVIDIA GPU and that the [CUDA library](https://developer.nvidia.com/cuda-zone)
+is installed correctly. We worked with CUDA 10.0 during the project.
+Additionally, the scripts only work when a symlink called "polymer" directing 
+at the clone of the GitHub repository on your local machine is found in the home directory. 
+Be referred to this [site](https://wiki.ubuntuusers.de/ln/) to
+create a symlink on Ubuntu and to this [site](https://docs.microsoft.com/en-us/windows/win32/fileio/creating-symbolic-links)
+to create one on Windows. You can check the packrat lockfile [here](https://github.com/goergen95/polymeRID/blob/master/packrat/packrat.lock) 
+to find a comprehensive list of the packages and their versions we used.
+For any further questions contact me via my GitHub account or by sending
+a mail to Darius2402@web.de.
