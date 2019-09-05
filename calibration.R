@@ -1,6 +1,6 @@
 ############ FUSION #################
 
-source("/mnt/SSD/polymer/polymeRID/code/setup_website.R")
+source("/mnt/SSD/polymer/polymeRID/code/setup.R")
 source("/mnt/SSD/polymer/polymeRID/code/functions.R")
 #system("source misc/cuda10.1-env")
 # reading data based on class control file
@@ -78,7 +78,7 @@ for (rep in repeats){
     x_testD2 = K$eval(x)
     y_testD2 = keras::to_categorical(as.numeric(testingD2$class)-1, length(unique(testingD2$class)))
 
-    cnnD2 = prepNNET(kernel = 90, variables = ncol(d2.data)-1, nOutcome = length(unique(d2.data$class)))
+    cnnD2 = prepCNN(kernel = 90, variables = ncol(d2.data)-1, nOutcome = length(unique(d2.data$class)))
     history = fit(cnnD2, x_train, y_train, batch_size = 10, epochs = 300)
 
 
@@ -92,7 +92,7 @@ for (rep in repeats){
     x_testND2 = K$eval(x)
     y_testND2 = keras::to_categorical(as.numeric(testingNormD2$class)-1, length(unique(testingNormD2$class)))
 
-    cnnND2 = prepNNET(kernel = 90, variables = ncol(normd2.data)-1, nOutcome = length(unique(normd2.data$class)))
+    cnnND2 = prepCNN(kernel = 90, variables = ncol(normd2.data)-1, nOutcome = length(unique(normd2.data$class)))
     history = fit(cnnND2, x_train, y_train, batch_size = 10, epochs = 300)
 
 
@@ -186,7 +186,7 @@ x = K$expand_dims(x_train, axis = 2L)
 x_train = K$eval(x)
 y_train = keras::to_categorical(as.numeric(d2.data$class)-1, length(unique(d2.data$class)))
 
-cnnD2 = prepNNET(kernel = 90, variables = ncol(d2.data)-1, nOutcome = length(unique(d2.data$class)))
+cnnD2 = prepCNN(kernel = 90, variables = ncol(d2.data)-1, nOutcome = length(unique(d2.data$class)))
 history = fit(cnnD2, x_train, y_train, batch_size = 10, epochs = 300)
 keras::save_model_hdf5(cnnD2, filepath = paste0(mod, "BASE/cnnD2.hdf"))
 
@@ -196,7 +196,7 @@ x = K$expand_dims(x_train, axis = 2L)
 x_train = K$eval(x)
 y_train = keras::to_categorical(as.numeric(normd2.data$class)-1, length(unique(normd2.data$class)))
 
-cnnND2 = prepNNET(kernel = 90, variables = ncol(normd2.data)-1, nOutcome = length(unique(normd2.data$class)))
+cnnND2 = prepCNN(kernel = 90, variables = ncol(normd2.data)-1, nOutcome = length(unique(normd2.data$class)))
 history = fit(cnnND2, x_train, y_train, batch_size = 10, epochs = 300)
 keras::save_model_hdf5(cnnND2, filepath = paste0(mod, "BASE/cnnND2.hdf"))
 
