@@ -8,6 +8,7 @@ output:
 editor_options:
   chunk_output_type: console
 bibliography: library.bib
+csl: elsevier-harvard.csl
 link-citations: yes
 ---
 
