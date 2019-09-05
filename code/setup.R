@@ -15,12 +15,10 @@ libs <-  c("dplyr",
            "ggplot2",
            "magrittr",
            "openxlsx",
-           #"caret",
            "prospectr",
-           #"tidyr",
            "stringr",
-           #"factoextra",
-           #"randomForest",
+           "factoextra",
+           "randomForest",
            "gridExtra",
            "baseline",
            "workflowr",
@@ -49,7 +47,7 @@ for (dir in subDir){assign(dir,paste(root,"/", paste(dir,"/",sep=""),sep=""))}
 
 
 # setting up keras on GPU
-library(tensorflow)
-Sys.setenv(CUDA_HOME="/usr/local/cuda")
+#library(tensorflow)
+#Sys.setenv(CUDA_HOME="/usr/local/cuda")
 #install_tensorflow(version = "gpu")
 
