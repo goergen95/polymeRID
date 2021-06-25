@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -15,25 +14,63 @@
 
 <title>Home</title>
 
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/spacelab.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<meta name="twitter:title" content="polymeRID - Identification of microplastics in environmental samples"/>
+<meta name="twitter:description" content="Using machine learning to identify microplastic particles in environmental samples based on their FTIR-spectra."/>
+<meta name="twitter:url" content="https://goergen95.github.io/polymeRID/"/>
+<meta name="twitter:image:src" content="https://github.com/goergen95/polymeRID/blob/add-license-1/docs/assets/images/mean_spectrum_PET.png?raw=true"/>
+<meta name="twitter:image:alt" content="Conflicts aggregated on administrative units and sub-basin watersheds"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta property="og:title" content="polymeRID - Identification of microplastics in environmental samples"/>
+<meta property="og:description" content="Using machine learning to identify microplastic particles in environmental samples based on their FTIR-spectra."/>
+<meta property="og:url" content="https://goergen95.github.io/polymeRID/"/>
+<meta property="og:image" content="https://github.com/goergen95/polymeRID/blob/add-license-1/docs/assets/images/mean_spectrum_PET.png?raw=true"/>
+<meta property="og:image:alt" content="Conflicts aggregated on administrative units and sub-basin watersheds"/>
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="article:author" content="Darius Görgen"/>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -46,30 +83,27 @@ if (window.hljs) {
 
 
 
+
 <style type="text/css">
-h1 {
-  font-size: 34px;
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
 }
-h1.title {
-  font-size: 38px;
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
 }
-h2 {
-  font-size: 30px;
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
 }
-h3 {
-  font-size: 24px;
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
 }
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
+div.csl-indent {
+  margin-left: 2em;
 }
 </style>
 
@@ -82,13 +116,8 @@ h6 {
   margin-left: auto;
   margin-right: auto;
 }
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -102,40 +131,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -163,7 +165,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -175,7 +177,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -186,10 +188,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -201,7 +216,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -237,6 +251,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -265,6 +280,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -320,7 +341,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -372,14 +393,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<!-- Add a small amount of space between sections. -->
-<style type="text/css">
-div.section {
-  padding-top: 12px;
-}
-</style>
-
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -391,7 +405,7 @@ div.section {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -400,7 +414,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -409,17 +423,17 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-09-19
+<strong>Last updated:</strong> 2021-06-25
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>polymeRID/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
 </p>
 <p>
 This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
-  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.4.0.9001). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
 </p>
 <hr>
 </div>
@@ -428,12 +442,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -457,7 +471,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongSeedstrongcodesetseed20190729code" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The command <code>set.seed(20190729)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+<p>The command <code>set.seed(20190729)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
 </div>
 </div>
 </div>
@@ -500,246 +514,32 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree75bc270dd70e3d906cb797ab49124616fb1604bdtargetblank75bc270a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/75bc270dd70e3d906cb797ab49124616fb1604bd" target="_blank">75bc270</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree591ac0b2651c761fee6a6e309c2d29c8dc260f94targetblank591ac0ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/goergen95/polymeRID/tree/591ac0b2651c761fee6a6e309c2d29c8dc260f94" target="_blank">591ac0b</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree75bc270dd70e3d906cb797ab49124616fb1604bdtargetblank75bc270a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomgoergen95polymeRIDtree591ac0b2651c761fee6a6e309c2d29c8dc260f94targetblank591ac0ba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
-Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/goergen95/polymeRID/tree/591ac0b2651c761fee6a6e309c2d29c8dc260f94" target="_blank">591ac0b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
-    Ignored:    .Rhistory
-    Ignored:    .Rprofile
     Ignored:    .Rproj.user/
     Ignored:    analysis/library.bib
-    Ignored:    docs/figure/
-    Ignored:    fun/
-    Ignored:    output/20190810_1538/
-    Ignored:    output/20190810_1546/
-    Ignored:    output/20190810_1609/
-    Ignored:    output/20190813_1044/
-    Ignored:    output/logs/
-    Ignored:    output/natural/
-    Ignored:    output/nnet/
-    Ignored:    output/svm/
-    Ignored:    output/testRunII/
-    Ignored:    output/testRunIII/
-    Ignored:    packrat/lib-R/
-    Ignored:    packrat/lib-ext/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/BH/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/FactoMineR/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/IDPmisc/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/KernSmooth/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/MASS/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/Matrix/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/MatrixModels/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/ModelMetrics/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/R6/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/RColorBrewer/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/RCurl/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/Rcpp/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/RcppArmadillo/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/RcppEigen/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/RcppGSL/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/RcppZiggurat/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/Rfast/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/Rgtsvm/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/Rmisc/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/SQUAREM/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/SparseM/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/abind/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/askpass/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/assertthat/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/backports/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/base64enc/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/baseline/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/bit/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/bit64/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/bitops/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/boot/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/brew/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/callr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/car/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/carData/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/caret/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/cellranger/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/class/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/cli/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/clipr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/clisymbols/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/cluster/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/codetools/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/colorspace/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/commonmark/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/config/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/cowplot/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/crayon/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/crosstalk/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/curl/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/data.table/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/dendextend/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/desc/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/devtools/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/digest/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/doParallel/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/dplyr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/e1071/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/ellipse/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/ellipsis/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/evaluate/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/factoextra/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/fansi/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/flashClust/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/forcats/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/foreach/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/foreign/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/fs/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/generics/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/getPass/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/ggplot2/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/ggpubr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/ggrepel/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/ggsci/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/ggsignif/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/gh/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/git2r/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/glue/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/gower/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/gridExtra/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/gtable/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/haven/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/hexbin/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/highr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/hms/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/htmltools/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/htmlwidgets/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/httpuv/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/httr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/ini/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/ipred/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/iterators/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/jsonlite/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/keras/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/kerasR/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/knitr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/labeling/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/later/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/lattice/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/lava/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/lazyeval/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/leaps/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/lme4/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/lubridate/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/magrittr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/maptools/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/markdown/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/memoise/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/mgcv/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/mime/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/minqa/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/munsell/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/nlme/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/nloptr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/nnet/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/numDeriv/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/openssl/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/openxlsx/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/packrat/tests/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/pbkrtest/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/pillar/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/pkgbuild/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/pkgconfig/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/pkgload/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/plogr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/plotly/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/plyr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/polynom/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/praise/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/prettyunits/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/processx/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/prodlim/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/progress/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/promises/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/prospectr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/ps/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/purrr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/quantreg/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/randomForest/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/rcmdcheck/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/readr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/readxl/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/recipes/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/rematch/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/remotes/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/reshape2/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/reticulate/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/rio/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/rlang/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/rmarkdown/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/roxygen2/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/rpart/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/rprojroot/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/rsconnect/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/rstudioapi/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/scales/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/scatterplot3d/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/sessioninfo/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/shiny/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/sourcetools/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/sp/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/stringi/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/stringr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/survival/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/sys/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/tensorflow/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/testthat/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/tfruns/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/tibble/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/tidyr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/tidyselect/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/timeDate/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/tinytex/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/usethis/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/utf8/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/vctrs/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/viridis/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/viridisLite/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/whisker/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/withr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/workflowr/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/xfun/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/xml2/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/xopen/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/xtable/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/yaml/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/zeallot/
-    Ignored:    packrat/lib/x86_64-pc-linux-gnu/3.6.1/zip/
-    Ignored:    packrat/src/
     Ignored:    polymeRID.Rproj
-    Ignored:    smp/20190812_1723_NNET/files/
-    Ignored:    smp/20190812_1723_NNET/plots/
-    Ignored:    smp/20190812_1729_NNET/files/
-    Ignored:    smp/20190812_1729_NNET/plots/
-    Ignored:    smp/20190812_1731_NNET/files/
-    Ignored:    smp/20190812_1731_NNET/plots/
-    Ignored:    smp/20190812_1733_NNET/files/
-    Ignored:    smp/20190812_1733_NNET/plots/
-    Ignored:    smp/20190815_1847_FUSION/
-    Ignored:    smp/20190905_1602_FUSION/
-    Ignored:    smp/20190905_1618_RFRAW/
-    Ignored:    smp/20190905_1637_CNND2/
-    Ignored:    smp/20190905_1708_FUSION/
-    Ignored:    smp/20190910_1805_FUSION/
-    Ignored:    website/
 
 Untracked files:
-    Untracked:  Rplots.pdf
-    Untracked:  analysis/elsevier-harvard.csl
+    Untracked:  analysis/site_libs/
 
 Unstaged changes:
-    Modified:   analysis/assets/images/seperators.jpg
+    Modified:   analysis/index.Rmd
+    Modified:   code/setup_website.R
 
 </code></pre>
 <p>
@@ -754,7 +554,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML (<code>docs/index.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -778,6 +578,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/goergen95/polymeRID/9a8b23ce9b7f6e871aad15f564531fd8c3fe32ad/docs/index.html" target="_blank">9a8b23c</a>
+</td>
+<td>
+goergen95
+</td>
+<td>
+2019-09-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1418,13 +1235,13 @@ Start workflowr project.
 <h2>Introduction</h2>
 <p>Here I present the results of my work for a master’s seminar at the University of Marburg concerned with microplastic in the environment.<br />
 <br> <img src="assets/images/seperators.jpg" alt="Probe Seperators" /><br> <em>Photo of two sediment separators taken by Sarah Brüning</em></p>
-<p>Microplastic particles polluting the environment has been in the public focus for some time now. The scientific efforts of analyzing the occurrences of particles in the environment and their effects on ecosystems and human health is manifold, yet there is a lack of consensus on methods for sampling, sample handling, analysis and identification, especially for samples from aquatic ecosystems. Some of the most urgent research questions concerned with microplastic are the effects on biological lifeforms <span class="citation">(Zhang et al., <a href="#ref-Zhang2019">2019</a>)</span>, their movement through and distribution in marine environments <span class="citation">(Auta et al., <a href="#ref-Auta2017">2017</a>)</span> as well as in freshwater ecosystems <span class="citation">(Li et al., <a href="#ref-Li2018b">2018</a>)</span>.</p>
+<p>Microplastic particles polluting the environment has been in the public focus for some time now. The scientific efforts of analyzing the occurrences of particles in the environment and their effects on ecosystems and human health is manifold, yet there is a lack of consensus on methods for sampling, sample handling, analysis and identification, especially for samples from aquatic ecosystems. Some of the most urgent research questions concerned with microplastic are the effects on biological lifeforms <span class="citation">(<a href="#ref-Zhang2019" role="doc-biblioref">Zhang et al., 2019</a>)</span>, their movement through and distribution in marine environments <span class="citation">(<a href="#ref-Auta2017" role="doc-biblioref">Auta et al., 2017</a>)</span> as well as in freshwater ecosystems <span class="citation">(<a href="#ref-Li2018b" role="doc-biblioref">Li et al., 2018</a>)</span>.</p>
 <p>Different research questions demand different methodologies for sampling, sample handling and laboratory analysis. However, the link between different research domains is that any analysis of microplastic in the environment needs a robust identification method to enable scientists to bring forward meaningful recommendations to the public and decision makers.</p>
-<p>A broad spectrum of different polymer identification strategies evidently exists <span class="citation">(Löder and Gerdts, <a href="#ref-Loder2015">2015</a>; Rocha-Santos and Duarte, <a href="#ref-Rocha-Santos2015a">2015</a>; Shim et al., <a href="#ref-Shim2017">2017</a>)</span>, ranging from traditional microscopy to spectroscopy as well as destructive methods of thermal analysis. A distinction has to be made towards the extent of automatization in the identification process. Recently, different approaches to automate the task of polymer classification, either by individual particles or for a whole collection of samples simultaneously have been reported to the scientific community <span class="citation">(Lorenzo-Navarro et al., <a href="#ref-Lorenzo-Navarro2018">2018</a>; Masoumi et al., <a href="#ref-Masoumi2012">2012</a>; Primpke et al., <a href="#ref-Primpke2019">2019</a>, <a href="#ref-Primpke2017">2017</a>; Zhang et al., <a href="#ref-Zhang2018">2018</a>)</span>.</p>
-<p>This project sets out to contribute to the ease of the cumbersome process of classifying individual particles based on their spectral reflectance by hand. The idea is that up-to-date machine learning models applied to the high-dimensional spectral data of particles found in environmental samples can minimize the need for human intervention in the classification process and thus significantly speed up the process of classification. Other studies have reported substantial accuracies by applying different kinds of machine learning algorithms such as hierarchical clustering <span class="citation">(Primpke et al., <a href="#ref-Primpke2017">2017</a>)</span>, support-vector-machines <span class="citation">(V. Bianco P. Memmolo, <a href="#ref-bianco2019">2019</a>)</span>, random forest <span class="citation">(Hufnagl et al., <a href="#ref-Hufnagl2019">2019</a>)</span>, as well as convolutional neural networks <span class="citation">(Liu et al., <a href="#ref-Liu2017">2017</a>)</span> to classify the spectra of microplastic and other materials found in environmental samples.</p>
+<p>A broad spectrum of different polymer identification strategies evidently exists <span class="citation">(<a href="#ref-Loder2015" role="doc-biblioref">Löder and Gerdts, 2015</a>; <a href="#ref-Rocha-Santos2015a" role="doc-biblioref">Rocha-Santos and Duarte, 2015</a>; <a href="#ref-Shim2017" role="doc-biblioref">Shim et al., 2017</a>)</span>, ranging from traditional microscopy to spectroscopy as well as destructive methods of thermal analysis. A distinction has to be made towards the extent of automatization in the identification process. Recently, different approaches to automate the task of polymer classification, either by individual particles or for a whole collection of samples simultaneously have been reported to the scientific community <span class="citation">(<a href="#ref-Lorenzo-Navarro2018" role="doc-biblioref">Lorenzo-Navarro et al., 2018</a>; <a href="#ref-Masoumi2012" role="doc-biblioref">Masoumi et al., 2012</a>; <a href="#ref-Primpke2019" role="doc-biblioref">Primpke et al., 2019</a>, <a href="#ref-Primpke2017" role="doc-biblioref">2017</a>; <a href="#ref-Zhang2018" role="doc-biblioref">Zhang et al., 2018</a>)</span>.</p>
+<p>This project sets out to contribute to the ease of the cumbersome process of classifying individual particles based on their spectral reflectance by hand. The idea is that up-to-date machine learning models applied to the high-dimensional spectral data of particles found in environmental samples can minimize the need for human intervention in the classification process and thus significantly speed up the process of classification. Other studies have reported substantial accuracies by applying different kinds of machine learning algorithms such as hierarchical clustering <span class="citation">(<a href="#ref-Primpke2017" role="doc-biblioref">Primpke et al., 2017</a>)</span>, support-vector-machines <span class="citation">(<a href="#ref-bianco2019" role="doc-biblioref">V. Bianco P. Memmolo, 2019</a>)</span>, random forest <span class="citation">(<a href="#ref-Hufnagl2019" role="doc-biblioref">Hufnagl et al., 2019</a>)</span>, as well as convolutional neural networks <span class="citation">(<a href="#ref-Liu2017" role="doc-biblioref">Liu et al., 2017</a>)</span> to classify the spectra of microplastic and other materials found in environmental samples.</p>
 <p>This project was grouped into different working steps, which were designed to allow to reproduce the workflows to the greatest extent possible as well as to allow alterations of the code and extensions to the database. These working steps are:</p>
 <ul>
-<li><p><a href="preparation.html"><strong>Preparation</strong></a>: At first the establishment of a comprehensive database of reference spectra was mandatory to allow the application of machine-learning models. We used an OpenSource database published by <span class="citation">Primpke et al. (<a href="#ref-Primpke2018">2018</a>)</span>. For potential future extensions, we created a workflow of spectral resampling and baseline correction for reference polymers and other particles to ensure the consistency of the database.</p></li>
+<li><p><a href="preparation.html"><strong>Preparation</strong></a>: At first the establishment of a comprehensive database of reference spectra was mandatory to allow the application of machine-learning models. We used an OpenSource database published by <span class="citation"><a href="#ref-Primpke2018" role="doc-biblioref">Primpke et al.</a> (<a href="#ref-Primpke2018" role="doc-biblioref">2018</a>)</span>. For potential future extensions, we created a workflow of spectral resampling and baseline correction for reference polymers and other particles to ensure the consistency of the database.</p></li>
 <li><p><a href="exploration.html"><strong>Exploration</strong></a>: Different types of pre-processing techniques were assessed by a cross-validation approach in which different representations of data were presented to a selection of machine-learning models. Their capability to correctly classify the database was captured. Additionally, increasing levels of noise were added to the data so that the models and pre-processing techniques which most robustly classify polymer spectra could be identified.</p></li>
 <li><p><a href="calibration.html"><strong>Calibration</strong></a>: After the exploration stage, the best performing models were chosen to create a decision fusion model. A workflow was created to calibrate these models to a potentially changing database when needed. This step is crucial so that the work presented here can be used in the future, i.e. in the case of a extension of the reference database or a change in the spectral resolution.</p></li>
 <li><p><a href="classification.html"><strong>Classification</strong></a>: At the final stage of the project, a workflow was created to classify real environmental samples in a user-friendly way to ease the classification process. Here, some accuracy values of the classification are extracted and comprehensively handed to the user, as well as some plots for a visual confirmation of the classification results. This way, it is ensured that the results are easily accessible and the possibility for a human agent to assess the quality of the classification is implemented.</p></li>
@@ -1432,51 +1249,51 @@ Start workflowr project.
 </div>
 <div id="citations-on-this-page" class="section level2">
 <h2>Citations on this page</h2>
-<div id="refs">
-<div id="ref-Auta2017">
-<p>Auta, H.S., Emenike, C.U., Fauziah, S.H., 2017. Distribution and importance of microplastics in the marine environment. A review of the sources, fate, effects, and potential solutions. <a href="https://doi.org/10.1016/j.envint.2017.02.013">https://doi.org/10.1016/j.envint.2017.02.013</a></p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Auta2017" class="csl-entry">
+Auta, H.S., Emenike, C.U., Fauziah, S.H., 2017. <span class="nocase">Distribution and importance of microplastics in the marine environment. A review of the sources, fate, effects, and potential solutions</span>. <a href="https://doi.org/10.1016/j.envint.2017.02.013">https://doi.org/10.1016/j.envint.2017.02.013</a>
 </div>
-<div id="ref-Hufnagl2019">
-<p>Hufnagl, B., Steiner, D., Renner, E., Löder, M.G., Laforsch, C., Lohninger, H., 2019. A methodology for the fast identification and monitoring of microplastics in environmental samples using random decision forest classifiers. Analytical Methods 11, 2277–2285. <a href="https://doi.org/10.1039/c9ay00252a">https://doi.org/10.1039/c9ay00252a</a></p>
+<div id="ref-Hufnagl2019" class="csl-entry">
+Hufnagl, B., Steiner, D., Renner, E., Löder, M.G.J., Laforsch, C., Lohninger, H., 2019. <span class="nocase">A methodology for the fast identification and monitoring of microplastics in environmental samples using random decision forest classifiers</span>. Analytical Methods 11, 2277–2285. <a href="https://doi.org/10.1039/c9ay00252a">https://doi.org/10.1039/c9ay00252a</a>
 </div>
-<div id="ref-Li2018b">
-<p>Li, J., Liu, H., Paul Chen, J., 2018. Microplastics in freshwater systems: A review on occurrence, environmental effects, and methods for microplastics detection. Water Research 137, 362–374. <a href="https://doi.org/10.1016/j.watres.2017.12.056">https://doi.org/10.1016/j.watres.2017.12.056</a></p>
+<div id="ref-Li2018b" class="csl-entry">
+Li, J., Liu, H., Paul Chen, J., 2018. <span class="nocase">Microplastics in freshwater systems: A review on occurrence, environmental effects, and methods for microplastics detection</span>. Water Research 137, 362–374. <a href="https://doi.org/10.1016/j.watres.2017.12.056">https://doi.org/10.1016/j.watres.2017.12.056</a>
 </div>
-<div id="ref-Liu2017">
-<p>Liu, J., Osadchy, M., Ashton, L., Foster, M., Solomon, C.J., Gibson, S.J., 2017. Deep convolutional neural networks for Raman spectrum recognition: A unified solution. Analyst 142, 4067–4074. <a href="https://doi.org/10.1039/c7an01371j">https://doi.org/10.1039/c7an01371j</a></p>
+<div id="ref-Liu2017" class="csl-entry">
+Liu, J., Osadchy, M., Ashton, L., Foster, M., Solomon, C.J., Gibson, S.J., 2017. <span class="nocase">Deep convolutional neural networks for Raman spectrum recognition: A unified solution</span>. Analyst 142, 4067–4074. <a href="https://doi.org/10.1039/c7an01371j">https://doi.org/10.1039/c7an01371j</a>
 </div>
-<div id="ref-Lorenzo-Navarro2018">
-<p>Lorenzo-Navarro, J., Castrillón-Santana, M., Gómez, M., Herrera, A., Marín-Reyes, P.A., 2018. Automatic Counting and Classification of Microplastic Particles. <a href="https://doi.org/10.5220/0006725006460652">https://doi.org/10.5220/0006725006460652</a></p>
+<div id="ref-Lorenzo-Navarro2018" class="csl-entry">
+Lorenzo-Navarro, J., Castrillón-Santana, M., Gómez, M., Herrera, A., Marín-Reyes, P.A., 2018. <span class="nocase">Automatic Counting and Classification of Microplastic Particles</span>. <a href="https://doi.org/10.5220/0006725006460652">https://doi.org/10.5220/0006725006460652</a>
 </div>
-<div id="ref-Loder2015">
-<p>Löder, M.G., Gerdts, G., 2015. Methodology used for the detection and identification of microplastics—a critical appraisal, in: Marine Anthropogenic Litter. Springer International Publishing, pp. 201–227. <a href="https://doi.org/10.1007/978-3-319-16510-3_8">https://doi.org/10.1007/978-3-319-16510-3_8</a></p>
+<div id="ref-Loder2015" class="csl-entry">
+Löder, M.G.J., Gerdts, G., 2015. <span class="nocase">Methodology used for the detection and identification of microplastics—a critical appraisal</span>, in: Marine Anthropogenic Litter. Springer International Publishing, pp. 201–227. <a href="https://doi.org/10.1007/978-3-319-16510-3_8">https://doi.org/10.1007/978-3-319-16510-3_8</a>
 </div>
-<div id="ref-Masoumi2012">
-<p>Masoumi, H., Safavi, S., Khani, Z., 2012. Identification and Classification of Plastic Resins using Near Infrared Reflectance. Waset 6, 213–220.</p>
+<div id="ref-Masoumi2012" class="csl-entry">
+Masoumi, H., Safavi, S., Khani, Z., 2012. <span class="nocase">Identification and Classification of Plastic Resins using Near Infrared Reflectance</span>. Waset 6, 213–220.
 </div>
-<div id="ref-Primpke2019">
-<p>Primpke, S., Dias, P.A., Gerdts, G., 2019. Automated identification and quantification of microfibres and microplastics. Analytical Methods 11, 2138–2147. <a href="https://doi.org/10.1039/c9ay00126c">https://doi.org/10.1039/c9ay00126c</a></p>
+<div id="ref-Primpke2019" class="csl-entry">
+Primpke, S., Dias, P.A., Gerdts, G., 2019. <span class="nocase">Automated identification and quantification of microfibres and microplastics</span>. Analytical Methods 11, 2138–2147. <a href="https://doi.org/10.1039/c9ay00126c">https://doi.org/10.1039/c9ay00126c</a>
 </div>
-<div id="ref-Primpke2017">
-<p>Primpke, S., Lorenz, C., Rascher-Friesenhausen, R., Gerdts, G., 2017. An automated approach for microplastics analysis using focal plane array (FPA) FTIR microscopy and image analysis. Analytical Methods 9, 1499–1511. <a href="https://doi.org/10.1039/c6ay02476a">https://doi.org/10.1039/c6ay02476a</a></p>
+<div id="ref-Primpke2017" class="csl-entry">
+Primpke, S., Lorenz, C., Rascher-Friesenhausen, R., Gerdts, G., 2017. <span class="nocase">An automated approach for microplastics analysis using focal plane array (FPA) FTIR microscopy and image analysis</span>. Analytical Methods 9, 1499–1511. <a href="https://doi.org/10.1039/c6ay02476a">https://doi.org/10.1039/c6ay02476a</a>
 </div>
-<div id="ref-Primpke2018">
-<p>Primpke, S., Wirth, M., Lorenz, C., Gerdts, G., 2018. Reference database design for the automated analysis of microplastic samples based on Fourier transform infrared (FTIR) spectroscopy. Analytical and Bioanalytical Chemistry 410, 5131–5141. <a href="https://doi.org/10.1007/s00216-018-1156-x">https://doi.org/10.1007/s00216-018-1156-x</a></p>
+<div id="ref-Primpke2018" class="csl-entry">
+Primpke, S., Wirth, M., Lorenz, C., Gerdts, G., 2018. <span class="nocase">Reference database design for the automated analysis of microplastic samples based on Fourier transform infrared (FTIR) spectroscopy</span>. Analytical and Bioanalytical Chemistry 410, 5131–5141. <a href="https://doi.org/10.1007/s00216-018-1156-x">https://doi.org/10.1007/s00216-018-1156-x</a>
 </div>
-<div id="ref-Rocha-Santos2015a">
-<p>Rocha-Santos, T., Duarte, A.C., 2015. A critical overview of the analytical approaches to the occurrence, the fate and the behavior of microplastics in the environment. TrAC - Trends in Analytical Chemistry 65, 47–53. <a href="https://doi.org/10.1016/j.trac.2014.10.011">https://doi.org/10.1016/j.trac.2014.10.011</a></p>
+<div id="ref-Rocha-Santos2015a" class="csl-entry">
+Rocha-Santos, T., Duarte, A.C., 2015. <span class="nocase">A critical overview of the analytical approaches to the occurrence, the fate and the behavior of microplastics in the environment</span>. TrAC - Trends in Analytical Chemistry 65, 47–53. <a href="https://doi.org/10.1016/j.trac.2014.10.011">https://doi.org/10.1016/j.trac.2014.10.011</a>
 </div>
-<div id="ref-Shim2017">
-<p>Shim, W.J., Hong, S.H., Eo, S.E., 2017. Identification methods in microplastic analysis: A review. Analytical Methods 9, 1384–1391. <a href="https://doi.org/10.1039/c6ay02558g">https://doi.org/10.1039/c6ay02558g</a></p>
+<div id="ref-Shim2017" class="csl-entry">
+Shim, W.J., Hong, S.H., Eo, S.E., 2017. <span class="nocase">Identification methods in microplastic analysis: A review</span>. Analytical Methods 9, 1384–1391. <a href="https://doi.org/10.1039/c6ay02558g">https://doi.org/10.1039/c6ay02558g</a>
 </div>
-<div id="ref-bianco2019">
-<p>V. Bianco P. Memmolo, F.M.P.C.C.D.P.F., 2019. High-accuracy identification of micro-plastics by holographic microscopy enabled support vector machine, in:. <a href="https://doi.org/10.1117/12.2509515">https://doi.org/10.1117/12.2509515</a></p>
+<div id="ref-bianco2019" class="csl-entry">
+V. Bianco P. Memmolo, F.M.P.C.C.D.P.F., 2019. <span class="nocase">High-accuracy identification of micro-plastics by holographic microscopy enabled support vector machine</span>. <a href="https://doi.org/10.1117/12.2509515">https://doi.org/10.1117/12.2509515</a>
 </div>
-<div id="ref-Zhang2018">
-<p>Zhang, J., Tian, K., Lei, C., Min, S., 2018. Identification and quantification of microplastics in table sea salts using micro-NIR imaging methods. Analytical Methods 10, 2881–2887. <a href="https://doi.org/10.1039/c8ay00125a">https://doi.org/10.1039/c8ay00125a</a></p>
+<div id="ref-Zhang2018" class="csl-entry">
+Zhang, J., Tian, K., Lei, C., Min, S., 2018. <span class="nocase">Identification and quantification of microplastics in table sea salts using micro-NIR imaging methods</span>. Analytical Methods 10, 2881–2887. <a href="https://doi.org/10.1039/c8ay00125a">https://doi.org/10.1039/c8ay00125a</a>
 </div>
-<div id="ref-Zhang2019">
-<p>Zhang, S., Wang, J., Liu, X., Qu, F., Wang, X., Wang, X., Li, Y., Sun, Y., 2019. Microplastics in the environment: A review of analytical methods, distribution, and biological effects. TrAC - Trends in Analytical Chemistry 111, 62–72. <a href="https://doi.org/10.1016/j.trac.2018.12.002">https://doi.org/10.1016/j.trac.2018.12.002</a></p>
+<div id="ref-Zhang2019" class="csl-entry">
+Zhang, S., Wang, J., Liu, X., Qu, F., Wang, X., Wang, X., Li, Y., Sun, Y., 2019. <span class="nocase">Microplastics in the environment: A review of analytical methods, distribution, and biological effects</span>. TrAC - Trends in Analytical Chemistry 111, 62–72. <a href="https://doi.org/10.1016/j.trac.2018.12.002">https://doi.org/10.1016/j.trac.2018.12.002</a>
 </div>
 </div>
 <br>
@@ -1487,17 +1304,17 @@ Start workflowr project.
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.6.1 (2019-07-05)
+<pre><code>R version 4.1.0 (2021-05-18)
 Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: Linux Mint 19.1
+Running under: Ubuntu 20.04.2 LTS
 
 Matrix products: default
-BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1
-LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
 
 locale:
  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
- [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [3] LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8    
  [5] LC_MONETARY=de_DE.UTF-8    LC_MESSAGES=en_US.UTF-8   
  [7] LC_PAPER=de_DE.UTF-8       LC_NAME=C                 
  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
@@ -1507,34 +1324,29 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] plotly_4.9.0              tensorflow_1.14.0        
- [3] abind_1.4-5               e1071_1.7-2              
- [5] keras_2.2.4.1             workflowr_1.4.0.9001     
- [7] baseline_1.2-1            gridExtra_2.3            
- [9] stringr_1.4.0             prospectr_0.1.3          
-[11] RcppArmadillo_0.9.600.4.0 openxlsx_4.1.0.1         
-[13] magrittr_1.5              ggplot2_3.2.0            
-[15] reshape2_1.4.3            dplyr_0.8.3              
+ [1] tensorflow_2.5.0 abind_1.4-5      e1071_1.7-7      plotly_4.9.4.1  
+ [5] keras_2.4.0      workflowr_1.6.2  baseline_1.3-1   gridExtra_2.3   
+ [9] stringr_1.4.0    prospectr_0.2.1  openxlsx_4.2.4   magrittr_2.0.1  
+[13] ggplot2_3.3.4    reshape2_1.4.4   dplyr_1.0.7      metathis_1.0.3  
 
 loaded via a namespace (and not attached):
- [1] reticulate_1.13   tidyselect_0.2.5  xfun_0.8         
- [4] purrr_0.3.2       lattice_0.20-38   colorspace_1.4-1 
- [7] generics_0.0.2    viridisLite_0.3.0 htmltools_0.3.6  
-[10] yaml_2.2.0        base64enc_0.1-3   rlang_0.4.0      
-[13] pillar_1.4.2      glue_1.3.1        withr_2.1.2      
-[16] foreach_1.4.7     plyr_1.8.4        munsell_0.5.0    
-[19] gtable_0.3.0      zip_2.0.3         htmlwidgets_1.3  
-[22] codetools_0.2-16  evaluate_0.14     knitr_1.24       
-[25] SparseM_1.77      tfruns_1.4        class_7.3-15     
-[28] Rcpp_1.0.2        scales_1.0.0      backports_1.1.4  
-[31] jsonlite_1.6      fs_1.3.1          digest_0.6.20    
-[34] stringi_1.4.3     grid_3.6.1        rprojroot_1.3-2  
-[37] tools_3.6.1       lazyeval_0.2.2    tibble_2.1.3     
-[40] tidyr_0.8.3       crayon_1.3.4      whisker_0.3-2    
-[43] pkgconfig_2.0.2   zeallot_0.1.0     Matrix_1.2-17    
-[46] data.table_1.12.2 httr_1.4.1        assertthat_0.2.1 
-[49] rmarkdown_1.14    iterators_1.0.12  R6_2.4.0         
-[52] git2r_0.26.1      compiler_3.6.1   </code></pre>
+ [1] Rcpp_1.0.6        lattice_0.20-44   tidyr_1.1.3       class_7.3-19     
+ [5] png_0.1-7         zeallot_0.1.0     rprojroot_2.0.2   digest_0.6.27    
+ [9] foreach_1.5.1     utf8_1.2.1        R6_2.5.0          plyr_1.8.6       
+[13] evaluate_0.14     httr_1.4.2        pillar_1.6.1      tfruns_1.5.0     
+[17] rlang_0.4.11      lazyeval_0.2.2    data.table_1.14.0 SparseM_1.81     
+[21] limSolve_1.5.6    whisker_0.4       Matrix_1.3-4      reticulate_1.20  
+[25] rmarkdown_2.9     mathjaxr_1.4-0    htmlwidgets_1.5.3 munsell_0.5.0    
+[29] proxy_0.4-26      compiler_4.1.0    httpuv_1.6.1      xfun_0.24        
+[33] pkgconfig_2.0.3   base64enc_0.1-3   htmltools_0.5.1.1 tidyselect_1.1.1 
+[37] tibble_3.1.2      lpSolve_5.6.15    quadprog_1.5-8    codetools_0.2-18 
+[41] viridisLite_0.4.0 fansi_0.5.0       crayon_1.4.1      withr_2.4.2      
+[45] later_1.2.0       MASS_7.3-54       grid_4.1.0        jsonlite_1.7.2   
+[49] gtable_0.3.0      lifecycle_1.0.0   git2r_0.28.0      scales_1.1.1     
+[53] zip_2.2.0         stringi_1.6.2     fs_1.5.0          promises_1.2.0.1 
+[57] ellipsis_0.3.2    generics_0.1.0    vctrs_0.3.8       iterators_1.0.13 
+[61] tools_4.1.0       glue_1.4.2        purrr_0.3.4       yaml_2.2.1       
+[65] colorspace_2.0-2  knitr_1.33       </code></pre>
 </div>
 </div>
 
@@ -1552,6 +1364,8 @@ footer is added to webpages before the MathJax javascript. -->
 </script>
 
 
+
+
 </div>
 </div>
 
@@ -1561,7 +1375,7 @@ footer is added to webpages before the MathJax javascript. -->
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -1579,7 +1393,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -1588,6 +1402,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
@@ -1600,7 +1417,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

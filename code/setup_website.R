@@ -25,12 +25,14 @@ libs <-  c("dplyr",
            "baseline",
            "workflowr",
            "keras",
+           "plotly",
            "e1071",
            "abind")
 for (lib in libs){loadandinstall(lib)}
 
 # creating mandatory directories
-root= path.expand(paste0(root_folder,"/website"))
+# root = path.expand(paste0(root_folder,"/website"))
+root  = root_folder
 subDir= c("analysis", # directory containing rmd files which build docu website
           "code", #directory containing scripts and functions not
           "docs", #directory where htmls will be build
