@@ -20,7 +20,7 @@ meta() %>%
     title = "polymeRID - Identification of microplastics in environmental samples",
     description = "Using machine learning to identify microplastic particles in environmental samples based on their FTIR-spectra.",
     url = "https://goergen95.github.io/polymeRID/",
-    image = "https://github.com/goergen95/polymeRID/blob/add-license-1/docs/assets/images/mean_spectrum_PET.png?raw=true",
+    image = "https://github.com/goergen95/polymeRID/blob/master/analysis/assets/images/seperators.jpg?raw=true",
     image_alt = "Conflicts aggregated on administrative units and sub-basin watersheds",
     og_type = "website",
     og_author = "Darius Görgen",
